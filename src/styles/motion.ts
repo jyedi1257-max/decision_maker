@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'react'
+
 /**
  * 진입 모션의 지연 시간표.
  *
@@ -40,7 +42,10 @@ export function delayFor(index: number, motion: MotionClass, base = 0): number {
   return Math.max(0, Math.min(raw, latestStart))
 }
 
-/** style 속성에 그대로 넣는 CSS 변수. */
-export function delay(index: number, motion: MotionClass, base = 0): { '--d': string } {
-  return { '--d': `${delayFor(index, motion, base)}ms` } as { '--d': string }
+/**
+ * style 속성에 그대로 펼쳐 넣는 CSS 변수.
+ * `--d`는 표준 속성이 아니라서 CSSProperties로 한 번 감싼다.
+ */
+export function delay(index: number, motion: MotionClass, base = 0): CSSProperties {
+  return { '--d': `${delayFor(index, motion, base)}ms` } as CSSProperties
 }

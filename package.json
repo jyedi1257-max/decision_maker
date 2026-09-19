@@ -16,6 +16,10 @@
     "cap:sync": "npm run build && cap sync"
   },
   "dependencies": {
+    "@capacitor/core": "^8.5.2",
+    "@capacitor/local-notifications": "^8.3.1",
+    "@capacitor/splash-screen": "^8.0.2",
+    "@capacitor/status-bar": "^8.0.3",
     "firebase": "^11.10.0",
     "idb": "^8.0.3",
     "react": "^19.3.0",
@@ -24,14 +28,18 @@
     "zustand": "^5.0.15"
   },
   "devDependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/cli": "^8.5.2",
+    "@capacitor/ios": "^8.5.2",
     "@fontsource/gowun-batang": "^5.3.0",
     "@fontsource/ibm-plex-sans-kr": "^5.3.0",
     "@types/node": "^26.6.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^4.7.0",
+    "playwright": "^1.63.0",
     "typescript": "^5.9.3",
     "vite": "^6.4.3",
-    "vitest": "^2.1.9"
+    "vitest": "^3.2.7"
   }
 }

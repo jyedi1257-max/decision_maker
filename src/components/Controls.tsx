@@ -6,17 +6,26 @@ import { delay } from '@/styles/motion'
 /** 화면 머리말. 뒤로가기 · 단계 표시 · 저장 상태 (§6 화면 구성 공통) */
 export function TopBar({
   back,
+  onBack,
+  backLabel = '뒤로',
   center,
   right,
 }: {
+  /** 돌아갈 주소. 화면 안에서 앞 문항으로 돌아가야 하면 onBack을 대신 준다. */
   back?: string
+  onBack?: () => void
+  backLabel?: string
   center?: ReactNode
   right?: ReactNode
 }) {
   return (
     <div className="topbar m-lift">
-      {back ? (
-        <Link to={back} aria-label="뒤로" className="iconbtn iconbtn--back">
+      {onBack ? (
+        <button type="button" aria-label={backLabel} className="iconbtn iconbtn--back" onClick={onBack}>
+          <BackIcon />
+        </button>
+      ) : back ? (
+        <Link to={back} aria-label={backLabel} className="iconbtn iconbtn--back">
           <BackIcon />
         </Link>
       ) : (

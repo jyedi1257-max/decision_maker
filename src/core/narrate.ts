@@ -16,28 +16,47 @@ export function ordinalMark(n: number): string {
   return CIRCLED[n - 1] ?? `(${n})`
 }
 
-/** 결과 화면 결론. "A가 정답"이 아니라 "지금 적은 기준에서는 A가 더 잘 맞는다". */
+/**
+ * 받침에 따라 조사를 고른다. "이사가" / "재계약이".
+ * 마지막 글자가 한글이 아니면 받침 없는 쪽을 쓴다.
+ */
+export function josa(word: string, withJong: string, withoutJong: string): string {
+  const last = word.trim().at(-1)
+  if (!last) return withoutJong
+  const code = last.charCodeAt(0)
+  if (code < 0xac00 || code > 0xd7a3) return withoutJong
+  return (code - 0xac00) % 28 === 0 ? withoutJong : withJong
+}
+
+/**
+ * 결과 화면 결론. "A가 정답"이 아니라 "지금 적은 기준에서는 A가 더 잘 맞는다".
+ *
+ * 세 토막으로 나눠 돌려준다. 화면은 `lead + particle`을 한 줄로, `tail`을 다음 줄로 놓는다 —
+ * 조사만 다음 줄로 넘어가면 읽기 어색해지기 때문이다.
+ */
 export function conclusionSentence(result: EvaluationResult, sensitivity: SensitivitySummary) {
   const leader = result.ranked[0]
   if (!leader) return null
 
   const lead = `${ordinalMark(leader.ordinal)} ${leader.name}`
+
   if (result.ranked.length === 1) {
-    return { lead, tail: '만 남았어요.' }
+    return { lead, particle: '만', tail: ' 남았어요.' }
   }
   return {
     lead,
-    tail: sensitivity.robustness === 'close' ? '가 조금 더 잘 맞아요.' : '가 더 잘 맞아요.',
+    particle: josa(leader.name, '이', '가'),
+    tail: sensitivity.robustness === 'close' ? ' 조금 더 잘 맞아요.' : ' 더 잘 맞아요.',
   }
 }
 
 /** "차이를 만든 건" 줄. */
 export function differenceSentence(maker: DifferenceMaker, leaderOrdinal: number): string {
-  const mark = ordinalMark(leaderOrdinal)
+  const mark = `${ordinalMark(leaderOrdinal)}가`
   if (maker.favorsLeader) {
-    return maker.strong ? `${mark}가 크게 앞섬` : `${mark}가 앞섬`
+    return maker.strong ? `${mark} 크게 앞섬` : `${mark} 앞섬`
   }
-  return maker.strong ? `${mark}가 크게 불리함` : `${mark}가 불리함`
+  return maker.strong ? `${mark} 크게 불리함` : `${mark} 불리함`
 }
 
 /** 민감도 한 문장. 숫자와 그래프는 상세 보기 안으로 넣는다. */

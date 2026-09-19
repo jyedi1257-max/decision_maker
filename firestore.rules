@@ -1,0 +1,17 @@
+rules_version = '2';
+
+// 동기화를 켠 사용자만, 자기 UID 아래만 읽고 쓴다.
+// 익명 계정이라 이름도 이메일도 없지만, 다른 사람의 고민에는 닿지 못한다.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /users/{uid}/decisions/{decisionId} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // 그 밖의 모든 경로는 막는다.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

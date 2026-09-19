@@ -3,6 +3,7 @@ import { evaluate } from './evaluate'
 import { makeDecision } from './fixtures'
 import {
   conclusionSentence,
+  josa,
   differenceRows,
   flipPointSentence,
   ordinalMark,
@@ -38,6 +39,20 @@ describe('ordinalMark', () => {
   })
 })
 
+describe('josa', () => {
+  it('받침이 있으면 이, 없으면 가', () => {
+    expect(josa('재계약', '이', '가')).toBe('이')
+    expect(josa('이사', '이', '가')).toBe('가')
+  })
+  it('한글이 아니면 받침 없는 쪽으로', () => {
+    expect(josa('Plan B', '이', '가')).toBe('가')
+    expect(josa('', '이', '가')).toBe('가')
+  })
+  it('끝의 공백은 무시한다', () => {
+    expect(josa('재계약  ', '이', '가')).toBe('이')
+  })
+})
+
 describe('conclusionSentence', () => {
   it('정답이라고 단정하지 않는다', () => {
     const r = evaluate(close)
@@ -65,7 +80,8 @@ describe('conclusionSentence', () => {
       musts: [{ name: '조건', fails: [1] }],
     })
     const r = evaluate(d)
-    expect(conclusionSentence(r, analyzeSensitivity(d, r))!.tail).toContain('만 남았어요')
+    const s = conclusionSentence(r, analyzeSensitivity(d, r))!
+    expect(s.particle + s.tail).toContain('만 남았어요')
   })
 
   it('남은 후보가 없으면 결론도 없다', () => {

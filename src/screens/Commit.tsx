@@ -1,0 +1,171 @@
+import { useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Paper } from '@/components/Paper'
+import { Scale5, TopBar } from '@/components/Controls'
+import { InkPhrase, InkUnderline } from '@/components/Ink'
+import { delay } from '@/styles/motion'
+import { evaluate } from '@/core/evaluate'
+import type { CommitRecord } from '@/core/types'
+import { ordinalMark } from '@/core/narrate'
+import { useDecision } from '@/app/useDecision'
+import { flushPendingSave } from '@/store/decisions'
+import { formatFullDate, reviewDueDate } from '@/store/factory'
+import { cancelReview, scheduleReview } from '@/platform/notify'
+
+/**
+ * 결정 확정
+ *
+ * 기획안 5.9 Decision Quality — "행동에 대한 실행 의지"가 좋은 결정의 여섯 요소 중 하나다.
+ * 결정 버튼은 앱의 추천이 아니라 사용자의 행동이다 (기획안 10.3).
+ */
+export function Commit() {
+  const navigate = useNavigate()
+  const { decision, update } = useDecision()
+  const [saving, setSaving] = useState(false)
+
+  const leader = useMemo(() => {
+    if (!decision) return null
+    return evaluate(decision).ranked[0] ?? null
+  }, [decision])
+
+  if (!decision || !leader) return <Paper> </Paper>
+
+  // 이미 확정했다면 그 내용을 그대로 고친다.
+  const chosenId = decision.commit?.alternativeId ?? leader.alternativeId
+  const chosen = decision.alternatives.find((a) => a.id === chosenId) ?? leader
+  const chosenOrdinal = decision.alternatives.findIndex((a) => a.id === chosenId) + 1
+  const reason = decision.commit?.reason ?? ''
+  const confidence = decision.commit?.confidence ?? null
+  const scheduled = decision.commit?.reviewScheduled ?? true
+  const dueAt = decision.commit?.reviewDueAt ?? reviewDueDate().toISOString()
+  const committedAt = decision.commit?.committedAt ?? new Date().toISOString()
+
+  function patchCommit(patch: Partial<CommitRecord>) {
+    update((d) => ({
+      ...d,
+      stage: 'committed',
+      commit: {
+        alternativeId: chosenId,
+        reason,
+        confidence,
+        committedAt,
+        reviewScheduled: scheduled,
+        reviewDueAt: dueAt,
+        ...d.commit,
+        ...patch,
+      },
+    }))
+  }
+
+  async function toggleReview() {
+    const next = !scheduled
+    patchCommit({ reviewScheduled: next, reviewDueAt: next ? dueAt : null })
+    if (next) await scheduleReview(decision!.id, decision!.question, new Date(dueAt))
+    else await cancelReview(decision!.id)
+  }
+
+  async function finish() {
+    if (saving) return
+    setSaving(true)
+    patchCommit({})
+    if (scheduled) await scheduleReview(decision!.id, decision!.question, new Date(dueAt))
+    await flushPendingSave()
+    navigate('/')
+  }
+
+  return (
+    <Paper>
+      <TopBar back={`/d/${decision.id}/result`} center="마무리" />
+
+      <h1 className="title" style={{ fontSize: 27, marginTop: 32 }}>
+        <span className="m-write" style={delay(0, 'm-write', 80)}>
+          {ordinalMark(chosenOrdinal)} {chosen.name},
+        </span>
+        <span className="m-write" style={delay(1, 'm-write', 80)}>
+          이걸로 정합니다.
+        </span>
+      </h1>
+
+      <div className="write m-lift" style={{ marginTop: 30, gap: 6, ...delay(0, 'm-lift', 280) }}>
+        <label className="write__label" htmlFor="reason">
+          가장 큰 이유 한 줄
+        </label>
+        <div className="write__line">
+          <input
+            id="reason"
+            type="text"
+            className="write__input"
+            style={{ fontSize: 18 }}
+            placeholder="방이 하나 더 필요하다는 게 제일 컸다"
+            value={reason}
+            autoComplete="off"
+            onChange={(e) => patchCommit({ reason: e.target.value })}
+          />
+          {reason.trim() === '' && <span className="write__caret m-caret" />}
+        </div>
+        <InkUnderline delayMs={320} />
+        <p style={{ margin: '8px 0 0', fontSize: 12, lineHeight: 1.7, color: 'var(--soft)' }}>
+          나중에 돌아볼 때 이 한 줄이 가장 쓸모 있습니다.
+        </p>
+      </div>
+
+      <div className="m-lift" style={{ marginTop: 26, ...delay(0, 'm-lift', 400) }}>
+        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--soft)' }}>
+          지금 확신은 어느 정도예요?
+        </div>
+        <Scale5 name="확신" value={confidence} onChange={(v) => patchCommit({ confidence: v })} />
+      </div>
+
+      <div
+        className="card m-settle"
+        style={{ marginTop: 26, display: 'flex', alignItems: 'center', gap: 14, padding: '15px 17px', ...delay(0, 'm-settle', 460) }}
+      >
+        <div style={{ flexGrow: 1 }}>
+          <div style={{ fontSize: 15, fontWeight: 600 }}>30일 뒤에 다시 물어보기</div>
+          <div style={{ marginTop: 4, fontSize: 12, color: 'var(--soft)' }}>
+            {formatFullDate(dueAt)} · 만족도만 한 번 체크
+          </div>
+        </div>
+        <button
+          type="button"
+          className={`toggle${scheduled ? ' is-on' : ''}`}
+          aria-pressed={scheduled}
+          aria-label="30일 뒤 회고 알림 켜기"
+          onClick={toggleReview}
+        >
+          <span className="toggle__knob" />
+        </button>
+      </div>
+
+      <div className="m-lift" style={{ marginTop: 30, ...delay(0, 'm-lift', 500) }}>
+        <div className="stamp m-stamp" style={delay(0, 'm-stamp', 560)}>
+          <svg className="stamp__ring" width="120" height="120" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+            <circle
+              className="m-draw"
+              cx="60"
+              cy="60"
+              r="55"
+              stroke="var(--pen)"
+              strokeWidth="2.6"
+              style={{ strokeDasharray: 350, strokeDashoffset: 350, '--d': '520ms' } as object}
+            />
+          </svg>
+          <InkPhrase phrase="stamp" size={34} className="stamp__word" />
+          <span className="stamp__date">{formatFullDate(committedAt)}</span>
+        </div>
+      </div>
+
+      <div className="spacer" />
+
+      <button
+        type="button"
+        className="btn btn--primary m-lift"
+        onClick={finish}
+        disabled={saving}
+        style={delay(0, 'm-lift', 680)}
+      >
+        노트 닫기
+      </button>
+    </Paper>
+  )
+}
