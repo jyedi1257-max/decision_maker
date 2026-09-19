@@ -23,3 +23,4 @@ firebase-debug.log
 firestore-debug.log
 
 # 스모크가 남기는 스크린샷은 검증 기록으로 커밋한다 (docs/screenshots).
+dist-preview/

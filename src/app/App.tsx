@@ -1,4 +1,4 @@
-import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import { BrowserRouter, HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 import { Main } from '@/screens/Main'
 import { Frame } from '@/screens/Frame'
@@ -13,6 +13,14 @@ import { Why } from '@/screens/Why'
 import { Commit } from '@/screens/Commit'
 import { Review } from '@/screens/Review'
 import { Settings } from '@/screens/Settings'
+
+/**
+ * 기본은 깔끔한 주소(BrowserRouter)다. firebase.json이 모든 경로를 index.html로 돌려준다.
+ *
+ * 그런 되돌림 규칙을 못 거는 정적 호스트에 미리보기를 올릴 때만 VITE_HASH_ROUTER를 켠다.
+ * 안 켜면 /d/:id/frame 같은 주소를 새로고침했을 때 404가 난다.
+ */
+const Router = import.meta.env.VITE_HASH_ROUTER === '1' ? HashRouter : BrowserRouter
 
 export function App() {
   return (
