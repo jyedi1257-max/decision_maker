@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { Paper } from '@/components/Paper'
-import { InkUnderline } from '@/components/Ink'
-import { StepBar, Title, TopBar } from '@/components/Controls'
+import { StepBar, Title, TopBar, WriteField } from '@/components/Controls'
 import { delay } from '@/styles/motion'
+import { questionExamples, questionPlaceholder } from '@/copy/examples'
 import { useDecision } from '@/app/useDecision'
 import { flushPendingSave } from '@/store/decisions'
 import { nextPath, prevPath, stepNumber } from '@/store/factory'
@@ -35,22 +35,13 @@ export function Frame() {
       </div>
 
       <div className="write" style={{ marginTop: 38 }}>
-        <label className="write__label" htmlFor="question">
-          고민 한 문장
-        </label>
-        <div className="write__line">
-          <input
-            id="question"
-            type="text"
-            className="write__input"
-            placeholder="가을에 이사할까, 지금 집에 더 살까"
-            value={decision.question}
-            autoComplete="off"
-            onChange={(e) => update((d) => ({ ...d, question: e.target.value }))}
-          />
-          {!ready && <span className="write__caret m-caret" style={delay(0, 'm-write', 760)} />}
-        </div>
-        <InkUnderline delayMs={300} />
+        <WriteField
+          id="question"
+          label="고민 한 문장"
+          value={decision.question}
+          placeholder={questionPlaceholder(decision.id)}
+          onChange={(value) => update((d) => ({ ...d, question: value }))}
+        />
       </div>
 
       <p className="lede m-lift" style={{ marginTop: 20, ...delay(0, 'm-lift', 620) }}>
@@ -62,9 +53,11 @@ export function Frame() {
           이런 문장도 좋아요
         </div>
         <div style={{ marginTop: 6, fontSize: 13, lineHeight: 1.7, color: 'var(--soft)' }}>
-          “대학원을 올해 갈까, 2년 뒤에 갈까”
-          <br />
-          “지금 차를 바꿀까, 2년 더 탈까”
+          {questionExamples(decision.id).map((example, i) => (
+            <span key={example} style={{ display: 'block' }}>
+              {i > 0 && <br />}“{example}”
+            </span>
+          ))}
         </div>
       </div>
 

@@ -9,8 +9,7 @@ import { DEFAULT_CRITERIA, MAX_CRITERIA } from '@/core/types'
 import { useDecision } from '@/app/useDecision'
 import { flushPendingSave } from '@/store/decisions'
 import { newCriterion, nextPath, prevPath, stepNumber } from '@/store/factory'
-
-const SUGGESTIONS = ['소음', '계약 안정성', '출퇴근 시간']
+import { slotPlaceholder } from '@/copy/examples'
 
 /**
  * 4 · 기준 세 개
@@ -101,10 +100,6 @@ export function Criteria() {
     navigate(nextPath(decision!.id, 'criteria'))
   }
 
-  const unusedSuggestions = SUGGESTIONS.filter(
-    (s) => !named.some((c) => c.name.trim() === s),
-  ).slice(0, 2)
-
   return (
     <Paper>
       <TopBar
@@ -133,7 +128,7 @@ export function Criteria() {
               style={{ border: 0, background: 'transparent', padding: 0 }}
               type="text"
               value={criterion.name}
-              placeholder={['월 주거비', '방 개수', '출퇴근 시간'][i] ?? '기준'}
+              placeholder={slotPlaceholder(i, '기준')}
               aria-label={`기준 ${i + 1}`}
               autoComplete="off"
               onChange={(e) => setName(criterion.id, e.target.value)}
@@ -174,17 +169,13 @@ export function Criteria() {
 
       {canAdd && (
         <div className="m-lift" style={{ marginTop: 20, ...delay(0, 'm-lift', 600) }}>
-          <div style={{ fontSize: 12, color: 'var(--soft)' }}>필요하면 하나 더</div>
-          <div style={{ marginTop: 10, display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {unusedSuggestions.map((s) => (
-              <button key={s} type="button" className="btn--chip" onClick={() => add(s)}>
-                + {s}
-              </button>
-            ))}
-            <button type="button" className="btn--chip" onClick={() => add()}>
-              + 직접 적기
-            </button>
-          </div>
+          {/*
+            기준 후보를 앱이 늘어놓지 않는다. 고른 예시는 그 사람의 고민에 안 맞으면
+            생각을 엉뚱한 쪽으로 끌고 가고, 맞아도 "고려할 것"을 늘린다 (기획안 8.3).
+          */}
+          <button type="button" className="btn--chip" onClick={() => add()}>
+            + 기준 하나 더
+          </button>
         </div>
       )}
 

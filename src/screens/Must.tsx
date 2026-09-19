@@ -86,7 +86,7 @@ export function Must() {
               style={{ border: 0, background: 'transparent', padding: 0 }}
               type="text"
               value={must.name}
-              placeholder="보증금 3억 이하"
+              placeholder={`이것만은 안 되는 조건 ${i + 1}`}
               aria-label={`필수조건 ${i + 1}`}
               autoComplete="off"
               onChange={(e) => setName(must.id, e.target.value)}

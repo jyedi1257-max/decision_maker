@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Paper } from '@/components/Paper'
-import { Scale5, TopBar } from '@/components/Controls'
-import { InkPhrase, InkUnderline } from '@/components/Ink'
+import { Scale5, TopBar, WriteField } from '@/components/Controls'
+import { InkPhrase } from '@/components/Ink'
 import { delay } from '@/styles/motion'
 import { evaluate } from '@/core/evaluate'
 import type { CommitRecord } from '@/core/types'
@@ -87,26 +87,15 @@ export function Commit() {
       </h1>
 
       <div className="write m-lift" style={{ marginTop: 30, gap: 6, ...delay(0, 'm-lift', 280) }}>
-        <label className="write__label" htmlFor="reason">
-          가장 큰 이유 한 줄
-        </label>
-        <div className="write__line">
-          <input
-            id="reason"
-            type="text"
-            className="write__input"
-            style={{ fontSize: 18 }}
-            placeholder="방이 하나 더 필요하다는 게 제일 컸다"
-            value={reason}
-            autoComplete="off"
-            onChange={(e) => patchCommit({ reason: e.target.value })}
-          />
-          {reason.trim() === '' && <span className="write__caret m-caret" />}
-        </div>
-        <InkUnderline delayMs={320} />
-        <p style={{ margin: '8px 0 0', fontSize: 12, lineHeight: 1.7, color: 'var(--soft)' }}>
-          나중에 돌아볼 때 이 한 줄이 가장 쓸모 있습니다.
-        </p>
+        <WriteField
+          id="reason"
+          label="가장 큰 이유 한 줄"
+          value={reason}
+          fontSize={18}
+          underlineDelayMs={320}
+          hint="나중에 돌아볼 때 이 한 줄이 가장 쓸모 있습니다."
+          onChange={(value) => patchCommit({ reason: value })}
+        />
       </div>
 
       <div className="m-lift" style={{ marginTop: 26, ...delay(0, 'm-lift', 400) }}>

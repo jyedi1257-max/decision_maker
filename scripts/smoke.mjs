@@ -119,6 +119,7 @@ try {
   await page.waitForURL(/\/frame$/)
   check('빈 문장이면 다음으로 못 간다', await page.isDisabled('button:has-text("후보 적기")'))
   await page.fill('#question', '가을에 이사할까, 지금 집에 더 살까')
+  check('빈 칸일 때만 펜 커서가 보인다', (await page.locator('.write__caret').count()) === 0)
   check('적으면 다음이 열린다', await page.isEnabled('button:has-text("후보 적기")'))
   await shot(page, 'frame')
 
@@ -148,7 +149,7 @@ try {
   await page.fill('input[aria-label="기준 1"]', '월 주거비')
   await page.fill('input[aria-label="기준 2"]', '방 개수')
   await page.fill('input[aria-label="기준 3"]', '출퇴근 시간')
-  await page.click('button:has-text("+ 직접 적기")')
+  await page.click('button:has-text("+ 기준 하나 더")')
   await page.fill('input[aria-label="기준 4"]', '통근 시간')
   await page.waitForTimeout(350)
   check('겹치는 기준을 잡아낸다', await page.isVisible('text=겹쳐 보여요'))

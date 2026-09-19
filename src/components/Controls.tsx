@@ -1,6 +1,7 @@
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { BackIcon, DragHandleIcon } from './Icons'
+import { InkUnderline } from './Ink'
 import { delay } from '@/styles/motion'
 
 /** 화면 머리말. 뒤로가기 · 단계 표시 · 저장 상태 (§6 화면 구성 공통) */
@@ -251,5 +252,64 @@ export function Title({ lines, size = 25, base = 80 }: { lines: string[]; size?:
         </span>
       ))}
     </h1>
+  )
+}
+
+/**
+ * 종이에 펜으로 쓰는 입력 한 줄.
+ *
+ * 장식용 펜 커서는 **비어 있고 포커스가 없을 때만** 보인다. 포커스가 들어오면
+ * 브라우저의 진짜 커서가 왼쪽에서 깜빡이므로, 둘을 함께 두면 커서가 두 개로 보인다.
+ */
+export function WriteField({
+  id,
+  label,
+  value,
+  onChange,
+  placeholder,
+  hint,
+  fontSize = 19,
+  underlineDelayMs = 300,
+}: {
+  id: string
+  label: string
+  value: string
+  onChange: (value: string) => void
+  placeholder?: string
+  hint?: string
+  fontSize?: number
+  underlineDelayMs?: number
+}) {
+  const [focused, setFocused] = useState(false)
+
+  return (
+    <>
+      <label className="write__label" htmlFor={id}>
+        {label}
+      </label>
+      <div className="write__line">
+        <input
+          id={id}
+          type="text"
+          className="write__input"
+          style={{ fontSize }}
+          placeholder={placeholder}
+          value={value}
+          autoComplete="off"
+          onChange={(e) => onChange(e.target.value)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+        />
+        {value.trim() === '' && !focused && (
+          <span className="write__caret m-caret" aria-hidden="true" />
+        )}
+      </div>
+      <InkUnderline delayMs={underlineDelayMs} />
+      {hint && (
+        <p style={{ margin: '8px 0 0', fontSize: 12, lineHeight: 1.7, color: 'var(--soft)' }}>
+          {hint}
+        </p>
+      )}
+    </>
   )
 }

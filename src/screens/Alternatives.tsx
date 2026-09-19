@@ -9,6 +9,7 @@ import { MAX_ALTERNATIVES, MIN_ALTERNATIVES } from '@/core/types'
 import { useDecision } from '@/app/useDecision'
 import { flushPendingSave } from '@/store/decisions'
 import { newAlternative, nextPath, prevPath, stepNumber } from '@/store/factory'
+import { slotPlaceholder } from '@/copy/examples'
 
 /** 2 · 후보 적기 — 2~5개로 제한한다 (기획안 8.2 choice complexity 관리) */
 export function Alternatives() {
@@ -128,7 +129,7 @@ export function Alternatives() {
               style={{ border: 0, background: 'transparent', padding: 0 }}
               type="text"
               value={alt.name}
-              placeholder={i === 0 ? '지금 집 재계약' : '신도시 24평으로 이사'}
+              placeholder={slotPlaceholder(i, '후보')}
               aria-label={`후보 ${i + 1}`}
               autoComplete="off"
               onChange={(e) => setName(alt.id, e.target.value)}
