@@ -105,6 +105,15 @@ export function Review() {
         )}
       </div>
 
+      {decision.insight && (
+        <div className="card--dashed m-settle" style={{ marginTop: 12, padding: 17, ...delay(0, 'm-settle', 320) }}>
+          <div className="card__label">그때 알게 된 것</div>
+          <p style={{ margin: '10px 0 0', fontSize: 14, lineHeight: 1.8, whiteSpace: 'pre-line' }}>
+            {decision.insight}
+          </p>
+        </div>
+      )}
+
       <div className="m-lift" style={{ marginTop: 26, ...delay(0, 'm-lift', 380) }}>
         <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--soft)' }}>지금 만족도</div>
         <Scale5

@@ -167,13 +167,22 @@ export function Why() {
 
       <div className="spacer" />
 
-      <Link
-        to={`/d/${decision.id}/commit`}
-        className="btn btn--primary m-lift"
-        style={{ color: 'var(--paper)', ...delay(0, 'm-lift', 680) }}
-      >
-        그래도 지금 정하기
-      </Link>
+      <div className="stack" style={{ gap: 10 }}>
+        <Link
+          to={`/d/${decision.id}/explore`}
+          className="btn btn--ghost m-lift"
+          style={delay(0, 'm-lift', 660)}
+        >
+          무게를 직접 움직여보기
+        </Link>
+        <Link
+          to={`/d/${decision.id}/commit`}
+          className="btn btn--primary m-lift"
+          style={{ color: 'var(--paper)', ...delay(0, 'm-lift', 680) }}
+        >
+          그래도 지금 정하기
+        </Link>
+      </div>
     </Paper>
   )
 }

@@ -20,6 +20,19 @@ interface DecisionDB extends DBSchema {
 const DB_NAME = 'decision-note'
 const DB_VERSION = 1
 
+/**
+ * 예전에 저장된 결정에는 나중에 생긴 칸이 없다. 읽을 때 기본값을 채워
+ * 화면이 undefined를 만나지 않게 한다.
+ */
+function migrate(decision: Decision): Decision {
+  return {
+    ...decision,
+    weightOverride: decision.weightOverride ?? null,
+    insight: decision.insight ?? null,
+    dismissedDuplicateHints: decision.dismissedDuplicateHints ?? [],
+  }
+}
+
 let dbPromise: Promise<IDBPDatabase<DecisionDB>> | null = null
 
 function db(): Promise<IDBPDatabase<DecisionDB>> {
@@ -40,7 +53,8 @@ export const localRepository: DecisionRepository = {
   },
 
   async get(id) {
-    return (await (await db()).get('decisions', id)) ?? null
+    const found = await (await db()).get('decisions', id)
+    return found ? migrate(found) : null
   },
 
   async save(decision) {
@@ -52,7 +66,7 @@ export const localRepository: DecisionRepository = {
   },
 
   async all() {
-    return (await db()).getAll('decisions')
+    return (await (await db()).getAll('decisions')).map(migrate)
   },
 
   async clear() {

@@ -163,6 +163,20 @@ export function Result() {
         </div>
       )}
 
+      {/*
+        머리와 마음이 갈렸을 때 가장 쓸모 있는 건 앱의 진단이 아니라 직접 만져보는 것이다.
+        갈리지 않았을 때도 들어갈 수 있게 자세히 화면에 같은 입구를 둔다.
+      */}
+      {conflict && (
+        <Link
+          to={`/d/${decision.id}/explore`}
+          className="btn--link m-lift"
+          style={{ alignSelf: 'flex-start', marginTop: 6, ...delay(0, 'm-lift', 680) }}
+        >
+          무게를 직접 움직여보기 →
+        </Link>
+      )}
+
       <div className="spacer" />
 
       <div className="btnrow">

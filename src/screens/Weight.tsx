@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { Paper } from '@/components/Paper'
 import { RankNum, ReorderHandle, StepBar, Title, TopBar } from '@/components/Controls'
 import { delay } from '@/styles/motion'
-import { rocWeights, moveTo } from '@/core/weights'
+import { moveTo, overrideFits } from '@/core/weights'
+import { weightsFor } from '@/core/evaluate'
 import { useDecision } from '@/app/useDecision'
 import { flushPendingSave } from '@/store/decisions'
 import { nextPath, prevPath, stepNumber } from '@/store/factory'
@@ -22,8 +23,9 @@ export function Weight() {
   const [showNumbers, setShowNumbers] = useState(false)
   const [dragging, setDragging] = useState<number | null>(null)
 
-  const weights = useMemo(
-    () => (decision && decision.criteria.length > 0 ? rocWeights(decision.criteria.length) : []),
+  const weights = useMemo(() => (decision ? weightsFor(decision) : []), [decision])
+  const handTuned = useMemo(
+    () => Boolean(decision && overrideFits(decision.weightOverride, decision.criteria.length)),
     [decision],
   )
 
@@ -31,7 +33,9 @@ export function Weight() {
 
   function reorder(from: number, to: number) {
     if (to < 0 || to >= decision!.criteria.length || from === to) return
-    update((d) => ({ ...d, criteria: moveTo(d.criteria, from, to) }))
+    // 순서를 다시 잡는다는 건 ROC로 돌아가겠다는 뜻이다.
+    // '직접 움직여보기'에서 손으로 정한 무게는 여기서 놓아준다.
+    update((d) => ({ ...d, criteria: moveTo(d.criteria, from, to), weightOverride: null }))
   }
 
   async function next() {
@@ -93,7 +97,9 @@ export function Weight() {
 
       <div className="card m-settle" style={{ marginTop: 24, ...delay(0, 'm-settle', 620) }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontSize: 13, color: 'var(--soft)' }}>이 순서로 계산한 비중</span>
+          <span style={{ fontSize: 13, color: 'var(--soft)' }}>
+            {handTuned ? '직접 정한 비중' : '이 순서로 계산한 비중'}
+          </span>
           <button
             type="button"
             className="btn--link"
@@ -132,7 +138,9 @@ export function Weight() {
           </ul>
         ) : (
           <p style={{ margin: '10px 0 0', fontSize: 12, lineHeight: 1.7, color: 'var(--soft)' }}>
-            1순위가 가장 무겁고, 뒤로 갈수록 가벼워집니다. 숫자를 직접 맞출 필요는 없어요.
+            {handTuned
+              ? '결과 화면에서 직접 움직인 무게를 쓰고 있어요. 여기서 순서를 다시 잡으면 자동 계산으로 돌아갑니다.'
+              : '1순위가 가장 무겁고, 뒤로 갈수록 가벼워집니다. 숫자를 직접 맞출 필요는 없어요.'}
           </p>
         )}
       </div>

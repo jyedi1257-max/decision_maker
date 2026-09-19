@@ -8,7 +8,7 @@
  */
 import type { Criterion, Decision, Evidence } from './types'
 import { scoreKey } from './types'
-import { rocWeights } from './weights'
+import { overrideFits, rocWeights } from './weights'
 
 /** 빈 칸의 값. 모르는 것을 유리하게도 불리하게도 두지 않는다. */
 export const NEUTRAL = 0.5
@@ -74,9 +74,29 @@ function eliminatedBy(decision: Decision, alternativeId: string): string | null 
   return null
 }
 
-export function evaluate(decision: Decision): EvaluationResult {
+/**
+ * 이 결정에 실제로 쓰이는 무게.
+ *
+ * 기본은 기준 순서에서 뽑은 ROC다. 사용자가 '직접 움직여보기'에서 손으로 정했다면
+ * 그 값을 쓴다 (기획안 6.5 적응형 정밀도). 기준을 더하거나 빼서 길이가 어긋나면 버린다.
+ */
+export function weightsFor(decision: Decision): number[] {
+  const n = decision.criteria.length
+  if (n === 0) return []
+  if (overrideFits(decision.weightOverride, n)) return decision.weightOverride!
+  return rocWeights(n)
+}
+
+/**
+ * @param weightsOverride 무게를 직접 넘겨 계산해본다. '직접 움직여보기'가 슬라이더를
+ *                        움직일 때마다 이걸로 다시 계산한다. 저장은 하지 않는다.
+ */
+export function evaluate(decision: Decision, weightsOverride?: number[]): EvaluationResult {
   const { alternatives, criteria } = decision
-  const weights = criteria.length > 0 ? rocWeights(criteria.length) : []
+  const weights =
+    weightsOverride && weightsOverride.length === criteria.length
+      ? weightsOverride
+      : weightsFor(decision)
 
   const all: AlternativeResult[] = alternatives.map((alt, index) => {
     const breakdown: CriterionBreakdown[] = criteria.map((criterion, ci) => {

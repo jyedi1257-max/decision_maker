@@ -50,5 +50,7 @@ export function makeDecision(init: {
     updatedAt: now,
     hiddenAlternativeAsked: false,
     dismissedDuplicateHints: [],
+    weightOverride: null,
+    insight: null,
   }
 }

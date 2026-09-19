@@ -5,10 +5,10 @@
  * "5점 차이"보다 의미 있는 정보를 줄 수 있다.
  * 기획안 4.2 / 디자인 §7: **그래프보다 자연어 문장을 먼저** 보여준다.
  */
-import { evaluate, normalizeScore, type EvaluationResult } from './evaluate'
+import { evaluate, normalizeScore, weightsFor, type EvaluationResult } from './evaluate'
 import { margin } from './explain'
 import { scoreKey, type Decision } from './types'
-import { moveTo, rocWeights, scaleWeight } from './weights'
+import { moveTo, overrideFits, scaleWeight } from './weights'
 
 /** 1·2위 차이가 이보다 작으면 박빙으로 본다. */
 export const CLOSE_CALL_THRESHOLD = 0.06
@@ -31,6 +31,9 @@ export interface RankFlip {
  * "월 주거비를 한 단계만 더 무겁게 보면 ①이 앞섭니다"로 그대로 읽힌다.
  */
 export function findRankFlip(decision: Decision): RankFlip | null {
+  // 사용자가 무게를 손으로 정했다면 순서를 옮겨도 무게가 안 바뀐다 — 할 말이 없다.
+  if (overrideFits(decision.weightOverride, decision.criteria.length)) return null
+
   const base = evaluate(decision)
   const leader = base.ranked[0]
   if (!leader || base.ranked.length < 2) return null
@@ -95,7 +98,7 @@ export function findWeightFlipPoint(decision: Decision): WeightFlipPoint | null 
 
   const n = decision.criteria.length
   if (n < 2) return null
-  const weights = rocWeights(n)
+  const weights = weightsFor(decision)
 
   let best: { index: number; factor: number; newLeaderId: string } | null = null
 

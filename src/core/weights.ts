@@ -41,3 +41,20 @@ export function moveTo<T>(items: readonly T[], from: number, to: number): T[] {
   next.splice(to, 0, item)
   return next
 }
+
+/**
+ * 무게 배열을 합이 1이 되게 맞춘다. 손으로 움직인 값을 저장하기 전에 한 번 거친다.
+ */
+export function normalizeWeights(weights: number[]): number[] {
+  const safe = weights.map((w) => (Number.isFinite(w) && w > 0 ? w : 0))
+  const total = safe.reduce((a, b) => a + b, 0)
+  if (total <= 0) return rocWeights(Math.max(1, weights.length))
+  return safe.map((w) => w / total)
+}
+
+/**
+ * 저장된 손 조정값이 지금 기준 목록과 아직 맞는지. 기준을 더하거나 빼면 버린다.
+ */
+export function overrideFits(override: number[] | null, criteriaCount: number): boolean {
+  return override !== null && override.length === criteriaCount && criteriaCount > 0
+}

@@ -10,6 +10,7 @@ import { Weight } from '@/screens/Weight'
 import { Evaluate } from '@/screens/Evaluate'
 import { Result } from '@/screens/Result'
 import { Why } from '@/screens/Why'
+import { Explore } from '@/screens/Explore'
 import { Commit } from '@/screens/Commit'
 import { Review } from '@/screens/Review'
 import { Settings } from '@/screens/Settings'
@@ -37,6 +38,7 @@ export function App() {
         <Route path="/d/:id/evaluate" element={<Evaluate />} />
         <Route path="/d/:id/result" element={<Result />} />
         <Route path="/d/:id/why" element={<Why />} />
+        <Route path="/d/:id/explore" element={<Explore />} />
         <Route path="/d/:id/commit" element={<Commit />} />
         <Route path="/d/:id/review" element={<Review />} />
         <Route path="*" element={<Navigate to="/" replace />} />

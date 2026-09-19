@@ -23,6 +23,8 @@ export function newDecision(): Decision {
     updatedAt: now,
     hiddenAlternativeAsked: false,
     dismissedDuplicateHints: [],
+    weightOverride: null,
+    insight: null,
   }
 }
 

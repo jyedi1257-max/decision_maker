@@ -92,6 +92,18 @@ export interface Decision {
   /** 앱이 "한 번만 묻는" 제안을 이미 했는지 (기획안 4.1 단계 2) */
   hiddenAlternativeAsked: boolean
   dismissedDuplicateHints: string[]
+
+  /**
+   * 사용자가 '직접 움직여보기'에서 손으로 정한 무게. null이면 순서에서 뽑은 ROC를 쓴다.
+   *
+   * 기획안 6.5의 '적응형 정밀도' — 기본은 순서 입력이되, 결과가 민감하거나 머리와 마음이
+   * 갈릴 때는 더 정교한 무게를 허용한다. 기준 순서를 다시 만지면 해제된다.
+   * 길이는 criteria와 같고 합은 1이다.
+   */
+  weightOverride: number[] | null
+
+  /** 무게를 움직여보며 알게 된 것. 회고에서 다시 읽는다. */
+  insight: string | null
 }
 
 export function scoreKey(alternativeId: string, criterionId: string): string {
