@@ -1,0 +1,568 @@
+/*
+ * 디자인 시스템 §5 — 핵심 컴포넌트
+ * 여기 없는 모양을 화면에서 새로 만들지 않는다.
+ */
+
+/* ── 글자 ─────────────────────────────────────────────── */
+
+.title {
+  margin: 0;
+  font-family: var(--font-title);
+  font-weight: 700;
+  line-height: 1.5;
+}
+.title > span {
+  display: block;
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--soft);
+}
+
+.lede {
+  margin: 10px 0 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--soft);
+}
+
+.meta {
+  font-size: 12px;
+  color: var(--meta);
+}
+
+.ink-hand {
+  font-family: var(--font-ink);
+  font-weight: 400;
+  color: var(--pen);
+  /* 자간 조정 금지 (§9) */
+}
+
+/* ── 머리말 · 진행 ─────────────────────────────────────── */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.topbar__step {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--soft);
+}
+
+.iconbtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.iconbtn--back {
+  margin-left: -14px;
+}
+
+.stepbar {
+  margin-top: 6px;
+  display: flex;
+  gap: 5px;
+}
+.stepbar__cell {
+  height: 3px;
+  flex-grow: 1;
+  border-radius: 2px;
+  background: var(--border);
+}
+.stepbar__cell--done {
+  background: var(--ink);
+}
+
+.progress {
+  margin-top: 8px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--rule);
+  overflow: hidden;
+}
+.progress__fill {
+  display: block;
+  height: 5px;
+  background: var(--ink);
+}
+
+/* ── 카드 ─────────────────────────────────────────────── */
+
+.card {
+  padding: 16px 18px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.card--dashed {
+  background: transparent;
+  border: 1px dashed var(--dashed);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+/* 펜이 말을 거는 카드 — 앱이 사용자에게 한 번 묻는 자리 */
+.card--note {
+  background: var(--note-bg);
+  border: 1px solid var(--note-border);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+.card__pen-label {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--pen);
+  font-weight: 600;
+}
+.card__label {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--soft);
+  font-weight: 600;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 원형 번호 ① ② ③ (§5) ────────────────────────────── */
+
+.circlenum {
+  font-family: var(--font-title);
+  font-size: 19px;
+  color: var(--pen);
+  flex-shrink: 0;
+}
+
+.ranknum {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--pen);
+}
+.ranknum__circle {
+  position: absolute;
+  inset: 0;
+}
+
+.ordinal {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 배지 ─────────────────────────────────────────────── */
+
+.chip {
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--chip-neutral);
+  color: var(--soft);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.chip--pass {
+  background: var(--chip-accent);
+  color: var(--accent);
+}
+.chip--sm {
+  font-size: 11px;
+  padding: 4px 9px;
+  font-weight: 400;
+}
+
+/* ── 버튼 ─────────────────────────────────────────────── */
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 54px;
+  border: 0;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+.btn--primary {
+  background: var(--ink);
+  color: var(--paper);
+}
+.btn--primary:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.btn--ghost {
+  background: transparent;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  font-size: 15px;
+}
+.btn--quiet {
+  background: transparent;
+  border: 1px solid var(--line-soft);
+  color: var(--soft);
+  font-size: 15px;
+  font-weight: 400;
+}
+.btn--add {
+  height: 52px;
+  gap: 8px;
+  border: 1px dashed var(--dashed);
+  border-radius: 14px;
+  background: transparent;
+  color: var(--soft);
+  font-size: 14px;
+  font-weight: 400;
+}
+.btn--add:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.btn--chip {
+  height: 44px;
+  padding: 0 16px;
+  border: 1px dashed var(--dashed);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--soft);
+  font-size: 14px;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+.btn--answer {
+  flex-grow: 1;
+  height: 44px;
+  border: 1px solid var(--line-soft);
+  border-radius: 11px;
+  background: transparent;
+  color: var(--soft);
+  font-size: 14px;
+  font-weight: 400;
+}
+.btn--answer.is-strong {
+  border-color: var(--ink);
+  color: var(--ink);
+  font-weight: 500;
+}
+.btn--link {
+  border: 0;
+  background: transparent;
+  color: var(--pen);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 10px 0;
+  min-height: 44px;
+  font-family: var(--font-body);
+}
+
+.btnrow {
+  display: flex;
+  gap: 10px;
+}
+
+/* ── 5칸 척도: 확신도 · 만족도 (§5) ───────────────────── */
+
+.scale5 {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+.scale5__cell {
+  flex-grow: 1;
+  height: 46px;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+/* 선택 이하 칸은 --accent로 채우고, 이상 칸은 투명 테두리만 (§5) */
+.scale5__cell.is-filled {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+.scale5__ends {
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--soft);
+}
+
+/* 1~5 점수 고르기 (평가 화면) */
+.score5 {
+  display: flex;
+  gap: 8px;
+}
+.score5__cell {
+  flex-grow: 1;
+  height: 58px;
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 15px;
+  color: var(--soft);
+  font-family: var(--font-body);
+}
+.score5__cell.is-picked {
+  border: 2px solid var(--ink);
+  background: var(--card);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* ── 적합도 막대 (§5) ─────────────────────────────────── */
+
+.fitbar {
+  margin-top: 7px;
+  height: 14px;
+  border-radius: 3px;
+  background: var(--rule);
+  overflow: hidden;
+}
+.fitbar__fill {
+  display: block;
+  height: 100%;
+  background: var(--bar-second);
+}
+.fitbar__fill--lead {
+  background: var(--accent);
+}
+.fitbar--thin,
+.fitbar--thin .fitbar__fill {
+  height: 10px;
+}
+
+.barhead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* 가중치 비중 띠 */
+.weightbar {
+  margin-top: 10px;
+  display: flex;
+  height: 12px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--rule);
+}
+.weightbar__seg {
+  transform-origin: left;
+}
+
+/* ── 선택 카드 (직감·후보) ────────────────────────────── */
+
+.pick {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 19px 17px;
+  background: transparent;
+  border: 1px solid var(--line-soft);
+  border-radius: 14px;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-body);
+  width: 100%;
+}
+.pick.is-picked {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  padding: 18px 16px;
+}
+.pick__label {
+  flex-grow: 1;
+  font-size: 16px;
+  color: var(--ink);
+}
+.pick.is-picked .pick__label {
+  font-weight: 600;
+}
+
+/* ── 줄 항목 (후보·기준·필수조건) ─────────────────────── */
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 17px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.row__text {
+  flex-grow: 1;
+  font-size: 16px;
+  font-weight: 500;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.row--quiet {
+  background: transparent;
+  position: relative;
+}
+.row__strike {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  margin-top: -13px;
+  pointer-events: none;
+}
+
+/* ── 손으로 쓰는 입력 ─────────────────────────────────── */
+
+.write {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.write__label {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--soft);
+}
+.write__line {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+}
+.write__input {
+  flex-grow: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-title);
+  font-size: 19px;
+  line-height: 1.6;
+  padding: 6px 0 10px;
+}
+.write__input:focus {
+  outline: none;
+}
+.write__caret {
+  width: 2px;
+  height: 24px;
+  background: var(--pen);
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+.write__rule {
+  display: block;
+  margin-top: -4px;
+  width: 100%;
+}
+
+/* ── 도장 (§5) ────────────────────────────────────────── */
+
+.stamp {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  transform: rotate(-8deg);
+}
+.stamp__ring {
+  position: absolute;
+  inset: 0;
+}
+.stamp__word {
+  font-family: var(--font-ink);
+  font-size: 34px;
+  color: var(--pen);
+}
+.stamp__date {
+  font-size: 12px;
+  color: var(--pen);
+}
+
+/* ── 토글 ─────────────────────────────────────────────── */
+
+.toggle {
+  width: 52px;
+  height: 30px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--line-soft);
+  position: relative;
+  cursor: pointer;
+  padding: 0;
+  transition: background 160ms var(--ease);
+}
+.toggle.is-on {
+  background: var(--ink);
+}
+.toggle__knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--paper);
+  transition: left 160ms var(--ease);
+}
+.toggle.is-on .toggle__knob {
+  left: 25px;
+}
+
+/* ── 빈 상태 ──────────────────────────────────────────── */
+
+.empty {
+  padding: 22px 18px;
+  border: 1px dashed var(--dashed);
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggle,
+  .toggle__knob {
+    transition: none;
+  }
+}

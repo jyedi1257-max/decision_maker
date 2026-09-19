@@ -1,0 +1,58 @@
+/*
+ * 디자인 시스템 §1 — 색
+ * 이 파일이 색의 단일 기준이다. 화면에서 새 색을 만들지 않는다.
+ */
+:root {
+  /* 확정 팔레트 A (원고지) */
+  --desk: #efece5;      /* 종이 바깥 책상 */
+  --paper: #faf9f6;     /* 종이 배경 */
+  --rule: #eae7df;      /* 괘선(가로줄) */
+  --card: #ffffff;      /* 카드 배경 */
+  --border: #e3dfd5;    /* 카드 테두리 */
+  --dashed: #d2ccbf;    /* 점선 테두리(추가 버튼 등) */
+  --ink: #23201c;       /* 본문, 확정 버튼 배경 */
+  --soft: #5a554c;      /* 설명문 */
+  --meta: #6e695c;      /* 보조 텍스트·날짜·타이머 */
+  --pen: #b3402b;       /* 빨간 펜 — 사용자의 손자국 전용 */
+  --pen-hover: #8e3120;
+  --accent: #2f6a5e;    /* 확신도·만족도·적합도 앞선 쪽 — 단일 강조색 */
+  --hl: #f2d98d;        /* 형광펜, 화면당 최대 1곳 */
+
+  /*
+   * 프로토타입이 실제로 쓴 보조값. 위 팔레트에서 파생된 톤이며,
+   * 새 색을 만든 것이 아니라 확정 시안에 이미 있던 값을 이름만 붙인 것이다.
+   */
+  --paper-edge: #ddd8cc;        /* 종이 외곽선 */
+  --line-soft: #ded9cc;         /* 비선택 버튼 테두리 */
+  --rule-ink: #c7c0b2;          /* 입력 밑줄 */
+  --bar-second: #6a6558;        /* 2위 막대 */
+  --bar-rest: #b2aba0;          /* 3위 이하 막대·드래그 손잡이 */
+  --icon-mute: #9a948a;         /* 지우기 아이콘 */
+  --chip-neutral: #efebe1;      /* 중립 배지 배경 */
+  --chip-accent: #e4ede9;       /* 통과·사실 배지 배경 */
+  --note-bg: #fdf8f2;           /* 펜이 말을 거는 카드 배경 */
+  --note-border: #ebd8cc;       /* 같은 카드의 테두리 */
+  --margin-line: rgba(179, 64, 43, 0.22); /* 종이 왼쪽 여백선 */
+  --paper-shadow: 0 2px 10px rgba(35, 32, 28, 0.06);
+
+  /* 서체 — 전부 자가호스팅, 외부 폰트 서버 요청 없음 */
+  --font-title: 'Gowun Batang', 'Apple SD Gothic Neo', serif;
+  --font-body: 'IBM Plex Sans KR', system-ui, -apple-system, sans-serif;
+  --font-ink: 'PenInk', 'Gowun Batang', cursive;
+
+  /* 모션 §4 — 이징은 전부 하나 */
+  --ease: cubic-bezier(0.22, 0.9, 0.24, 1);
+  --stagger: 80ms;
+
+  /* 종이 레이아웃 */
+  --desk-pad: 8px;
+  --paper-radius: 3px;
+  --paper-pad-top: 52px;
+  --paper-pad-right: 18px;
+  --paper-pad-bottom: 24px;
+  --paper-pad-left: 40px;
+  --margin-line-x: 26px;
+  --rule-height: 31px;
+
+  color-scheme: light; /* 다크모드는 지원하지 않는다 (§9) */
+}

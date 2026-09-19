@@ -1,0 +1,26 @@
+node_modules/
+dist/
+dist-ssr/
+*.local
+.DS_Store
+.env
+.env.*
+!.env.example
+
+# Capacitor
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+ios/App/Pods/
+ios/App/build/
+ios/App/App/public/
+android/app/src/main/assets/public/
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# 검증 산출물
+docs/screenshots/*.png

@@ -1,0 +1,37 @@
+{
+  "name": "decision-maker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "개인 의사결정 지원 앱 — 충분히 고민한 사람이 결정할 수 있게",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -b --noEmit",
+    "font:subset": "node scripts/subset-ink-font.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "cap:sync": "npm run build && cap sync"
+  },
+  "dependencies": {
+    "firebase": "^11.10.0",
+    "idb": "^8.0.3",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-router-dom": "^7.18.4",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@fontsource/gowun-batang": "^5.3.0",
+    "@fontsource/ibm-plex-sans-kr": "^5.3.0",
+    "@types/node": "^26.6.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "typescript": "^5.9.3",
+    "vite": "^6.4.3",
+    "vitest": "^2.1.9"
+  }
+}

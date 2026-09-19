@@ -1,0 +1,190 @@
+/*
+ * 디자인 시스템 §4 — 모션 토큰
+ *
+ * 이징은 전부 var(--ease). 항목 간 지연은 --d 커스텀 속성으로 준다.
+ * 한 화면의 진입 모션 전체는 900ms 안에 멈춘다 (§9 금지: 900ms 초과).
+ * 반복 루프·떠 있는 로딩·장식용 파티클은 쓰지 않는다.
+ */
+
+@keyframes write-on {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes ink-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(12px) rotate(-0.7deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes lift-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hilite {
+  from {
+    background-size: 0% 42%;
+  }
+  to {
+    background-size: 100% 42%;
+  }
+}
+
+@keyframes strike {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes stamp-down {
+  from {
+    opacity: 0;
+    transform: rotate(-8deg) scale(1.25);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-8deg) scale(1);
+  }
+}
+
+@keyframes caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ── 적용 클래스 ─────────────────────────────────────────── */
+
+.m-write {
+  animation: write-on 300ms var(--ease) var(--d, 0ms) both;
+}
+.m-draw {
+  animation: ink-draw 380ms var(--ease) var(--d, 0ms) both;
+}
+.m-settle {
+  animation: settle 260ms var(--ease) var(--d, 0ms) both;
+}
+.m-lift {
+  animation: lift-in 220ms ease-out var(--d, 0ms) both;
+}
+.m-grow {
+  transform-origin: left;
+  animation: grow-x 380ms var(--ease) var(--d, 0ms) both;
+}
+.m-fade {
+  animation: fade-in 300ms ease-out var(--d, 0ms) both;
+}
+.m-stamp {
+  animation: stamp-down 320ms var(--ease) var(--d, 0ms) both;
+}
+
+/* 취소선 — 그어진 뒤 항목 전체가 흐려진다 (§5 필수조건 탈락) */
+.m-strike {
+  animation: strike 420ms var(--ease) var(--d, 0ms) both;
+}
+.is-eliminated {
+  animation: fade-to-muted 300ms ease-out calc(var(--d, 0ms) + 420ms) both;
+}
+@keyframes fade-to-muted {
+  to {
+    opacity: 0.45;
+  }
+}
+
+/* 형광펜 — 화면당 최대 1곳 (§1 색 사용 규칙) */
+.m-hilite {
+  background-image: linear-gradient(var(--hl), var(--hl));
+  background-repeat: no-repeat;
+  background-position: 0 82%;
+  background-size: 0% 42%;
+  animation: hilite 320ms ease-out var(--d, 0ms) both;
+}
+
+.m-caret {
+  animation: caret 900ms steps(1, end) var(--d, 0ms) infinite both;
+}
+
+/*
+ * 뒤로 가기는 모션을 역재생하지 않고 페이드로 끝낸다 (§4).
+ */
+.m-back-fade {
+  animation: fade-in 180ms ease-out both;
+}
+
+/*
+ * prefers-reduced-motion에서는 전부 생략하고 최종 상태만 보여준다 (§4).
+ */
+@media (prefers-reduced-motion: reduce) {
+  .m-write,
+  .m-draw,
+  .m-settle,
+  .m-lift,
+  .m-grow,
+  .m-fade,
+  .m-stamp,
+  .m-strike,
+  .is-eliminated,
+  .m-hilite,
+  .m-caret,
+  .m-back-fade {
+    animation: none !important;
+  }
+  .m-hilite {
+    background-size: 100% 42%;
+  }
+  .is-eliminated {
+    opacity: 0.45;
+  }
+  .m-draw,
+  .m-strike {
+    stroke-dashoffset: 0 !important;
+  }
+  .m-caret {
+    opacity: 1;
+  }
+}

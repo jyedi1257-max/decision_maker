@@ -1,0 +1,137 @@
+/*
+ * 디자인 시스템 §3 — 종이 · 배경
+ * 화면은 "책상 위에 놓인 종이 한 장" 구조다.
+ */
+
+@font-face {
+  font-family: 'PenInk';
+  src: url('../assets/fonts/penink.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+  /* 서브셋이 담은 글자만 선언한다. 여기 없는 글자는 Gowun Batang으로 폴백된다. */
+  unicode-range: U+ACB0, U+ACE0, U+B2C8, U+B2E4, U+B85D, U+BBFC, U+C218, U+C5B4, U+C744, U+C774, U+C801, U+C815, U+C9D1, U+D568;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--desk);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--pen);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--pen-hover);
+}
+
+input {
+  font-family: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--pen);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── 책상과 종이 ─────────────────────────────────────────── */
+
+.desk {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  background: var(--desk);
+  padding: calc(var(--desk-pad) + env(safe-area-inset-top)) var(--desk-pad)
+    calc(var(--desk-pad) + env(safe-area-inset-bottom)) var(--desk-pad);
+}
+
+.paper {
+  position: relative;
+  width: 100%;
+  max-width: 374px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--paper);
+  border: 1px solid var(--paper-edge);
+  border-radius: var(--paper-radius);
+  box-shadow: var(--paper-shadow);
+}
+
+/* 홈 화면 배경에만 가로 괘선을 반복한다 (§3). */
+.paper--ruled {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 var(--rule-height),
+    var(--rule) var(--rule-height) calc(var(--rule-height) + 1px)
+  );
+}
+
+/* 종이 왼쪽 세로 여백선 */
+.paper::before {
+  content: '';
+  position: absolute;
+  left: var(--margin-line-x);
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--margin-line);
+  pointer-events: none;
+}
+
+.sheet {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--paper-pad-top) var(--paper-pad-right) var(--paper-pad-bottom)
+    var(--paper-pad-left);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* 화면 하단에 붙는 확정 버튼 위의 밀어내기 */
+.spacer {
+  flex-grow: 1;
+  min-height: 16px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
