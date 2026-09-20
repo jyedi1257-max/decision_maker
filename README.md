@@ -86,7 +86,41 @@ w_i = (1/n) · Σ_{k=i..n} (1/k)        기준 3개 → [0.611, 0.278, 0.111]
 - 충돌은 `updatedAt` 최신 우선.
 - 보관함에서 JSON으로 내보내거나 전부 지울 수 있다.
 
-`.env`를 비워두면 동기화 토글이 잠긴 채로 기기 저장만 쓴다. 설정은 `.env.example` 참고.
+설정값은 `src/firebase/config.ts`에 기본값으로 들어 있어서 따로 준비할 게 없다. 이 값들은
+비밀이 아니다 — 웹에 배포하면 번들에 그대로 실린다. 막는 건 두 겹이다.
+
+1. `firestore.rules` — 자기 UID 하위 문서만 읽고 쓴다. 나머지 경로는 전부 거부
+2. Firebase Auth의 **승인된 도메인** — 거기 등록된 곳에서만 로그인이 된다
+
+다른 프로젝트(스테이징 등)를 붙이려면 `.env`로 덮어쓰면 된다 (`.env.example` 참고).
+
+---
+
+## 배포
+
+프로젝트는 `decision-maker-48224`에 연결돼 있다.
+
+```bash
+npx firebase login          # 브라우저가 열린다
+npm run deploy              # 빌드 + 호스팅 + 규칙
+```
+
+`npm run deploy:hosting` / `npm run deploy:rules`로 나눠 올릴 수도 있고,
+`npm run emulators`로 로그인 없이 로컬에서 Auth·Firestore를 흉내 내며 볼 수 있다.
+
+### 처음 한 번만 해야 하는 것
+
+Firebase 콘솔에서 두 가지를 켜야 동기화가 돈다.
+
+| 할 일 | 어디서 |
+|---|---|
+| **Firestore 만들기** — 프로덕션 모드로. 규칙은 배포할 때 덮어쓴다 | 콘솔 → 빌드 → Firestore Database |
+| **익명 로그인 켜기** | 콘솔 → 빌드 → Authentication → 로그인 방법 → 익명 |
+
+승인된 도메인은 기본으로 `localhost`, `decision-maker-48224.web.app`,
+`decision-maker-48224.firebaseapp.com`이 들어 있다. **다른 도메인에서는 동기화가 안 된다** —
+미리보기용으로 어딘가에 올렸다면 그 도메인을 Authentication → 설정 → 승인된 도메인에 넣어야 한다.
+기기 저장은 도메인과 무관하게 언제나 동작한다.
 
 ---
 

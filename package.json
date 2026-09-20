@@ -13,7 +13,11 @@
     "typecheck": "tsc -b --noEmit",
     "font:subset": "node scripts/subset-ink-font.mjs",
     "smoke": "node scripts/smoke.mjs",
-    "cap:sync": "npm run build && cap sync"
+    "cap:sync": "npm run build && cap sync",
+    "deploy": "npm run build && firebase deploy",
+    "deploy:hosting": "npm run build && firebase deploy --only hosting",
+    "deploy:rules": "firebase deploy --only firestore:rules",
+    "emulators": "firebase emulators:start --only auth,firestore,hosting"
   },
   "dependencies": {
     "@capacitor/core": "^8.5.2",
@@ -37,6 +41,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^4.7.0",
+    "firebase-tools": "^15.30.2",
     "playwright": "^1.63.0",
     "typescript": "^5.9.3",
     "vite": "^6.4.3",

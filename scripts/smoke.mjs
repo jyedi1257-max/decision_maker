@@ -96,6 +96,13 @@ const context = await browser.newContext({
 const page = await context.newPage()
 
 const consoleErrors = []
+const outboundRequests = []
+page.on('request', (r) => {
+  const url = r.url()
+  if (!url.startsWith(`http://localhost:${PORT}`) && !url.startsWith('data:')) {
+    outboundRequests.push(url.split('?')[0])
+  }
+})
 page.on('console', (m) => {
   if (m.type() === 'error') consoleErrors.push(m.text())
 })
@@ -308,7 +315,16 @@ try {
   console.log('\n보관함')
   await page.goto(`${base}/settings`)
   check('기기 저장을 설명한다', await visible(page, 'text=전부 이 기기에만 있습니다'))
-  check('설정이 없으면 동기화가 잠긴다', await page.isDisabled('button[aria-label="다른 기기와 동기화"]'))
+  check(
+    '동기화를 켤 수 있다 (Firebase 설정이 들어 있음)',
+    await page.isEnabled('button[aria-label="다른 기기와 동기화"]'),
+  )
+  // 켜기 전에는 firebase 청크가 로드조차 되면 안 된다 — 고민 본문이 기기를 벗어나지 않는 근거
+  check(
+    '켜기 전에는 바깥으로 아무것도 안 나간다',
+    outboundRequests.length === 0,
+    outboundRequests.slice(0, 3).join(' | '),
+  )
   await shot(page, 'settings')
 
   console.log('\n모션을 끈 상태')
