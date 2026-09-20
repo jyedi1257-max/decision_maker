@@ -108,6 +108,15 @@ npm run deploy              # 빌드 + 호스팅 + 규칙
 `npm run deploy:hosting` / `npm run deploy:rules`로 나눠 올릴 수도 있고,
 `npm run emulators`로 로그인 없이 로컬에서 Auth·Firestore를 흉내 내며 볼 수 있다.
 
+사는 곳: **https://decision-maker-48224.web.app**
+
+### 캐시 헤더
+
+해시가 붙은 자산(`/assets/**`)과 폰트는 1년 immutable, HTML은 `no-cache`다.
+HTML 쪽은 **라우터가 쓰는 주소를 `firebase.json`에 그대로 나열해** 걸어둔다 —
+루트 `/`는 `/index.html`과 다른 경로라 한쪽만 적으면 다른 쪽이 새 것을 늦게 받는다.
+**라우트를 추가하면 `firebase.json`의 no-cache 목록도 같이 늘려야 한다.**
+
 ### 처음 한 번만 해야 하는 것
 
 Firebase 콘솔에서 두 가지를 켜야 동기화가 돈다.
