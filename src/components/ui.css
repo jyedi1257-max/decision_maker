@@ -690,3 +690,111 @@
   border-style: solid;
   border-color: var(--pen);
 }
+
+/* ── 내가 매긴 표 (매트릭스) ─────────────────────────────────
+   만년필이 표를 써 내려가는 화면. 표는 SVG 하나로 그려지고,
+   종이 폭에 맞춰 늘어난다.
+*/
+.matrix {
+  margin-top: 18px;
+}
+
+.matrix__sheet {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* 만년필 몸통은 닙에서 위로 뻗는다. 표의 윗줄을 쓸 때 viewBox를 벗어나는데,
+     잘리면 펜이 화살촉처럼 보인다. 종이(.paper)가 overflow:hidden이라
+     결국 종이 가장자리에서 멈춘다 — 손이 종이 밖으로 나간 것처럼. */
+  overflow: visible;
+}
+
+.matrix__legend {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--soft);
+}
+
+.matrix__dropped {
+  margin: 14px 0 0;
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: var(--meta);
+}
+
+/* 소리가 나는 중이라고 알려주는 상단 배지 */
+.soundbadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 30px;
+  padding: 0 11px;
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--meta);
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.soundbadge.is-on {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--chip-accent);
+}
+
+.soundbadge__eq {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+
+.soundbadge__eq i {
+  width: 2.5px;
+  height: 4px;
+  border-radius: 1px;
+  background: currentColor;
+}
+
+.soundbadge__eq i:nth-child(2) {
+  height: 9px;
+}
+
+.soundbadge__eq i:nth-child(3) {
+  height: 6px;
+}
+
+.soundbadge.is-on .soundbadge__eq i {
+  animation: soundbadge-eq 900ms ease-in-out infinite;
+}
+
+.soundbadge.is-on .soundbadge__eq i:nth-child(2) {
+  animation-delay: 150ms;
+}
+
+.soundbadge.is-on .soundbadge__eq i:nth-child(3) {
+  animation-delay: 300ms;
+}
+
+@keyframes soundbadge-eq {
+  0%,
+  100% {
+    height: 3px;
+  }
+  50% {
+    height: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .soundbadge.is-on .soundbadge__eq i {
+    animation: none;
+  }
+}

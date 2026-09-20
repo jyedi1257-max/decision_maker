@@ -18,6 +18,9 @@
 - 반복 루프 애니메이션
 - 다크모드
 
+900ms 예외는 매트릭스 화면의 필기 모션 하나뿐이다 (디자인 시스템 §9).
+건너뛰기·`prefers-reduced-motion`·소리 끄기가 셋 다 있어야 성립한다.
+
 기획안 8.3 (AI 역할):
 
 - AI가 점수를 매기기 — "근거 없이 AI가 8점"
@@ -34,22 +37,28 @@
 
 ## 손글씨 문구를 고칠 때
 
-`src/styles/ink-phrases.ts`를 고쳤으면 반드시:
+`src/styles/ink-phrases.ts`의 `INK_PHRASES`나 `INK_GLYPHS`를 고쳤으면 반드시:
 
 ```bash
 npm run font:subset
 ```
 
-앱에 실린 폰트는 그 문구의 글자만 담은 서브셋이다. 빼먹어도 글자가 깨지지는 않지만
-(`unicode-range` 폴백) 새 문구가 본문 서체로 나온다.
+앱에 실린 폰트는 그 글자만 담은 서브셋이다. 빼먹어도 글자가 깨지지는 않지만
+(`unicode-range` 폴백) 새 문구가 조용히 본문 서체로 나온다 — 알아채기 어렵다.
+스크립트가 woff2와 `base.css`의 `unicode-range`를 함께 갱신하니 손으로 옮겨 적지 않는다.
+
+선택지·기준 **이름은 손글씨로 쓰지 않는다.** 사용자가 직접 치는 글자라 서브셋에 담을 수 없다.
 
 ## 검증
 
 ```bash
 npm test          # 결정 엔진
 npm run build     # 타입 + 빌드
-npm run build && npm run smoke   # 13화면 완주 + 스크린샷
+npm run build && npm run smoke   # 전체 화면 완주 + 스크린샷
 ```
+
+`npx tsc --noEmit`은 아무것도 검사하지 않는다 (`tsconfig.json`이 프로젝트 참조만 갖고 있다).
+타입은 `npm run build`로 본다.
 
 스모크는 화면마다 `docs/screenshots/`에 스크린샷을 남긴다. 화면을 고쳤으면
 스크린샷도 함께 갱신해 커밋한다.

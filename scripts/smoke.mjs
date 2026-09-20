@@ -275,8 +275,49 @@ try {
   check('30일 뒤 회고를 예약한다', await page.isVisible('text=30일 뒤에 다시 물어보기'))
   await shot(page, 'commit')
 
-  console.log('\n홈으로 — 저장 확인')
+  console.log('\n내가 매긴 표')
   await page.click('button:has-text("기록하고 나가기")')
+  await page.waitForURL(/\/matrix$/)
+  // 그리는 걸 다 기다리지 않고 건너뛴다 — 끝 상태가 같아야 한다.
+  check('건너뛰기가 처음부터 떠 있다', await visible(page, 'button:has-text("건너뛰기")'))
+  check('소리 배지가 상단에 있다', await visible(page, '.soundbadge'))
+
+  // 만년필이 실제로 종이 위에 나타나는지. 카메라가 움직이는 동안에는 펜을
+  // 떼므로 잠깐 사라진다 — 3초 안에 한 번이라도 보이면 된다.
+  let penSeen = false
+  for (let i = 0; i < 30 && !penSeen; i++) {
+    const opacity = await page
+      .locator('.mx-pen')
+      .evaluate((el) => getComputedStyle(el).opacity)
+      .catch(() => '0')
+    if (opacity !== '0') penSeen = true
+    else await page.waitForTimeout(100)
+  }
+  check('만년필이 종이 위에 있다', penSeen)
+  await shot(page, 'matrix-writing')
+
+  await page.click('button:has-text("건너뛰기")')
+  await page.waitForTimeout(300)
+
+  // SVG <text>는 innerText가 비어 나온다. textContent로 읽는다.
+  const cells = await page.$$eval('.matrix__sheet g text', (nodes) => nodes.map((n) => n.textContent))
+  // 이름이 길면 두 줄로 갈리므로 이어붙여서 본다.
+  const joined = cells.join(' ')
+  check('선택지가 가로축에 있다', joined.includes('지금 집 재계약') && joined.includes('신도시'), cells.join('/'))
+  check('①②를 그대로 쓴다', cells.includes('①') && cells.includes('②'))
+  check('기준이 세로축에 있다', cells.includes('월 주거비'), cells.join('/'))
+  check('내가 매긴 점수가 그대로 있다', ['4', '2', '5', '3'].every((v) => cells.includes(v)), cells.join('/'))
+  check('무게를 비율로 적는다', cells.some((t) => /^\d+%$/.test(t)), cells.join('/'))
+  check('적합도는 라벨로만 (총점 숫자 없음)', cells.includes('적합도') && cells.some((t) => ['낮음', '보통', '높음'].includes(t)))
+  check(
+    '기준마다 가장 높은 점수에 동그라미',
+    (await page.locator('.matrix__sheet .mx-rings path').count()) === 3,
+  )
+  check('다 그려지면 다음으로가 열린다', await page.isEnabled('button:has-text("다음으로")'))
+  await shot(page, 'matrix')
+
+  console.log('\n홈으로 — 저장 확인')
+  await page.click('button:has-text("다음으로")')
   await page.waitForURL(`${base}/`)
   await page.waitForTimeout(400)
   check('목록에 남는다', await page.isVisible('text=가을에 이사할까'))

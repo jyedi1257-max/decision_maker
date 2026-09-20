@@ -87,7 +87,9 @@ export function Commit() {
     patchCommit({})
     if (scheduled) await scheduleReview(decision!.id, decision!.question, new Date(dueAt))
     await flushPendingSave()
-    navigate('/')
+    // 나가기 전에 표를 한 번 보여준다. 여기서 누른 손길이 소리를 여는
+    // 사용자 제스처 역할도 한다 — 브라우저는 그 전에는 소리를 안 내준다.
+    navigate(`/d/${decision!.id}/matrix`)
   }
 
   return (

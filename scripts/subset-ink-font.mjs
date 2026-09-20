@@ -23,10 +23,17 @@ if (phrases.length === 0) {
   throw new Error('ink-phrases.ts에서 문구를 찾지 못했습니다.')
 }
 
-const chars = [...new Set(phrases.join('').split('').filter((c) => c.trim() !== ''))].sort()
+// 문구 말고 낱글자로 들어가는 것들 (매트릭스 화면의 숫자·번호·%·적합도 라벨).
+const glyphsMatch = phrasesSrc.match(/^export const INK_GLYPHS = '([^']+)'$/m)
+if (!glyphsMatch) {
+  throw new Error('ink-phrases.ts에서 INK_GLYPHS를 찾지 못했습니다.')
+}
+
+const source = phrases.join('') + glyphsMatch[1]
+const chars = [...new Set(source.split('').filter((c) => c.trim() !== ''))].sort()
 const codepoints = chars.map((c) => c.codePointAt(0))
 
-console.log(`문구 ${phrases.length}개 → 글자 ${chars.length}자: ${chars.join('')}`)
+console.log(`문구 ${phrases.length}개 + 낱글자 → ${chars.length}자: ${chars.join('')}`)
 
 mkdirSync(dirname(OUT), { recursive: true })
 execFileSync(
@@ -49,6 +56,16 @@ execFileSync(
 const range = codepoints.map((c) => 'U+' + c.toString(16).toUpperCase()).join(', ')
 writeFileSync(RANGE_OUT, range + '\n')
 
+// base.css의 unicode-range도 같이 고쳐둔다. 손으로 옮겨 적다 빠뜨리면
+// 서브셋에 들어간 글자가 폴백으로 새어나가서 알아채기 어렵다.
+const CSS = resolve(root, 'src/styles/base.css')
+const css = readFileSync(CSS, 'utf8')
+const RANGE_LINE = /(\n  unicode-range: )[^;]+;/
+if (!RANGE_LINE.test(css)) {
+  throw new Error('base.css의 @font-face에서 unicode-range를 찾지 못했습니다.')
+}
+writeFileSync(CSS, css.replace(RANGE_LINE, `$1${range};`))
+
 const size = statSync(OUT).size
 console.log(`→ ${OUT} (${(size / 1024).toFixed(1)} KB)`)
-console.log(`→ unicode-range: ${range}`)
+console.log(`→ base.css의 unicode-range도 갱신했습니다 (${codepoints.length}자)`)
