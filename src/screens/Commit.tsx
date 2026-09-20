@@ -89,20 +89,28 @@ export function Commit() {
       <div className="write m-lift" style={{ marginTop: 30, gap: 6, ...delay(0, 'm-lift', 280) }}>
         <WriteField
           id="reason"
-          label="가장 큰 이유 한 줄"
+          label="결국 무엇 때문이었나요"
           value={reason}
           fontSize={18}
           underlineDelayMs={320}
-          hint="나중에 돌아볼 때 이 한 줄이 가장 쓸모 있습니다."
+          hint="한 달 뒤의 내가 가장 궁금해할 한 줄이에요."
           onChange={(value) => patchCommit({ reason: value })}
         />
       </div>
 
       <div className="m-lift" style={{ marginTop: 26, ...delay(0, 'm-lift', 400) }}>
         <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--soft)' }}>
-          지금 확신은 어느 정도예요?
+          결과를 보니 마음이 기울었나요?
         </div>
-        <Scale5 name="확신" value={confidence} onChange={(v) => patchCommit({ confidence: v })} />
+        <Scale5
+          name="마음이 기운 정도"
+          value={confidence}
+          onChange={(v) => patchCommit({ confidence: v })}
+        />
+        <p style={{ margin: '10px 0 0', fontSize: 12, lineHeight: 1.7, color: 'var(--soft)' }}>
+          결정을 눈으로 봤을 때, 생각만큼 마음이 안 갈 수도 있어요. 어떤 점이 마음에 걸리는지 다시 한 번
+          생각해보세요.
+        </p>
       </div>
 
       <div
@@ -112,7 +120,7 @@ export function Commit() {
         <div style={{ flexGrow: 1 }}>
           <div style={{ fontSize: 15, fontWeight: 600 }}>30일 뒤에 다시 물어보기</div>
           <div style={{ marginTop: 4, fontSize: 12, color: 'var(--soft)' }}>
-            {formatFullDate(dueAt)} · 만족도만 한 번 체크
+            {formatFullDate(dueAt)} · 어땠는지만 한 번 체크
           </div>
         </div>
         <button
@@ -153,7 +161,7 @@ export function Commit() {
         disabled={saving}
         style={delay(0, 'm-lift', 680)}
       >
-        노트 닫기
+        기록하고 나가기
       </button>
     </Paper>
   )

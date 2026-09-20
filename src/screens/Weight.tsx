@@ -98,7 +98,7 @@ export function Weight() {
       <div className="card m-settle" style={{ marginTop: 24, ...delay(0, 'm-settle', 620) }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <span style={{ fontSize: 13, color: 'var(--soft)' }}>
-            {handTuned ? '직접 정한 비중' : '이 순서로 계산한 비중'}
+            {handTuned ? '직접 정한 무게' : '이렇게 무게가 나뉩니다'}
           </span>
           <button
             type="button"
@@ -106,7 +106,7 @@ export function Weight() {
             aria-expanded={showNumbers}
             onClick={() => setShowNumbers((v) => !v)}
           >
-            {showNumbers ? '접기' : '숫자로 보기'}
+            {showNumbers ? '접기' : '숫자 보기'}
           </button>
         </div>
 
@@ -140,7 +140,7 @@ export function Weight() {
           <p style={{ margin: '10px 0 0', fontSize: 12, lineHeight: 1.7, color: 'var(--soft)' }}>
             {handTuned
               ? '결과 화면에서 직접 움직인 무게를 쓰고 있어요. 여기서 순서를 다시 잡으면 자동 계산으로 돌아갑니다.'
-              : '1순위가 가장 무겁고, 뒤로 갈수록 가벼워집니다. 숫자를 직접 맞출 필요는 없어요.'}
+              : '내가 나열한 순서입니다. 실제 마음은 다를 수 있어요.'}
           </p>
         )}
       </div>

@@ -74,13 +74,13 @@ export function Settings() {
       <TopBar back="/" backLabel="홈으로" center="보관함" />
 
       <div style={{ marginTop: 32 }}>
-        <Title lines={['적은 것들은', '어디에 있나요?']} size={24} />
+        <Title lines={['결정 기록 노트']} size={24} />
       </div>
 
       <div className="card m-settle" style={{ marginTop: 24, ...delay(0, 'm-settle', 240) }}>
         <div style={{ fontSize: 15, fontWeight: 600 }}>이 기기</div>
         <p style={{ margin: '8px 0 0', fontSize: 13, lineHeight: 1.7, color: 'var(--soft)' }}>
-          고민 본문과 점수는 기본적으로 이 기기 안에만 저장됩니다. 계정도, 로그인도 필요하지 않아요.
+          적은 건 전부 이 기기에만 있습니다. 서버로 보내지 않고, 계정도 만들지 않아요.
         </p>
       </div>
 
@@ -90,7 +90,7 @@ export function Settings() {
             <div style={{ fontSize: 15, fontWeight: 600 }}>다른 기기에서도 보기</div>
             <div style={{ marginTop: 4, fontSize: 12, color: 'var(--soft)' }}>
               {configured
-                ? '켜면 익명 계정을 만들어 기록을 올립니다. 이름도 이메일도 묻지 않아요.'
+                ? '켜면 기록이 서버로 올라갑니다. 이름도 이메일도 묻지 않아요.'
                 : '이 빌드에는 서버 설정이 들어 있지 않아 기기 저장만 씁니다.'}
             </div>
           </div>

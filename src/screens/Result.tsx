@@ -45,7 +45,7 @@ export function Result() {
         <TopBar back={`/d/${decision.id}/must`} center="결과" />
         <div style={{ marginTop: 40 }}>
           <p className="empty">
-            필수조건을 지키는 후보가 남지 않았어요. 조건을 다시 보거나 후보를 더 적어주세요.
+            필수조건을 지키는 선택지가 남지 않았어요. 조건을 다시 보거나 선택지를 더 적어주세요.
           </p>
         </div>
         <div className="spacer" />
@@ -104,7 +104,7 @@ export function Result() {
       {differences.length > 0 && (
         <div className="card m-settle" style={{ marginTop: 26, padding: 17, ...delay(0, 'm-settle', 620) }}>
           <div className="card__label">
-            차이를 만든 건 {differences.length === 1 ? '한 가지' : '두 가지'}
+            결정적이었던 {differences.length === 1 ? '한 가지' : '두 가지'}
           </div>
           <div className="stack" style={{ marginTop: 14, gap: 12 }}>
             {differences.map(({ maker, text }) => (
@@ -163,19 +163,6 @@ export function Result() {
         </div>
       )}
 
-      {/*
-        머리와 마음이 갈렸을 때 가장 쓸모 있는 건 앱의 진단이 아니라 직접 만져보는 것이다.
-        갈리지 않았을 때도 들어갈 수 있게 자세히 화면에 같은 입구를 둔다.
-      */}
-      {conflict && (
-        <Link
-          to={`/d/${decision.id}/explore`}
-          className="btn--link m-lift"
-          style={{ alignSelf: 'flex-start', marginTop: 6, ...delay(0, 'm-lift', 680) }}
-        >
-          무게를 직접 움직여보기 →
-        </Link>
-      )}
 
       <div className="spacer" />
 
@@ -183,9 +170,9 @@ export function Result() {
         <Link
           to={`/d/${decision.id}/why`}
           className="btn btn--ghost m-lift"
-          style={{ width: 118, ...delay(0, 'm-lift', 680) }}
+          style={{ flexGrow: 1, whiteSpace: 'nowrap', ...delay(0, 'm-lift', 680) }}
         >
-          왜 이렇죠?
+          판단 기준 자세히 보기
         </Link>
         <Link
           to={`/d/${decision.id}/commit`}

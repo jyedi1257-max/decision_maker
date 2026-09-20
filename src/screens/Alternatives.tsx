@@ -11,7 +11,7 @@ import { flushPendingSave } from '@/store/decisions'
 import { newAlternative, nextPath, prevPath, stepNumber } from '@/store/factory'
 import { slotPlaceholder } from '@/copy/examples'
 
-/** 2 · 후보 적기 — 2~5개로 제한한다 (기획안 8.2 choice complexity 관리) */
+/** 2 · 선택지 적기 — 2~5개로 제한한다 (기획안 8.2 choice complexity 관리) */
 export function Alternatives() {
   const navigate = useNavigate()
   const { decision, update } = useDecision()
@@ -81,7 +81,7 @@ export function Alternatives() {
       return {
         ...d,
         hiddenAlternativeAsked: true,
-        alternatives: [...d.alternatives, newAlternative('1년 미루고 내년에 다시 보기')],
+        alternatives: [...d.alternatives, newAlternative('지금은 그냥 두기')],
       }
     })
   }
@@ -109,10 +109,10 @@ export function Alternatives() {
       <StepBar step={stepNumber('alternatives')} />
 
       <div style={{ marginTop: 34 }}>
-        <Title lines={['지금 머릿속에 있는', '후보를 적어볼까요?']} />
+        <Title lines={['지금 머릿속에 있는', '선택지를 적어볼까요?']} />
       </div>
       <p className="lede m-lift" style={delay(0, 'm-lift', 260)}>
-        2개부터 5개까지. 비슷한 건 하나로 묶어도 돼요.
+        최대 다섯 개까지만. 많을수록 정하기 어려워져요.
       </p>
 
       <div className="stack" style={{ marginTop: 24, gap: 10 }}>
@@ -129,8 +129,8 @@ export function Alternatives() {
               style={{ border: 0, background: 'transparent', padding: 0 }}
               type="text"
               value={alt.name}
-              placeholder={slotPlaceholder(i, '후보')}
-              aria-label={`후보 ${i + 1}`}
+              placeholder={slotPlaceholder(i, '선택지')}
+              aria-label={`선택지 ${i + 1}`}
               autoComplete="off"
               onChange={(e) => setName(alt.id, e.target.value)}
             />
@@ -139,7 +139,7 @@ export function Alternatives() {
                 type="button"
                 className="iconbtn"
                 style={{ margin: '-12px -10px -12px 0' }}
-                aria-label={`후보 ${i + 1} 지우기`}
+                aria-label={`선택지 ${i + 1} 지우기`}
                 onClick={() => removeAt(alt.id)}
               >
                 <CloseIcon />
@@ -156,7 +156,7 @@ export function Alternatives() {
           style={delay(rows.length, 'm-lift', 320)}
         >
           <PlusIcon />
-          {canAdd ? '후보 하나 더' : '다섯 개면 충분해요'}
+          {canAdd ? '선택지 추가' : '다섯 개면 충분해요'}
         </button>
       </div>
 
@@ -164,15 +164,15 @@ export function Alternatives() {
         <div className="card--note m-settle" style={{ marginTop: 24, ...delay(0, 'm-settle', 660) }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <SparkIcon />
-            <span className="card__pen-label">한 번만 묻습니다</span>
+            <span className="card__pen-label">하나만 여쭤볼게요</span>
           </div>
           <p style={{ margin: '8px 0 0', fontSize: 14, lineHeight: 1.7 }}>{hiddenHint}</p>
           <div className="btnrow" style={{ marginTop: 12, gap: 8 }}>
             <button type="button" className="btn--answer is-strong" onClick={acceptHint}>
-              후보에 넣기
+              넣을게요
             </button>
             <button type="button" className="btn--answer" onClick={dismissHint}>
-              아니요
+              괜찮아요
             </button>
           </div>
         </div>
@@ -187,7 +187,7 @@ export function Alternatives() {
         onClick={next}
         style={delay(0, 'm-lift', 680)}
       >
-        {ready ? '다음' : '후보를 두 개 이상 적어주세요'}
+        {ready ? '다음' : '선택지를 두 개 이상 적어주세요'}
       </button>
     </Paper>
   )

@@ -11,7 +11,7 @@ import { useDecision } from '@/app/useDecision'
 import { flushPendingSave } from '@/store/decisions'
 import { prevPath, stepNumber } from '@/store/factory'
 
-const SCORE_LABELS = ['많이 아쉬움', '조금 아쉬움', '보통', '잘 맞음', '아주 잘 맞음'] as const
+const SCORE_LABELS = ['매우 불만족', '불만족', '보통', '만족', '매우 만족'] as const
 const EVIDENCES: Evidence[] = ['fact', 'estimate', 'feeling']
 
 /** 한 칸당 대략 이만큼 걸린다고 보고 남은 시간을 어림한다. */
@@ -129,7 +129,10 @@ export function Evaluate() {
       <div style={{ marginTop: 12 }}>
         <Title
           key={`${cell.alternativeId}:${cell.criterionId}`}
-          lines={[`${ordinalMark(alternativeIndex + 1)} ${alternative.name},`, '이 기준에선 어때요?']}
+          lines={[
+            `${ordinalMark(alternativeIndex + 1)} ${alternative.name},`,
+            `‘${criterion.name}’에 몇 점을 줄까요?`,
+          ]}
           size={26}
           base={240}
         />
@@ -145,7 +148,7 @@ export function Evaluate() {
 
       <div className="m-lift" style={{ marginTop: 30, ...delay(0, 'm-lift', 540) }}>
         <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--soft)' }}>
-          이 점수는 무엇에 기대고 있나요?
+          그렇게 생각한 근거가 뭐예요?
         </div>
         <div className="btnrow" style={{ marginTop: 12, gap: 8 }} role="group" aria-label="점수의 근거">
           {EVIDENCES.map((evidence) => {
@@ -174,7 +177,8 @@ export function Evaluate() {
           })}
         </div>
         <p style={{ margin: '12px 0 0', fontSize: 12, lineHeight: 1.7, color: 'var(--soft)' }}>
-          ‘추정’과 ‘느낌’은 결과에서 따로 표시돼요. 모르는 걸 숫자로 덮지 않기 위해서입니다.
+          내 판단이 어떤 정보에 기반하고 있는지 알아보면, 내가 놓친 정보나 다시 확인해볼 부분을 찾을 수
+          있어요.
         </p>
       </div>
 

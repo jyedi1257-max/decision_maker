@@ -110,7 +110,7 @@ export function Criteria() {
       <StepBar step={stepNumber('criteria')} />
 
       <div style={{ marginTop: 34 }}>
-        <Title lines={['무엇을 기준으로', '볼까요? 먼저 세 개만.']} />
+        <Title lines={['무엇을 판단 기준으로 둘까요?', '중요한 것부터 세 개만.']} />
       </div>
       <p className="lede m-lift" style={delay(0, 'm-lift', 260)}>
         세 개면 대부분의 결정이 갈립니다. 더 필요하면 나중에 한 개씩 늘려요.
@@ -150,7 +150,7 @@ export function Criteria() {
 
       {duplicate && (
         <div className="card--note m-settle" style={{ marginTop: 20, ...delay(0, 'm-settle', 560) }}>
-          <div className="card__pen-label">겹쳐 보여요</div>
+          <div className="card__pen-label">비슷해 보여요</div>
           <p style={{ margin: '8px 0 0', fontSize: 14, lineHeight: 1.7 }}>
             ‘<strong style={{ color: 'var(--pen)' }}>{duplicate.a.name}</strong>’과 ‘
             <strong style={{ color: 'var(--pen)' }}>{duplicate.b.name}</strong>’는 같은 걸 두 번 보는
@@ -158,10 +158,10 @@ export function Criteria() {
           </p>
           <div className="btnrow" style={{ marginTop: 14, gap: 8 }}>
             <button type="button" className="btn--answer is-strong" onClick={mergeDuplicate}>
-              묶기
+              하나로
             </button>
             <button type="button" className="btn--answer" onClick={keepBoth}>
-              따로 볼게요
+              각각 둘게요
             </button>
           </div>
         </div>

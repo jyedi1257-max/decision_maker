@@ -60,7 +60,7 @@ export function Main() {
           ...delay(0, 'm-settle', 420),
         }}
       >
-        <span>새 고민 펼치기</span>
+        <span>새 고민 꺼내놓기</span>
         <PlusIcon size={20} color="var(--paper)" />
       </button>
 
@@ -75,17 +75,17 @@ export function Main() {
         }}
       >
         <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.04em', color: 'var(--soft)' }}>
-          지난 결정
+          지난 결정기록
         </span>
         <Link to="/settings" className="meta" style={{ color: 'var(--meta)' }}>
-          {synced ? '다른 기기와 동기화 중' : '기기에만 저장됨'}
+          {synced ? '다른 기기와 함께 보는 중' : '고민은 이 기기에만 저장됩니다'}
         </Link>
       </div>
 
       <div className="stack" style={{ marginTop: 14, gap: 12 }}>
         {loading && summaries.length === 0 ? null : summaries.length === 0 ? (
           <p className="empty m-settle" style={delay(0, 'm-settle', 540)}>
-            아직 펼친 고민이 없어요. 머릿속에 있는 걸 한 문장으로 적는 것부터 시작합니다.
+            첫 장은 비어 있어요. 지금 걸리는 걸 한 줄로 적어보세요.
           </p>
         ) : (
           summaries.map((summary, i) => (
@@ -129,7 +129,7 @@ function DecisionCard({ summary, index }: { summary: DecisionSummary; index: num
 }
 
 function statusBadge(s: DecisionSummary): { badge: string; badgeTone: 'neutral' | 'accent' } {
-  if (s.satisfaction !== null) return { badge: `만족 ${s.satisfaction}`, badgeTone: 'neutral' }
+  if (s.satisfaction !== null) return { badge: `돌아보니 ${s.satisfaction}`, badgeTone: 'neutral' }
   if (s.committedAt && s.reviewDueAt) {
     const days = daysUntil(s.reviewDueAt)
     if (days <= 0) return { badge: '회고할 때', badgeTone: 'accent' }
@@ -142,12 +142,12 @@ function statusBadge(s: DecisionSummary): { badge: string; badgeTone: 'neutral' 
 function subtitle(s: DecisionSummary): string {
   if (s.committedAt) {
     const parts = [`${formatDate(s.committedAt)} 확정`, `기준 ${s.criteriaCount}개`]
-    if (s.confidence !== null) parts.push(`확신 ${s.confidence}`)
+    if (s.confidence !== null) parts.push(`마음 ${s.confidence}`)
     if (s.satisfaction !== null) parts.push('회고 완료')
     return parts.join(' · ')
   }
   if (s.criteriaCount > 0) return `기준 ${s.criteriaCount}개까지 적음 · 평가 전`
-  if (s.alternativesCount > 0) return `후보 ${s.alternativesCount}개까지 적음`
+  if (s.alternativesCount > 0) return `선택지 ${s.alternativesCount}개까지 적음`
   return '이제 막 펼침'
 }
 

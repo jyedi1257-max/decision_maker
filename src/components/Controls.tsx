@@ -58,7 +58,7 @@ export function StepBar({ step, total = 7 }: { step: number; total?: number }) {
 }
 
 /**
- * 5칸 척도 — 확신도·만족도 (§5).
+ * 5칸 척도 — 마음이 기운 정도·회고 (§5).
  * 선택 이하 칸은 --accent로 채우고, 이상 칸은 투명 테두리만 남긴다.
  */
 export function Scale5({

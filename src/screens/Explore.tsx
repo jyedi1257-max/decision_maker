@@ -86,7 +86,7 @@ export function Explore() {
 
   return (
     <Paper>
-      <TopBar back={`/d/${decision.id}/result`} backLabel="결과로 돌아가기" center="직접 움직여보기" />
+      <TopBar back={`/d/${decision.id}/why`} backLabel="자세히로 돌아가기" center="진짜 내 마음은" />
 
       <div style={{ marginTop: 26 }}>
         <Title lines={['무게를 바꿔보면', '결과가 어떻게 움직이나']} size={24} />

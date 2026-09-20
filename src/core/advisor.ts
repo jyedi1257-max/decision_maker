@@ -151,7 +151,7 @@ export class LocalAdvisor implements Advisor {
     const hasWaitOption = names.some((n) => waitWords.some((w) => n.includes(normalizeName(w))))
     if (hasWaitOption) return null
 
-    return '“1년 미루고 내년에 다시 보기”도 후보인가요?'
+    return '“지금은 그냥 두기”도 선택지에 넣을까요?'
   }
 
   guessEvidence(note: string): Evidence | null {

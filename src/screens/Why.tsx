@@ -72,7 +72,7 @@ export function Why() {
       </div>
 
       <div className="card m-settle" style={{ marginTop: 24, padding: 17, ...delay(0, 'm-settle', 560) }}>
-        <div className="card__label">결과가 뒤집히는 지점</div>
+        <div className="card__label">이 선을 넘으면 달라져요</div>
         <p style={{ margin: '10px 0 0', fontSize: 14, lineHeight: 1.75 }}>
           {flipPointSentence(sensitivity)}
         </p>
@@ -157,7 +157,7 @@ export function Why() {
             <span className="chip chip--sm">
               {unknowns[0]!.kind === 'missing' ? '빈 칸' : EVIDENCE_LABEL[unknowns[0]!.kind]}
             </span>
-            <span className="meta">아직 남아 있는 불확실성 {unknowns.length}개</span>
+            <span className="meta">아직 확인 안 한 것 {unknowns.length}개</span>
           </div>
           <p style={{ margin: '9px 0 0', fontSize: 14, lineHeight: 1.7 }}>
             {uncertaintySentence(unknowns[0]!)}
@@ -173,14 +173,14 @@ export function Why() {
           className="btn btn--ghost m-lift"
           style={delay(0, 'm-lift', 660)}
         >
-          무게를 직접 움직여보기
+          진짜 내 마음은
         </Link>
         <Link
           to={`/d/${decision.id}/commit`}
           className="btn btn--primary m-lift"
           style={{ color: 'var(--paper)', ...delay(0, 'm-lift', 680) }}
         >
-          그래도 지금 정하기
+          이만하면 됐어요, 정할게요
         </Link>
       </div>
     </Paper>
@@ -193,10 +193,10 @@ function uncertaintySentence(u: ReturnType<typeof uncertainties>[number]): strin
     u.kind === 'missing'
       ? '아직 비워둔 칸이에요'
       : u.kind === 'estimate'
-        ? '확인하지 않은 추정값이에요'
-        : '느낌으로 채운 칸이에요'
+        ? '추정이에요'
+        : '느낌이에요'
   const tail = u.matters
-    ? '이 하나만 확인하면 결과가 훨씬 단단해집니다.'
-    : '결과를 뒤집을 만큼은 아니지만, 알아두면 좋아요.'
+    ? '실제 정보를 확인하면 결과가 훨씬 단단해집니다.'
+    : '실제 정보를 알아두면 좋아요.'
   return `${who}은 ${what}. ${tail}`
 }

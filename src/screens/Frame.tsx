@@ -31,7 +31,7 @@ export function Frame() {
       <StepBar step={stepNumber('frame')} />
 
       <div style={{ marginTop: 44 }}>
-        <Title lines={['무엇 때문에', '고민하고 있어요?']} size={27} />
+        <Title lines={['어떤 걸 고민하고 있어요?']} size={27} />
       </div>
 
       <div className="write" style={{ marginTop: 38 }}>
@@ -45,12 +45,12 @@ export function Frame() {
       </div>
 
       <p className="lede m-lift" style={{ marginTop: 20, ...delay(0, 'm-lift', 620) }}>
-        한 문장이면 충분해요. 나중에 언제든 고칠 수 있습니다.
+        정확하지 않아도 괜찮아요. 적고 나면 또렷해집니다.
       </p>
 
       <div className="card--dashed m-settle" style={{ marginTop: 24, ...delay(0, 'm-settle', 640) }}>
         <div style={{ fontFamily: 'var(--font-title)', fontSize: 15, fontWeight: 700, color: 'var(--pen)' }}>
-          이런 문장도 좋아요
+          예를 들면
         </div>
         <div style={{ marginTop: 6, fontSize: 13, lineHeight: 1.7, color: 'var(--soft)' }}>
           {questionExamples(decision.id).map((example, i) => (
@@ -70,7 +70,7 @@ export function Frame() {
         onClick={next}
         style={delay(0, 'm-lift', 680)}
       >
-        후보 적기
+        선택지 적기
       </button>
     </Paper>
   )

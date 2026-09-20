@@ -70,7 +70,7 @@ export function Must() {
       <StepBar step={stepNumber('must')} />
 
       <div style={{ marginTop: 34 }}>
-        <Title lines={['이것만 안 되면', '바로 빼는 조건, 있나요?']} />
+        <Title lines={['이건 절대 안 된다,', '하는 선이 있나요?']} />
       </div>
       <p className="lede m-lift" style={delay(0, 'm-lift', 260)}>
         없으면 건너뛰어도 됩니다. 최대 두 개까지.
@@ -122,7 +122,7 @@ export function Must() {
             className="m-lift"
             style={{ marginTop: 28, fontSize: 13, fontWeight: 600, color: 'var(--soft)', ...delay(0, 'm-lift', 500) }}
           >
-            걸러본 결과 — 조건을 못 지키는 후보를 눌러 빼주세요
+            조건에 걸리는 선택지를 눌러서 제외해주세요
           </div>
 
           <div className="stack" style={{ marginTop: 12, gap: 10 }}>
@@ -158,7 +158,7 @@ export function Must() {
           </div>
 
           <p className="lede m-lift" style={{ marginTop: 18, ...delay(0, 'm-lift', 700) }}>
-            필수조건은 점수로 상쇄되지 않습니다. 다른 장점이 아무리 커도 먼저 빠져요.
+            여기 걸리면 다른 게 아무리 좋아도 소용없어요. 그래서 점수 내기 전에 뺍니다.
           </p>
         </>
       )}
@@ -167,7 +167,7 @@ export function Must() {
 
       {survivors === 0 ? (
         <p className="empty" style={{ marginBottom: 12 }}>
-          조건을 지키는 후보가 하나도 남지 않았어요. 조건을 다시 보거나 후보를 더 적어주세요.
+          조건을 지키는 선택지가 하나도 남지 않았어요. 조건을 다시 보거나 선택지를 더 적어주세요.
         </p>
       ) : null}
 
@@ -181,8 +181,8 @@ export function Must() {
         {namedMusts.length === 0
           ? '조건 없이 넘어가기'
           : survivors === 1
-            ? '남은 하나 보기'
-            : `남은 ${survivors}개 비교하기`}
+            ? '남은 선택지 보여주기'
+            : `남은 선택지 ${survivors}개 비교하기`}
       </button>
     </Paper>
   )

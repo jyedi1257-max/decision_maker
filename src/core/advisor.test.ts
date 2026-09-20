@@ -92,9 +92,9 @@ describe('findDuplicateCriteria', () => {
 })
 
 describe('suggestHiddenAlternative', () => {
-  it('기다리기 계열 후보가 없으면 한 번 묻는다', () => {
+  it('기다리기 계열 선택지가 없으면 한 번 묻는다', () => {
     const d = makeDecision({ alternatives: ['재계약', '이사'], criteria: [] })
-    expect(advisor.suggestHiddenAlternative(d)).toContain('후보인가요')
+    expect(advisor.suggestHiddenAlternative(d)).toContain('넣을까요')
   })
 
   it('이미 물었으면 다시 묻지 않는다', () => {
@@ -108,7 +108,7 @@ describe('suggestHiddenAlternative', () => {
     expect(advisor.suggestHiddenAlternative(d)).toBeNull()
   })
 
-  it('후보가 없으면 묻지 않는다', () => {
+  it('선택지가 없으면 묻지 않는다', () => {
     expect(advisor.suggestHiddenAlternative(makeDecision({ alternatives: [], criteria: [] }))).toBeNull()
   })
 })

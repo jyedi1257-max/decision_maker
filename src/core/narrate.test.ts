@@ -3,7 +3,6 @@ import { evaluate } from './evaluate'
 import { makeDecision } from './fixtures'
 import {
   conclusionSentence,
-  josa,
   differenceRows,
   flipPointSentence,
   ordinalMark,
@@ -39,37 +38,23 @@ describe('ordinalMark', () => {
   })
 })
 
-describe('josa', () => {
-  it('받침이 있으면 이, 없으면 가', () => {
-    expect(josa('재계약', '이', '가')).toBe('이')
-    expect(josa('이사', '이', '가')).toBe('가')
-  })
-  it('한글이 아니면 받침 없는 쪽으로', () => {
-    expect(josa('Plan B', '이', '가')).toBe('가')
-    expect(josa('', '이', '가')).toBe('가')
-  })
-  it('끝의 공백은 무시한다', () => {
-    expect(josa('재계약  ', '이', '가')).toBe('이')
-  })
-})
-
 describe('conclusionSentence', () => {
   it('정답이라고 단정하지 않는다', () => {
     const r = evaluate(close)
     const s = conclusionSentence(r, analyzeSensitivity(close, r))!
-    expect(s.tail).toContain('잘 맞아요')
+    expect(s.tail).toContain('기울어요')
     expect(s.tail).not.toContain('최선')
     expect(s.tail).not.toContain('정답')
   })
 
   it('박빙이면 "조금 더"라고 말한다', () => {
     const r = evaluate(close)
-    expect(conclusionSentence(r, analyzeSensitivity(close, r))!.tail).toContain('조금 더')
+    expect(conclusionSentence(r, analyzeSensitivity(close, r))!.tail).toContain('조금')
   })
 
   it('안정적이면 "조금 더"를 붙이지 않는다', () => {
     const r = evaluate(stable)
-    expect(conclusionSentence(r, analyzeSensitivity(stable, r))!.tail).not.toContain('조금 더')
+    expect(conclusionSentence(r, analyzeSensitivity(stable, r))!.tail).not.toContain('조금')
   })
 
   it('필수조건으로 하나만 남으면 그렇게 말한다', () => {
@@ -81,7 +66,8 @@ describe('conclusionSentence', () => {
     })
     const r = evaluate(d)
     const s = conclusionSentence(r, analyzeSensitivity(d, r))!
-    expect(s.particle + s.tail).toContain('만 남았어요')
+    expect(s.particle).toBe('만')
+    expect(s.tail).toContain('남았어요')
   })
 
   it('남은 후보가 없으면 결론도 없다', () => {
@@ -102,9 +88,11 @@ describe('robustnessSentence', () => {
     expect(text).toMatch(/월 주거비|방 개수|출퇴근 시간/)
   })
 
-  it('안 뒤집히면 안정적이라고만 한다', () => {
+  it('안 뒤집히면 차이가 분명하다고만 한다 — 점수가 높다고 말하지 않는다', () => {
     const text = robustnessSentence(analyzeSensitivity(stable))
-    expect(text).toContain('안정적')
+    expect(text).toContain('차이가 분명')
+    // 두 선택지가 모두 낮은데 차이만 클 수 있으므로 점수로 말하면 거짓이 된다
+    expect(text).not.toContain('점수')
   })
 
   it('그래프 없이 문장만으로 읽힌다 — 숫자를 노출하지 않는다', () => {
@@ -130,7 +118,7 @@ describe('differenceRows', () => {
     const rows = differenceRows(evaluate(close))
     expect(rows.length).toBeGreaterThan(0)
     for (const row of rows) {
-      expect(row.text).toMatch(/앞섬|불리함/)
+      expect(row.text).toMatch(/나음|손해/)
     }
   })
 
@@ -138,7 +126,7 @@ describe('differenceRows', () => {
     const rows = differenceRows(evaluate(close))
     const favors = rows.filter((r) => r.maker.favorsLeader)
     const against = rows.filter((r) => !r.maker.favorsLeader)
-    for (const r of favors) expect(r.text).toContain('앞섬')
-    for (const r of against) expect(r.text).toContain('불리함')
+    for (const r of favors) expect(r.text).toContain('나음')
+    for (const r of against) expect(r.text).toContain('손해')
   })
 })

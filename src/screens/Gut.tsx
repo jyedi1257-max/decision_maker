@@ -37,13 +37,13 @@ export function Gut() {
       <StepBar step={stepNumber('gut')} />
 
       <div style={{ marginTop: 40 }}>
-        <Title lines={['계산하기 전에,', '지금 마음은 어느 쪽이에요?']} />
+        <Title lines={['계산하기 전에,', '지금 끌리는 쪽이 있나요?']} />
       </div>
       <p className="lede m-lift" style={delay(0, 'm-lift', 260)}>
-        이 답은 접어두었다가 결과와 나란히 펴봅니다.
+        지금 끌리는 답과 계산한 답을 나중에 비교해볼게요.
       </p>
 
-      <div className="stack" style={{ marginTop: 30, gap: 10 }} role="radiogroup" aria-label="지금 마음">
+      <div className="stack" style={{ marginTop: 30, gap: 10 }} role="radiogroup" aria-label="지금 끌리는 쪽">
         {decision.alternatives.map((alt, i) => {
           const picked = gut.alternativeId === alt.id
           return (
@@ -66,15 +66,18 @@ export function Gut() {
 
       <div className="m-lift" style={{ marginTop: 28, ...delay(0, 'm-lift', 560) }}>
         <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--soft)' }}>
-          그 마음이 얼마나 확실한가요?
+          그 마음이 얼마나 기울었어요?
         </div>
         <Scale5
-          name="확신"
+          name="마음이 기운 정도"
           value={gut.confidence}
           onChange={(v) => update((d) => ({ ...d, gut: { ...d.gut, confidence: v } }))}
-          lowLabel="잘 모르겠다"
-          highLabel="거의 정했다"
+          lowLabel="기울지 않았다"
+          highLabel="이미 정했다"
         />
+        <p style={{ margin: '10px 0 0', fontSize: 12, lineHeight: 1.7, color: 'var(--soft)' }}>
+          끌리는 게 없어도 괜찮아요. 나중에 나의 직감을 살펴보기 위해 사용됩니다.
+        </p>
       </div>
 
       <div
@@ -97,7 +100,7 @@ export function Gut() {
         onClick={next}
         style={delay(0, 'm-lift', 680)}
       >
-        접어두고 기준 정하기
+        판단 기준 정하기
       </button>
     </Paper>
   )

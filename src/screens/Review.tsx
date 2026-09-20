@@ -85,10 +85,10 @@ export function Review() {
       <div className="card m-settle" style={{ marginTop: 24, padding: 17, ...delay(0, 'm-settle', 260) }}>
         <div style={{ fontSize: 12, color: 'var(--soft)' }}>
           {formatFullDate(commit.committedAt)}
-          {commit.confidence !== null && ` · 확신 ${commit.confidence}`}
+          {commit.confidence !== null && ` · 마음 ${commit.confidence}`}
         </div>
         <div style={{ marginTop: 8, fontFamily: 'var(--font-title)', fontSize: 19, fontWeight: 700 }}>
-          {ordinalMark(chosenOrdinal)} {chosen?.name ?? '고른 후보'}
+          {ordinalMark(chosenOrdinal)} {chosen?.name ?? '고른 선택지'}
         </div>
         {commit.reason.trim() !== '' && (
           <div
@@ -115,13 +115,13 @@ export function Review() {
       )}
 
       <div className="m-lift" style={{ marginTop: 26, ...delay(0, 'm-lift', 380) }}>
-        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--soft)' }}>지금 만족도</div>
+        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--soft)' }}>돌아보면</div>
         <Scale5
-          name="만족도"
+          name="돌아보면"
           value={review?.satisfaction ?? null}
           onChange={(v) => patchReview({ satisfaction: v })}
-          lowLabel="아쉽다"
-          highLabel="잘했다"
+          lowLabel="별로였다"
+          highLabel="잘한 선택이었다"
         />
       </div>
 
@@ -172,8 +172,8 @@ export function Review() {
           {nowTop && (
             <p style={{ margin: '14px 0 0', fontSize: 13, lineHeight: 1.7, color: 'var(--soft)' }}>
               {nowTop.id === thenTop.id
-                ? '무게가 그대로예요. 그때의 기준이 지금도 맞았습니다.'
-                : '살아보니 무게가 옮겨갔어요. 다음 결정에서 참고할 수 있게 기록해 둡니다.'}
+                ? '그때 본 게 지금도 맞았어요.'
+                : '겪어보니 중요한 게 달라졌네요. 이게 다음 결정에서 제일 쓸모 있는 정보예요.'}
             </p>
           )}
         </div>
@@ -184,14 +184,14 @@ export function Review() {
         <div className="card--dashed m-settle" style={{ marginTop: 14, padding: 17, ...delay(0, 'm-settle', 540) }}>
           <div className="card__label">지금까지 모인 패턴</div>
           <p style={{ margin: '10px 0 0', fontSize: 14, lineHeight: 1.8 }}>
-            확신이 4 이상이던 결정{' '}
+            마음이 크게 기울었던 결정{' '}
             <Hilite delayMs={620}>
               {pattern.total}개 중 {pattern.satisfied}개
             </Hilite>
-            가 만족도 4 이상이었어요.
+            가 실제로도 괜찮았어요.
             {pattern.satisfied < pattern.total
-              ? ' 확신이 낮을 때는 결정을 한 번 미루는 편이 나았습니다.'
-              : ' 확신이 높았던 판단은 지금까지 잘 맞았습니다.'}
+              ? ' 마음이 덜 기울었을 때는 한 번 미루는 편이 나았습니다.'
+              : ' 당신의 직감은 꽤 믿을 만한 편입니다.'}
           </p>
         </div>
       )}
@@ -222,7 +222,7 @@ export function Review() {
 }
 
 /**
- * 확신이 높았던 결정이 실제로 만족스러웠는지 (기획안 4.3 개인 의사결정 패턴).
+ * 마음이 크게 기울었던 결정이 실제로 괜찮았는지 (기획안 4.3 개인 의사결정 패턴).
  * 표본이 2건 미만이면 아무 말도 하지 않는다.
  */
 function patternSentence(history: Decision[]): { total: number; satisfied: number } | null {
