@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
+import type { PointerEvent as ReactPointerEvent } from 'react'
 import { BackIcon, DragHandleIcon } from './Icons'
 import { InkUnderline } from './Ink'
 import { delay } from '@/styles/motion'
@@ -151,18 +152,28 @@ export function FitBar({
 }
 
 /** 순서 바꾸기 손잡이 — 드래그와 키보드 두 경로를 함께 둔다. */
+/**
+ * 순서 바꾸기 — 위/아래 버튼과 끌기 손잡이.
+ *
+ * 버튼은 키보드와 보조기기를 위한 길이고, 손잡이는 손가락을 위한 길이다.
+ * 둘 다 있어야 한다: 손잡이만 두면 키보드로 못 옮기고, 버튼만 두면
+ * 손잡이 모양을 보고 끌어본 사람이 "안 움직인다"고 느낀다.
+ */
 export function ReorderHandle({
   label,
   onUp,
   onDown,
   canUp,
   canDown,
+  onGrab,
 }: {
   label: string
   onUp: () => void
   onDown: () => void
   canUp: boolean
   canDown: boolean
+  /** 손잡이를 잡았을 때. 주지 않으면 손잡이는 장식으로만 남는다. */
+  onGrab?: (event: ReactPointerEvent<HTMLElement>) => void
 }) {
   return (
     <span style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -202,7 +213,12 @@ export function ReorderHandle({
           />
         </svg>
       </button>
-      <span aria-hidden="true" style={{ display: 'flex', paddingLeft: 2 }}>
+      <span
+        aria-hidden="true"
+        className={onGrab ? 'grip' : undefined}
+        style={{ display: 'flex', paddingLeft: 2 }}
+        onPointerDown={onGrab}
+      >
         <DragHandleIcon />
       </span>
     </span>

@@ -5,6 +5,10 @@
  * 들이미는 대신, 쓰는 동안은 그 부분으로 확대해 붙어 있다가 마지막에만
  * 물러난다. 전체가 보일 땐 이미 한 칸씩 다 읽은 상태다.
  *
+ * 결과 화면 **앞에** 오는 화면이라 적합도는 그리지 않는다. 사용자가 적은
+ * 점수와 기준별 최고점까지만 보여주고, "그래서 어느 쪽이 더 맞는가"는
+ * 다음 화면이 말한다. 여기서 막대를 띄우면 결과를 미리 말해버린다.
+ *
  * 디자인 §9의 "진입 모션 900ms"를 넘긴다. 그 규칙은 화면이 뜰 때마다
  * 반복되는 모션을 겨냥한 것이고 이건 결정당 한 번만 보는 장면이라
  * 다른 종류로 본다. 대신 건너뛰기를 항상 띄우고, 모션을 줄이는 설정이
@@ -12,7 +16,6 @@
  *
  * React도 저장소도 모른다 — SVG 엘리먼트 하나와 값만 받는다.
  */
-import type { FitLabel } from '@/core/evaluate'
 import type { PenSound } from '@/platform/sound'
 
 const NS = 'http://www.w3.org/2000/svg'
@@ -24,9 +27,6 @@ export interface MatrixAlternative {
   /** ①②③ */
   mark: string
   name: string
-  /** 0~1. 막대 길이로만 쓴다 — 숫자로는 안 내보낸다 (디자인 §9) */
-  fit: number
-  label: FitLabel
 }
 
 export interface MatrixCriterion {
@@ -42,8 +42,6 @@ export interface MatrixData {
   scores: (number | null)[][]
   /** 기준마다 가장 높은 점수의 선택지. 동점이거나 전부 비었으면 -1 */
   winners: number[]
-  /** 적합도가 가장 높은 선택지 */
-  leader: number
 }
 
 export interface SceneHandle {
@@ -123,7 +121,6 @@ const MAX_TOTAL_MS = 19000
 const MIN_ACT_MS = 80
 
 const ease = (p: number) => (p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2)
-const easeOut = (p: number) => 1 - Math.pow(1 - p, 3)
 
 export function createMatrixScene(
   svg: SVGSVGElement,
@@ -138,8 +135,7 @@ export function createMatrixScene(
   const COL_W = (GRID_R - GRID_L) / n
   const ROW_H = m <= 3 ? 64 : 54
   const GRID_B = GRID_T + ROW_H * m
-  const FIT_Y = GRID_B + 38
-  const VH = FIT_Y + 34
+  const VH = GRID_B + 28
   const CY = VH / 2
 
   const colX = (i: number) => GRID_L + COL_W * i + COL_W / 2
@@ -154,7 +150,6 @@ export function createMatrixScene(
   const gLabels = mk('g', { class: 'mx-labels' }, zoom)
   const gScores = mk('g', { class: 'mx-scores' }, zoom)
   const gRings = mk('g', { class: 'mx-rings' }, zoom)
-  const gFit = mk('g', { class: 'mx-fit', opacity: '0' }, zoom)
   const penG = mk('g', { class: 'mx-pen', opacity: '0' }, svg)
 
   // ── 글자 폭 재기 ────────────────────────────────────────────
@@ -382,56 +377,6 @@ export function createMatrixScene(
     })
   }
 
-  // ── 적합도 줄 ───────────────────────────────────────────────
-  /* 총점 숫자는 쓰지 않는다. 라벨과 막대만 (디자인 §9). */
-  const BAR_W = Math.min(88, COL_W - 14)
-  let fitBuilt = false
-  function buildFitRow(): void {
-    if (fitBuilt) return
-    fitBuilt = true
-    mk(
-      'path',
-      { d: `M ${LABEL_L} ${GRID_B} L ${GRID_R} ${GRID_B}`, fill: 'none', stroke: 'var(--line-soft)', 'stroke-width': 1 },
-      gFit,
-    )
-    const label = mk(
-      'text',
-      { x: LABEL_R, y: FIT_Y + 5, 'text-anchor': 'end', 'font-size': 13, 'font-family': BODY, fill: 'var(--soft)' },
-      gFit,
-    )
-    label.textContent = '적합도'
-
-    alts.forEach((alt, i) => {
-      const x = colX(i) - BAR_W / 2
-      const text = mk(
-        'text',
-        {
-          x: colX(i),
-          y: FIT_Y - 11,
-          'text-anchor': 'middle',
-          'font-size': m <= 3 ? 15 : 13,
-          'font-family': INK,
-          fill: i === data.leader ? 'var(--accent)' : 'var(--soft)',
-        },
-        gFit,
-      )
-      text.textContent = alt.label
-      mk('rect', { x, y: FIT_Y, width: BAR_W, height: 8, rx: 4, fill: 'var(--rule)' }, gFit)
-      mk(
-        'rect',
-        {
-          x,
-          y: FIT_Y,
-          width: (BAR_W * alt.fit).toFixed(1),
-          height: 8,
-          rx: 4,
-          fill: i === data.leader ? 'var(--accent)' : 'var(--bar-rest)',
-        },
-        gFit,
-      )
-    })
-  }
-
   // ── 장면 ────────────────────────────────────────────────────
   // 1. 가로축과 세로축
   camTo(1.02, VW / 2, CY, 420)
@@ -503,18 +448,11 @@ export function createMatrixScene(
   })
 
   // 7. 물러나서 전체를 본다
-  acts.push({
-    dur: 10,
-    at() {
-      penOff()
-      buildFitRow()
-    },
-  })
   camTo(1, VW / 2, CY, 900)
   acts.push({
-    dur: 700,
-    at(p) {
-      gFit.style.opacity = easeOut(p).toFixed(3)
+    dur: 260,
+    at() {
+      penOff()
     },
     end: () => done(),
   })
@@ -576,8 +514,6 @@ export function createMatrixScene(
       act.started = true
       act.at(1, 0)
     }
-    buildFitRow()
-    gFit.style.opacity = '1'
     applyCam(1, VW / 2, CY)
     done()
   }

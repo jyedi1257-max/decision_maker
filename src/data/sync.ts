@@ -7,7 +7,7 @@
  * 기획안 10.3: 가능하면 로컬 우선 저장, 전송범위를 명확히 한다.
  */
 import type { Decision } from '@/core/types'
-import { isFirebaseConfigured } from '@/firebase/config'
+import { firebaseConfig, isFirebaseConfigured } from '@/firebase/config'
 import { localRepository, settings } from './local'
 
 const SYNC_FLAG = 'sync-enabled'
@@ -30,12 +30,14 @@ export async function isSyncEnabled(): Promise<boolean> {
 async function connect() {
   if (cached) return cached
 
+  // 동적으로 가져오는 건 firebase SDK뿐이다. config.ts는 상수 객체 하나라
+  // 어차피 본 번들에 있고(보관함 화면이 정적으로 쓴다), 동적으로 또 부르면
+  // "static/dynamic 양쪽에서 불린다"는 경고만 난다.
   const [{ initializeApp, getApps }, { getAuth, signInAnonymously }, firestore] = await Promise.all([
     import('firebase/app'),
     import('firebase/auth'),
     import('firebase/firestore'),
   ])
-  const { firebaseConfig } = await import('@/firebase/config')
 
   const app = getApps()[0] ?? initializeApp(firebaseConfig)
   const auth = getAuth(app)

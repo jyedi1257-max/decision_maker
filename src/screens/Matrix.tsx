@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Paper } from '@/components/Paper'
 import { TopBar } from '@/components/Controls'
-import { evaluate, fitLabel } from '@/core/evaluate'
+import { evaluate } from '@/core/evaluate'
 import { ordinalMark } from '@/core/narrate'
 import { scoreKey } from '@/core/types'
 import { useDecision } from '@/app/useDecision'
@@ -10,11 +10,11 @@ import { sound, soundPreference } from '@/platform/sound'
 import { createMatrixScene, type MatrixData } from './matrix-scene'
 
 /**
- * 내가 매긴 표 — 확정 뒤에 한 번 보는 화면.
+ * 내가 매긴 표 — 평가를 마치고 결과를 보기 직전의 화면.
  *
- * 결정을 끝내고 나면 남는 건 "②로 정했다" 한 줄뿐이라, 그 답이 무엇 위에
- * 서 있었는지가 사라진다. 이 화면은 그걸 표 하나로 되돌려준다.
- * 새 정보를 더하지 않고, 사용자가 이미 적은 것만 모아 보여준다.
+ * 앱이 "②가 더 잘 맞습니다"라고 말하기 전에, 그 말이 무엇 위에 서 있는지를
+ * 먼저 보여준다. 새 정보를 더하지 않고 사용자가 이미 적은 것만 모은다.
+ * 적합도는 여기서 그리지 않는다 — 다음 화면이 할 말이다.
  *
  * 표가 한 화면에 안 들어오는 문제는 만년필이 써 내려가는 시간으로 푼다
  * (matrix-scene.ts). 건너뛰기는 항상 떠 있다.
@@ -106,7 +106,7 @@ export function Matrix() {
   return (
     <Paper>
       <TopBar
-        back={`/d/${decision.id}/commit`}
+        back={`/d/${decision.id}/evaluate`}
         center="내가 매긴 표"
         right={
           <button
@@ -168,25 +168,32 @@ export function Matrix() {
 
       <div className="spacer" />
 
-      <div className="btnrow">
-        <button
-          type="button"
-          className="btn btn--quiet"
-          style={{ flexShrink: 0, paddingInline: 18 }}
-          onClick={done ? () => setRun((r) => r + 1) : skip}
-        >
-          {done ? '다시 보기' : '건너뛰기'}
+      {/* 그리는 동안엔 건너뛰기 하나만 크게 띄운다. 흐릿한 '다음으로'를
+          같이 두면 눌리지 않는 버튼을 쳐다보게 된다. */}
+      {done || empty ? (
+        <div className="btnrow">
+          <button
+            type="button"
+            className="btn btn--quiet"
+            style={{ flexShrink: 0, paddingInline: 18 }}
+            onClick={() => setRun((r) => r + 1)}
+          >
+            다시 보기
+          </button>
+          <button
+            type="button"
+            className="btn btn--primary"
+            style={{ flexGrow: 1 }}
+            onClick={() => navigate(`/d/${decision.id}/result`)}
+          >
+            결과 보기
+          </button>
+        </div>
+      ) : (
+        <button type="button" className="btn btn--ghost" onClick={skip}>
+          그리는 건 건너뛰기
         </button>
-        <button
-          type="button"
-          className="btn btn--primary"
-          style={{ flexGrow: 1 }}
-          disabled={!done && !empty}
-          onClick={() => navigate('/')}
-        >
-          다음으로
-        </button>
-      </div>
+      )}
     </Paper>
   )
 }
@@ -220,29 +227,14 @@ function toMatrix(decision: Parameters<typeof evaluate>[0]): MatrixData {
     return tied ? -1 : best
   })
 
-  let leader = 0
-  let bestFit = -Infinity
-  alive.forEach((alt, i) => {
-    if (alt.fit > bestFit) {
-      bestFit = alt.fit
-      leader = i
-    }
-  })
-
   return {
-    alternatives: alive.map((alt) => ({
-      mark: ordinalMark(alt.ordinal),
-      name: alt.name,
-      fit: alt.fit,
-      label: fitLabel(alt.fit),
-    })),
+    alternatives: alive.map((alt) => ({ mark: ordinalMark(alt.ordinal), name: alt.name })),
     criteria: decision.criteria.map((criterion, i) => ({
       name: criterion.name,
       percent: `${Math.round((result.weights[i] ?? 0) * 100)}%`,
     })),
     scores,
     winners,
-    leader: alive.length === 0 ? 0 : leader,
   }
 }
 
@@ -257,6 +249,5 @@ function describe(data: MatrixData): string {
       .join(', ')
     return `${criterion.name} ${criterion.percent}: ${cells}`
   })
-  const fits = data.alternatives.map((alt) => `${alt.mark} ${alt.label}`).join(', ')
-  return `${data.alternatives.map((a) => `${a.mark} ${a.name}`).join(', ')}. ${rows.join('. ')}. 적합도 ${fits}.`
+  return `${data.alternatives.map((a) => `${a.mark} ${a.name}`).join(', ')}. ${rows.join('. ')}.`
 }

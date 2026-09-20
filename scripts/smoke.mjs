@@ -186,6 +186,35 @@ try {
   await page.waitForTimeout(300)
   const order = await page.locator('.row__text').allInnerTexts()
   check('키보드 경로로 순서가 바뀐다', order[0] === '방 개수', `실제: ${order.join(' > ')}`)
+
+  // 손잡이를 끌어서도 움직여야 한다. HTML5 드래그앤드롭으로 짜여 있던 동안은
+  // 터치에서 아예 동작하지 않았다 — 손잡이만 보고 끌어본 사람에겐 고장난 화면이었다.
+  const grips = page.locator('.grip')
+  const firstRow = page.locator('.row').first()
+  const lastRow = page.locator('.row').last()
+  const from = await grips.first().boundingBox()
+  const a = await firstRow.boundingBox()
+  const b = await lastRow.boundingBox()
+  await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2)
+  await page.mouse.down()
+  // 한 번에 튀지 않게 몇 걸음 나눠 내린다 — 실제 손가락처럼.
+  for (let i = 1; i <= 6; i++) {
+    await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2 + ((b.y - a.y) * i) / 6)
+    await page.waitForTimeout(30)
+  }
+  await page.mouse.up()
+  await page.waitForTimeout(350)
+  const dragged = await page.locator('.row__text').allInnerTexts()
+  check('손잡이를 끌어서도 순서가 바뀐다', dragged[dragged.length - 1] === '방 개수', `실제: ${dragged.join(' > ')}`)
+
+  // 원래 순서로 돌려놓는다 — 뒤 단계의 기대값이 이 순서에 기대고 있다.
+  await page.click('button[aria-label="방 개수 위로"]')
+  await page.waitForTimeout(150)
+  await page.click('button[aria-label="방 개수 위로"]')
+  await page.waitForTimeout(250)
+  const restored = await page.locator('.row__text').allInnerTexts()
+  check('되돌려 놓았다', restored[0] === '방 개수', `실제: ${restored.join(' > ')}`)
+
   await page.click('button:has-text("숫자 보기")')
   await page.waitForTimeout(200)
   check('ROC 비중이 61/28/11로 나온다', await page.isVisible('text=61%'))
@@ -210,7 +239,53 @@ try {
     await page.waitForTimeout(200)
   }
 
+  console.log('\n내가 매긴 표')
+  await page.waitForURL(/\/matrix$/)
+  check('평가가 끝나면 결과보다 표가 먼저 나온다', await visible(page, 'text=내가 매긴 표'))
+  check('건너뛰기가 처음부터 떠 있다', await visible(page, 'button:has-text("그리는 건 건너뛰기")'))
+  check('소리 배지가 상단에 있다', await visible(page, '.soundbadge'))
+
+  // 만년필이 실제로 종이 위에 나타나는지. 카메라가 움직이는 동안에는 펜을
+  // 떼므로 잠깐 사라진다 — 3초 안에 한 번이라도 보이면 된다.
+  let penSeen = false
+  for (let i = 0; i < 30 && !penSeen; i++) {
+    const opacity = await page
+      .locator('.mx-pen')
+      .evaluate((el) => getComputedStyle(el).opacity)
+      .catch(() => '0')
+    if (opacity !== '0') penSeen = true
+    else await page.waitForTimeout(100)
+  }
+  check('만년필이 종이 위에 있다', penSeen)
+  await shot(page, 'matrix-writing')
+
+  await page.click('button:has-text("그리는 건 건너뛰기")')
+  await page.waitForTimeout(300)
+
+  // SVG <text>는 innerText가 비어 나온다. textContent로 읽는다.
+  const cells = await page.$$eval('.matrix__sheet g text', (nodes) => nodes.map((n) => n.textContent))
+  // 이름이 길면 두 줄로 갈리므로 이어붙여서 본다.
+  const joined = cells.join(' ')
+  check('선택지가 가로축에 있다', joined.includes('지금 집 재계약') && joined.includes('신도시'), cells.join('/'))
+  check('①②를 그대로 쓴다', cells.includes('①') && cells.includes('②'))
+  check('기준이 세로축에 있다', cells.includes('월 주거비'), cells.join('/'))
+  check('내가 매긴 점수가 그대로 있다', ['2', '5', '4', '3'].every((v) => cells.includes(v)), cells.join('/'))
+  check('무게를 비율로 적는다', cells.some((t) => /^\d+%$/.test(t)), cells.join('/'))
+  check(
+    '기준마다 가장 높은 점수에 동그라미',
+    (await page.locator('.matrix__sheet .mx-rings path').count()) === 3,
+  )
+  // 결과보다 앞에 오는 화면이라 적합도를 미리 말하면 안 된다.
+  check(
+    '적합도를 미리 말하지 않는다',
+    !cells.includes('적합도') && !cells.some((t) => ['낮음', '보통', '높음'].includes(t)),
+    cells.join('/'),
+  )
+  check('다 그려지면 결과 보기가 열린다', await page.isEnabled('button:has-text("결과 보기")'))
+  await shot(page, 'matrix')
+
   console.log('\n결과')
+  await page.click('button:has-text("결과 보기")')
   await page.waitForURL(/\/result$/)
   check('결론 한 문장이 있다', await visible(page, 'text=지금 적은 기준에서는'))
   check('결정적이었던 기준을 보여준다', await visible(page, 'text=결정적이었던'))
@@ -223,9 +298,11 @@ try {
   console.log('\n왜 이런 결과인지')
   await page.click('text=판단 기준 자세히 보기')
   await page.waitForURL(/\/why$/)
-  check('기준별 비교를 보여준다', await visible(page, 'text=기준마다 어디서'))
+  check('결과가 얼마나 단단한지를 말한다', await visible(page, 'text=얼마나 단단한가'))
   check('뒤집히는 지점을 말한다', await visible(page, 'text=이 선을 넘으면 달라져요'))
   check('확인 안 한 칸을 표시한다', await visible(page, 'text=아직 확인 안 한 것'))
+  // 기준별 막대 비교는 '내가 매긴 표'로 옮겼다. 두 화면이 같은 말을 하지 않는다.
+  check('기준별 막대를 중복해 그리지 않는다', !(await page.isVisible('text=기준마다 어디서')))
   await shot(page, 'why')
 
   console.log('\n직접 움직여보기')
@@ -275,49 +352,8 @@ try {
   check('30일 뒤 회고를 예약한다', await page.isVisible('text=30일 뒤에 다시 물어보기'))
   await shot(page, 'commit')
 
-  console.log('\n내가 매긴 표')
-  await page.click('button:has-text("기록하고 나가기")')
-  await page.waitForURL(/\/matrix$/)
-  // 그리는 걸 다 기다리지 않고 건너뛴다 — 끝 상태가 같아야 한다.
-  check('건너뛰기가 처음부터 떠 있다', await visible(page, 'button:has-text("건너뛰기")'))
-  check('소리 배지가 상단에 있다', await visible(page, '.soundbadge'))
-
-  // 만년필이 실제로 종이 위에 나타나는지. 카메라가 움직이는 동안에는 펜을
-  // 떼므로 잠깐 사라진다 — 3초 안에 한 번이라도 보이면 된다.
-  let penSeen = false
-  for (let i = 0; i < 30 && !penSeen; i++) {
-    const opacity = await page
-      .locator('.mx-pen')
-      .evaluate((el) => getComputedStyle(el).opacity)
-      .catch(() => '0')
-    if (opacity !== '0') penSeen = true
-    else await page.waitForTimeout(100)
-  }
-  check('만년필이 종이 위에 있다', penSeen)
-  await shot(page, 'matrix-writing')
-
-  await page.click('button:has-text("건너뛰기")')
-  await page.waitForTimeout(300)
-
-  // SVG <text>는 innerText가 비어 나온다. textContent로 읽는다.
-  const cells = await page.$$eval('.matrix__sheet g text', (nodes) => nodes.map((n) => n.textContent))
-  // 이름이 길면 두 줄로 갈리므로 이어붙여서 본다.
-  const joined = cells.join(' ')
-  check('선택지가 가로축에 있다', joined.includes('지금 집 재계약') && joined.includes('신도시'), cells.join('/'))
-  check('①②를 그대로 쓴다', cells.includes('①') && cells.includes('②'))
-  check('기준이 세로축에 있다', cells.includes('월 주거비'), cells.join('/'))
-  check('내가 매긴 점수가 그대로 있다', ['4', '2', '5', '3'].every((v) => cells.includes(v)), cells.join('/'))
-  check('무게를 비율로 적는다', cells.some((t) => /^\d+%$/.test(t)), cells.join('/'))
-  check('적합도는 라벨로만 (총점 숫자 없음)', cells.includes('적합도') && cells.some((t) => ['낮음', '보통', '높음'].includes(t)))
-  check(
-    '기준마다 가장 높은 점수에 동그라미',
-    (await page.locator('.matrix__sheet .mx-rings path').count()) === 3,
-  )
-  check('다 그려지면 다음으로가 열린다', await page.isEnabled('button:has-text("다음으로")'))
-  await shot(page, 'matrix')
-
   console.log('\n홈으로 — 저장 확인')
-  await page.click('button:has-text("다음으로")')
+  await page.click('button:has-text("기록하고 나가기")')
   await page.waitForURL(`${base}/`)
   await page.waitForTimeout(400)
   check('목록에 남는다', await page.isVisible('text=가을에 이사할까'))

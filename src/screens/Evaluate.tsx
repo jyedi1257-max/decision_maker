@@ -81,7 +81,8 @@ export function Evaluate() {
     }
     update((d) => ({ ...d, stage: 'result' }))
     await flushPendingSave()
-    navigate(`/d/${decision!.id}/result`)
+    // 결과를 말해주기 전에, 내가 적은 것부터 한 장으로 보여준다.
+    navigate(`/d/${decision!.id}/matrix`)
   }
 
   function skip() {

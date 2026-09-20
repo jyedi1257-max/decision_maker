@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Paper } from '@/components/Paper'
-import { FitBar, Title, TopBar } from '@/components/Controls'
+import { Title, TopBar } from '@/components/Controls'
 import { delay } from '@/styles/motion'
 import { evaluate } from '@/core/evaluate'
 import { uncertainties } from '@/core/explain'
@@ -13,8 +13,11 @@ import { useDecision } from '@/app/useDecision'
 /**
  * 왜 이런 결과인지
  *
- * 기준마다 어디서 얼마나 벌어졌는지, 결과가 뒤집히는 지점, 남은 불확실성.
+ * 결과가 뒤집히는 지점과 남은 불확실성.
  * 숫자와 그래프는 여기(상세 보기) 안에만 둔다 (기획안 4.2).
+ *
+ * 기준별 막대 비교는 뺐다. 같은 내용을 '내가 매긴 표'가 더 잘 보여주고,
+ * 두 화면이 같은 말을 하면 어느 쪽도 자기 할 말이 없어진다.
  */
 export function Why() {
   const { decision } = useDecision()
@@ -29,49 +32,17 @@ export function Why() {
   if (!decision || !view) return <Paper> </Paper>
 
   const { result, sensitivity, unknowns } = view
-  const shown = result.ranked.slice(0, 2)
-  if (shown.length === 0) return <Paper> </Paper>
+  if (result.ranked.length === 0) return <Paper> </Paper>
 
   return (
     <Paper>
       <TopBar back={`/d/${decision.id}/result`} backLabel="결과로 돌아가기" center="자세히" />
 
       <div style={{ marginTop: 26 }}>
-        <Title lines={['기준마다 어디서', '얼마나 벌어졌나']} size={24} />
+        <Title lines={['이 결과가', '얼마나 단단한가']} size={24} />
       </div>
 
-      <div className="stack" style={{ marginTop: 24, gap: 18 }}>
-        {decision.criteria.map((criterion, ci) => (
-          <div key={criterion.id} className="m-lift" style={delay(ci, 'm-lift', 240)}>
-            <div className="barhead">
-              <span style={{ fontSize: 14, fontWeight: 600 }}>{criterion.name}</span>
-              <span style={{ fontSize: 12, color: 'var(--soft)', whiteSpace: 'nowrap' }}>
-                비중 {ci + 1}순위
-              </span>
-            </div>
-            {shown.map((alt, ai) => (
-              <div
-                key={alt.alternativeId}
-                style={{ marginTop: ai === 0 ? 8 : 6, display: 'flex', alignItems: 'center', gap: 8 }}
-              >
-                <span style={{ width: 18, fontSize: 12, color: 'var(--soft)' }}>
-                  {ordinalMark(alt.ordinal)}
-                </span>
-                <span style={{ flexGrow: 1 }}>
-                  <FitBar
-                    ratio={alt.breakdown[ci]?.value ?? 0}
-                    lead={ai === 0}
-                    thin
-                    delayMs={280 + ci * 60 + ai * 30}
-                  />
-                </span>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-
-      <div className="card m-settle" style={{ marginTop: 24, padding: 17, ...delay(0, 'm-settle', 560) }}>
+      <div className="card m-settle" style={{ marginTop: 24, padding: 17, ...delay(0, 'm-settle', 240) }}>
         <div className="card__label">이 선을 넘으면 달라져요</div>
         <p style={{ margin: '10px 0 0', fontSize: 14, lineHeight: 1.75 }}>
           {flipPointSentence(sensitivity)}
