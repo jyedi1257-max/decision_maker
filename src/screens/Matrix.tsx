@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Paper } from '@/components/Paper'
-import { TopBar } from '@/components/Controls'
+import { altColor, TopBar } from '@/components/Controls'
 import { evaluate } from '@/core/evaluate'
 import { ordinalMark } from '@/core/narrate'
 import { scoreKey } from '@/core/types'
@@ -37,7 +37,7 @@ export function Matrix() {
     if (!decision) return []
     return evaluate(decision)
       .all.filter((a) => a.eliminatedBy !== null)
-      .map((a) => `${ordinalMark(a.ordinal)} ${a.name}`)
+      .map((a) => ({ mark: ordinalMark(a.ordinal), name: a.name, color: altColor(a.ordinal) }))
   }, [decision])
 
   useEffect(() => {
@@ -146,7 +146,7 @@ export function Matrix() {
         <ul className="matrix__legend">
           {data.alternatives.map((alt) => (
             <li key={alt.mark}>
-              <span style={{ color: 'var(--pen)' }}>{alt.mark}</span> {alt.name}
+              <span style={{ color: alt.color }}>{alt.mark}</span> {alt.name}
             </li>
           ))}
         </ul>
@@ -163,7 +163,16 @@ export function Matrix() {
       )}
 
       {dropped.length > 0 && (
-        <p className="matrix__dropped">필수조건에 걸린 {dropped.join(', ')}는 표에서 뺐습니다.</p>
+        <p className="matrix__dropped">
+          필수조건에 걸린{' '}
+          {dropped.map((alt, i) => (
+            <span key={alt.mark}>
+              {i > 0 && ', '}
+              <span style={{ color: alt.color }}>{alt.mark}</span> {alt.name}
+            </span>
+          ))}
+          는 표에서 뺐습니다.
+        </p>
       )}
 
       <div className="spacer" />
@@ -228,7 +237,11 @@ function toMatrix(decision: Parameters<typeof evaluate>[0]): MatrixData {
   })
 
   return {
-    alternatives: alive.map((alt) => ({ mark: ordinalMark(alt.ordinal), name: alt.name })),
+    alternatives: alive.map((alt) => ({
+      mark: ordinalMark(alt.ordinal),
+      name: alt.name,
+      color: altColor(alt.ordinal),
+    })),
     criteria: decision.criteria.map((criterion, i) => ({
       name: criterion.name,
       percent: `${Math.round((result.weights[i] ?? 0) * 100)}%`,

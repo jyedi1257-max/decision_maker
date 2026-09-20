@@ -27,6 +27,8 @@ export interface MatrixAlternative {
   /** ①②③ */
   mark: string
   name: string
+  /** 이 선택지의 고유색 (--alt-n) */
+  color: string
 }
 
 export interface MatrixCriterion {
@@ -389,7 +391,9 @@ export function createMatrixScene(
   camTo(Z_HEAD, (GRID_L + GRID_R) / 2, 54, 560)
   cutting = 'alternatives'
   alts.forEach((alt, i) => {
-    write(gLabels, alt.mark, colX(i), 40, { 'text-anchor': 'middle', 'font-size': 20, 'font-family': INK, fill: 'var(--pen)' }, 230)
+    // 번호는 선택지의 고유색을 쓴다 — 결과 화면에서 같은 ①이 같은 색이어야
+    // 두 화면이 한 이야기로 읽힌다 (디자인 §1).
+    write(gLabels, alt.mark, colX(i), 40, { 'text-anchor': 'middle', 'font-size': 20, 'font-family': INK, fill: alt.color }, 230)
     const { lines, size } = layout(alt.name, COL_W - 6, 2)
     lines.forEach((line, li) => {
       write(gLabels, line, colX(i), 62 + li * (size + 2.5), { 'text-anchor': 'middle', 'font-size': size })
@@ -437,6 +441,7 @@ export function createMatrixScene(
   crits.forEach((_, ci) => {
     const ai = data.winners[ci] ?? -1
     if (ai < 0) return
+    // 동그라미는 색연필이다 — 사용자의 손자국이라 --pen 그대로 둔다.
     stroke(gRings, ringPath(colX(ai), rowY(ci), RX, RY), 520, {
       stroke: 'var(--pen)',
       'stroke-width': 1.8,

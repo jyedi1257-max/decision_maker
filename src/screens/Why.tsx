@@ -42,11 +42,8 @@ export function Why() {
         <Title lines={['이 결과가', '얼마나 단단한가']} size={24} />
       </div>
 
-      <div className="card m-settle" style={{ marginTop: 24, padding: 17, ...delay(0, 'm-settle', 240) }}>
-        <div className="card__label">이 선을 넘으면 달라져요</div>
-        <p style={{ margin: '10px 0 0', fontSize: 14, lineHeight: 1.75 }}>
-          {flipPointSentence(sensitivity)}
-        </p>
+      <div className="block m-settle" style={{ marginTop: 24, ...delay(0, 'm-settle', 240) }}>
+        <p className="say">{flipPointSentence(sensitivity)}</p>
 
         {sensitivity.weightFlip && (
           <>

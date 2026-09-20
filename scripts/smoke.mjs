@@ -288,7 +288,10 @@ try {
   await page.click('button:has-text("결과 보기")')
   await page.waitForURL(/\/result$/)
   check('결론 한 문장이 있다', await visible(page, 'text=지금 적은 기준에서는'))
-  check('결정적이었던 기준을 보여준다', await visible(page, 'text=결정적이었던'))
+  check('차이를 만든 기준을 문장으로 꺼낸다', await visible(page, 'text=앞의 둘을 가른 건'))
+  // 표제부(작은 라벨)는 전부 걷어냈다 (디자인 §5, 2026-09-20).
+  check('블록마다 붙던 표제부가 없다', (await page.locator('.card__label').count()) === 0)
+  check('선택지마다 고유색 막대', (await page.locator('.fitbar__fill--own').count()) >= 2)
   check('적합도를 말로 쓴다', await page.isVisible('text=적합도'))
   const body = await page.innerText('body')
   check('총점 숫자를 노출하지 않는다', !/\b0\.\d{2,}\b/.test(body), body.match(/0\.\d{2,}/)?.[0])
@@ -299,7 +302,7 @@ try {
   await page.click('text=판단 기준 자세히 보기')
   await page.waitForURL(/\/why$/)
   check('결과가 얼마나 단단한지를 말한다', await visible(page, 'text=얼마나 단단한가'))
-  check('뒤집히는 지점을 말한다', await visible(page, 'text=이 선을 넘으면 달라져요'))
+  check('뒤집히는 지점을 말한다', await visible(page, 'text=단계만 더'))
   check('확인 안 한 칸을 표시한다', await visible(page, 'text=아직 확인 안 한 것'))
   // 기준별 막대 비교는 '내가 매긴 표'로 옮겼다. 두 화면이 같은 말을 하지 않는다.
   check('기준별 막대를 중복해 그리지 않는다', !(await page.isVisible('text=기준마다 어디서')))
@@ -325,6 +328,23 @@ try {
   check('건드리지 않은 손잡이에는 움직임 표시가 없다', (await page.locator('.tune__weight.is-moved').count()) === 2)
   check('바뀐 결과를 문장으로 알려준다', await visible(page, 'text=로 바뀌네요'))
   check('되돌리기가 생긴다', await visible(page, 'text=되돌리기'))
+
+  // 순위가 바뀔 때 줄이 미끄러져야 한다. 그냥 다시 그리면 순간이동해서
+  // 무엇이 무엇을 제쳤는지 볼 수 없다 (디자인 §5).
+  const slide = await page
+    .locator('.rankrow')
+    .first()
+    .evaluate((el) => getComputedStyle(el).transitionDuration)
+  check('순위 변동에 모션이 걸려 있다', slide === '0.42s', `transition-duration=${slide}`)
+  check(
+    '선택지마다 고유색 막대',
+    (await page.locator('.fitbar__fill--own').count()) === 2,
+  )
+  const dim = await page
+    .locator('.fitbar__fill--own:not(.fitbar__fill--lead)')
+    .first()
+    .evaluate((el) => getComputedStyle(el).opacity)
+  check('앞서지 않은 쪽만 흐리다', dim === '0.55', `opacity=${dim}`)
   await shot(page, 'explore')
 
   await page.fill('#insight', '비용이라고 생각했는데 사실은 답답한 게 더 컸다')

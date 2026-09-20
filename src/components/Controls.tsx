@@ -130,25 +130,53 @@ export function Score5({
 }
 
 /** 적합도 막대 (§5). 앞선 쪽만 --accent, 나머지는 보조색. */
+/**
+ * 적합도 막대.
+ *
+ * ordinal을 주면 그 선택지의 고유색으로 칠하고, 앞서지 않은 쪽은
+ * --alt-dim만큼 흐려진다 (디자인 시스템 §1). 안 주면 예전처럼
+ * 앞선 쪽 --accent / 나머지 --bar-second.
+ */
 export function FitBar({
   ratio,
   lead,
+  ordinal,
   thin = false,
   delayMs = 0,
 }: {
   ratio: number
   lead: boolean
+  /** 선택지의 1-기준 순번. 색은 순위가 아니라 정체성에 붙는다. */
+  ordinal?: number
   thin?: boolean
   delayMs?: number
 }) {
   return (
     <div className={`fitbar${thin ? ' fitbar--thin' : ''}`}>
       <span
-        className={`fitbar__fill${lead ? ' fitbar__fill--lead' : ''} m-grow`}
-        style={{ width: `${Math.round(ratio * 100)}%`, '--d': `${delayMs}ms` } as object}
+        className={[
+          'fitbar__fill',
+          lead ? 'fitbar__fill--lead' : '',
+          ordinal ? 'fitbar__fill--own' : '',
+          'm-grow',
+        ]
+          .filter(Boolean)
+          .join(' ')}
+        style={
+          {
+            width: `${Math.round(ratio * 100)}%`,
+            '--d': `${delayMs}ms`,
+            ...(ordinal ? { '--own': altColor(ordinal) } : {}),
+          } as object
+        }
       />
     </div>
   )
+}
+
+/** ①②③④⑤의 고유색. 다섯을 넘으면 마지막 색을 돌려 쓴다. */
+export function altColor(ordinal: number): string {
+  return `var(--alt-${Math.min(Math.max(ordinal, 1), 5)})`
 }
 
 /** 순서 바꾸기 손잡이 — 드래그와 키보드 두 경로를 함께 둔다. */

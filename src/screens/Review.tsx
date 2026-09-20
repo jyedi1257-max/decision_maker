@@ -106,16 +106,18 @@ export function Review() {
       </div>
 
       {decision.insight && (
-        <div className="card--dashed m-settle" style={{ marginTop: 12, padding: 17, ...delay(0, 'm-settle', 320) }}>
-          <div className="card__label">그때 알게 된 것</div>
-          <p style={{ margin: '10px 0 0', fontSize: 14, lineHeight: 1.8, whiteSpace: 'pre-line' }}>
-            {decision.insight}
+        <div className="block m-settle" style={{ marginTop: 12, ...delay(0, 'm-settle', 320) }}>
+          <p className="say" style={{ whiteSpace: 'pre-line' }}>
+            무게를 움직여보며 이렇게 적으셨네요.{' '}
+            <span style={{ color: 'var(--soft)' }}>“{decision.insight}”</span>
           </p>
         </div>
       )}
 
       <div className="m-lift" style={{ marginTop: 26, ...delay(0, 'm-lift', 380) }}>
-        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--soft)' }}>돌아보면</div>
+        <p className="say" style={{ margin: 0, fontSize: 16, lineHeight: 1.85 }}>
+          돌아보면, 그 결정은 어땠나요?
+        </p>
         <Scale5
           name="돌아보면"
           value={review?.satisfaction ?? null}
@@ -126,9 +128,9 @@ export function Review() {
       </div>
 
       {thenTop && decision.criteria.length > 1 && (
-        <div className="card m-settle" style={{ marginTop: 24, padding: 17, ...delay(0, 'm-settle', 460) }}>
-          <div className="card__label">그때와 지금</div>
-          <div style={{ marginTop: 14, display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div className="block m-settle" style={{ marginTop: 24, ...delay(0, 'm-settle', 460) }}>
+          <p className="say">그때 제일 무겁게 봤던 기준은 이거였어요.</p>
+          <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{ flexGrow: 1, minWidth: 0 }}>
               <div style={{ fontSize: 12, color: 'var(--soft)' }}>그때 1순위</div>
               <div style={{ marginTop: 4, fontSize: 16, fontWeight: 600, overflowWrap: 'anywhere' }}>
@@ -181,9 +183,8 @@ export function Review() {
 
       {/* 회고가 쌓이기 전에는 패턴을 말하지 않는다 — 한 건으로 경향을 지어내지 않기 위해서다. */}
       {pattern && (
-        <div className="card--dashed m-settle" style={{ marginTop: 14, padding: 17, ...delay(0, 'm-settle', 540) }}>
-          <div className="card__label">지금까지 모인 패턴</div>
-          <p style={{ margin: '10px 0 0', fontSize: 14, lineHeight: 1.8 }}>
+        <div className="block m-settle" style={{ marginTop: 14, ...delay(0, 'm-settle', 540) }}>
+          <p className="say">
             마음이 크게 기울었던 결정{' '}
             <Hilite delayMs={620}>
               {pattern.total}개 중 {pattern.satisfied}개

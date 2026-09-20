@@ -3,8 +3,10 @@ import { evaluate } from './evaluate'
 import { makeDecision } from './fixtures'
 import {
   conclusionSentence,
+  differenceLead,
   differenceRows,
   flipPointSentence,
+  joinNames,
   ordinalMark,
   robustnessSentence,
 } from './narrate'
@@ -128,5 +130,35 @@ describe('differenceRows', () => {
     const against = rows.filter((r) => !r.maker.favorsLeader)
     for (const r of favors) expect(r.text).toContain('나음')
     for (const r of against) expect(r.text).toContain('손해')
+  })
+})
+
+describe('joinNames / differenceLead', () => {
+  it('받침에 따라 와/과를 고른다', () => {
+    expect(joinNames(['월 주거비', '방 개수'])).toBe('월 주거비와 방 개수')
+    expect(joinNames(['출퇴근 시간', '방 개수'])).toBe('출퇴근 시간과 방 개수')
+    expect(joinNames(['가격'])).toBe('가격')
+    expect(joinNames([])).toBe('')
+  })
+
+  it('셋 이상은 쉼표로 잇고 마지막만 와/과', () => {
+    expect(joinNames(['가격', '거리', '넓이'])).toBe('가격, 거리와 넓이')
+  })
+
+  it('두 기준이 갈랐으면 둘 다 말한다', () => {
+    const lead = differenceLead(evaluate(close))
+    expect(lead).toMatch(/^앞의 둘을 가른 건 .+였어요\.$/)
+  })
+
+  it('차이를 만든 기준이 하나면 "하나였어요"로 말한다', () => {
+    // 기준 하나만 남기면 그 하나가 유일한 차이다.
+    const single = { ...close, criteria: close.criteria.slice(0, 1) }
+    const lead = differenceLead(evaluate(single))
+    expect(lead).toContain('하나였어요')
+  })
+
+  it('비교할 선택지가 하나뿐이면 아무 말도 하지 않는다', () => {
+    const alone = { ...close, alternatives: close.alternatives.slice(0, 1) }
+    expect(differenceLead(evaluate(alone))).toBeNull()
   })
 })

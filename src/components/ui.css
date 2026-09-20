@@ -127,13 +127,6 @@
   color: var(--pen);
   font-weight: 600;
 }
-.card__label {
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  color: var(--soft);
-  font-weight: 600;
-}
-
 .stack {
   display: flex;
   flex-direction: column;
@@ -361,6 +354,17 @@
 }
 .fitbar__fill--lead {
   background: var(--accent);
+}
+
+/* 선택지 고유색을 쓸 때 — 앞선 쪽만 진하고 나머지는 흐리다 (§1).
+   앞선 쪽이 눈에 띄어야 한다는 규칙은 그대로고, 방법만 바뀐다. */
+.fitbar__fill--own {
+  background: var(--own);
+  opacity: var(--alt-dim);
+  transition: opacity 300ms var(--ease);
+}
+.fitbar__fill--own.fitbar__fill--lead {
+  opacity: 1;
 }
 .fitbar--thin,
 .fitbar--thin .fitbar__fill {
@@ -831,6 +835,39 @@
 
 @media (prefers-reduced-motion: reduce) {
   .row--sorting {
+    transition: none;
+  }
+}
+
+/* ── 표제부 없는 블록 (디자인 시스템 §5, 2026-09-20) ──────────
+   작은 라벨("결정적이었던 두 가지")과 카드 테두리를 걷어내고, 문장과 여백이
+   그 일을 대신한다. 블록 사이의 실선이 "여기까지가 한 덩어리"를 말한다.
+*/
+.block + .block,
+.stack + .block {
+  margin-top: 26px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+}
+
+.block > .say {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.85;
+}
+
+.block > .say + * {
+  margin-top: 16px;
+}
+
+/* 순위가 바뀌면 줄이 서로 자리를 바꾸며 미끄러진다 (디자인 시스템 §5).
+   420ms — §9의 900ms 제한 안이다. */
+.rankrow {
+  transition: transform 420ms var(--ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rankrow {
     transition: none;
   }
 }

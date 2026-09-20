@@ -1,13 +1,20 @@
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Paper } from '@/components/Paper'
-import { FitBar, TopBar } from '@/components/Controls'
+import { altColor, FitBar, TopBar } from '@/components/Controls'
 import { ArrowDownIcon, ArrowUpIcon } from '@/components/Icons'
 import { Hilite } from '@/components/Ink'
 import { delay } from '@/styles/motion'
 import { evaluate, fitLabel } from '@/core/evaluate'
 import { gutConflict } from '@/core/explain'
-import { conclusionSentence, differenceRows, ordinalMark, robustnessSentence, gutConflictSentence } from '@/core/narrate'
+import {
+  conclusionSentence,
+  differenceLead,
+  differenceRows,
+  ordinalMark,
+  robustnessSentence,
+  gutConflictSentence,
+} from '@/core/narrate'
 import { analyzeSensitivity } from '@/core/sensitivity'
 import { useDecision } from '@/app/useDecision'
 
@@ -29,6 +36,7 @@ export function Result() {
       sensitivity,
       conclusion: conclusionSentence(result, sensitivity),
       differences: differenceRows(result),
+      differenceLead: differenceLead(result),
       conflict: gutConflict(result, decision.gut.alternativeId),
     }
   }, [decision])
@@ -36,6 +44,7 @@ export function Result() {
   if (!decision || !view) return <Paper> </Paper>
 
   const { result, sensitivity, conclusion, differences, conflict } = view
+  const madeTheDifference = view.differenceLead
   const top = result.ranked[0]
   const best = result.ranked.reduce((m, a) => Math.max(m, a.fit), 0.0001)
 
@@ -81,8 +90,9 @@ export function Result() {
           return (
             <div key={alt.alternativeId} className="m-lift" style={delay(i, 'm-lift', 520)}>
               <div className="barhead">
-                <span style={{ fontSize: 14, fontWeight: lead ? 700 : 500 }}>
-                  {ordinalMark(alt.ordinal)} {alt.name}
+                <span style={{ fontSize: 14.5, fontWeight: lead ? 700 : 500 }}>
+                  <span style={{ color: altColor(alt.ordinal) }}>{ordinalMark(alt.ordinal)}</span>{' '}
+                  {alt.name}
                 </span>
                 <span
                   style={{
@@ -95,22 +105,20 @@ export function Result() {
                   적합도 {fitLabel(alt.fit)}
                 </span>
               </div>
-              <FitBar ratio={alt.fit / best} lead={lead} delayMs={560 + i * 60} />
+              <FitBar ratio={alt.fit / best} lead={lead} ordinal={alt.ordinal} delayMs={560 + i * 60} />
             </div>
           )
         })}
       </div>
 
       {differences.length > 0 && (
-        <div className="card m-settle" style={{ marginTop: 26, padding: 17, ...delay(0, 'm-settle', 620) }}>
-          <div className="card__label">
-            결정적이었던 {differences.length === 1 ? '한 가지' : '두 가지'}
-          </div>
-          <div className="stack" style={{ marginTop: 14, gap: 12 }}>
+        <div className="block m-settle" style={delay(0, 'm-settle', 620)}>
+          {madeTheDifference && <p className="say">{madeTheDifference}</p>}
+          <div className="stack" style={{ marginTop: 16, gap: 13 }}>
             {differences.map(({ maker, text }) => (
               <div key={maker.criterion.id} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 {maker.favorsLeader ? <ArrowUpIcon /> : <ArrowDownIcon />}
-                <span style={{ flexGrow: 1, fontSize: 15 }}>{maker.criterion.name}</span>
+                <span style={{ flexGrow: 1, fontSize: 15.5 }}>{maker.criterion.name}</span>
                 <span
                   style={{
                     fontSize: 13,
@@ -128,38 +136,25 @@ export function Result() {
       )}
 
       {/* 민감도는 그래프 전에 문장으로 (기획안 6.7) */}
-      <div
-        className="m-settle"
-        style={{
-          marginTop: 12,
-          padding: '15px 17px',
-          border: '1px solid var(--line-soft)',
-          borderRadius: 14,
-          ...delay(0, 'm-settle', 640),
-        }}
-      >
-        <p style={{ margin: 0, fontSize: 14, lineHeight: 1.75 }}>{robustnessSentence(sensitivity)}</p>
+      <div className="block m-settle" style={delay(0, 'm-settle', 640)}>
+        <p className="say">{robustnessSentence(sensitivity)}</p>
       </div>
 
       {conflict && (
-        <div
-          className="card--note m-settle"
-          style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 10, padding: '13px 16px', ...delay(0, 'm-settle', 660) }}
-        >
-          <span
-            style={{
-              fontFamily: 'var(--font-title)',
-              fontWeight: 700,
-              fontSize: 15,
-              color: 'var(--pen)',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            처음 마음은 {ordinalMark(conflict.ordinal)}
-          </span>
-          <span style={{ flexGrow: 1, fontSize: 13, lineHeight: 1.6, color: 'var(--soft)' }}>
-            {gutConflictSentence()}
-          </span>
+        <div className="block m-settle" style={delay(0, 'm-settle', 660)}>
+          <p className="say">
+            <span
+              style={{
+                fontFamily: 'var(--font-title)',
+                fontWeight: 700,
+                color: 'var(--pen)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              처음 마음은 {ordinalMark(conflict.ordinal)}
+            </span>
+            . {gutConflictSentence()}
+          </p>
         </div>
       )}
 

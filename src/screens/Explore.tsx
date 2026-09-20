@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Paper } from '@/components/Paper'
-import { FitBar, Title, TopBar } from '@/components/Controls'
+import { altColor, FitBar, Title, TopBar } from '@/components/Controls'
 import { delay } from '@/styles/motion'
 import { evaluate, fitLabel, weightsFor } from '@/core/evaluate'
 import { ordinalMark } from '@/core/narrate'
@@ -40,6 +40,39 @@ export function Explore() {
     if (decision && draft === null) setDraft(savedTicks)
     if (decision && note === null) setNote(decision.insight ?? '')
   }, [decision, draft, note, savedTicks])
+
+  /**
+   * 순위가 바뀔 때 줄이 서로 자리를 바꾸며 미끄러지게 한다 (FLIP).
+   *
+   * 그냥 다시 그리면 두 줄이 순간이동해서 무엇이 무엇을 제쳤는지 볼 수 없다.
+   * 바뀐 자리에서 예전 자리로 되돌려 놓은 뒤 풀어주면, 브라우저가 그 사이를
+   * 메워 준다. 모션을 줄이는 설정이면 건너뛴다 (디자인 §4).
+   */
+  const rankRef = useRef<HTMLDivElement>(null)
+  const lastTop = useRef<Map<string, number>>(new Map())
+
+  useLayoutEffect(() => {
+    const list = rankRef.current
+    if (!list) return
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const next = new Map<string, number>()
+
+    for (const row of [...list.children] as HTMLElement[]) {
+      const id = row.dataset.alt
+      if (!id) continue
+      const top = row.offsetTop
+      const previous = lastTop.current.get(id)
+      next.set(id, top)
+      if (still || previous === undefined || previous === top) continue
+      row.style.transition = 'none'
+      row.style.transform = `translateY(${previous - top}px)`
+      requestAnimationFrame(() => {
+        row.style.transition = ''
+        row.style.transform = ''
+      })
+    }
+    lastTop.current = next
+  })
 
   const weights = useMemo(() => (draft ? normalizeWeights(draft) : []), [draft])
   const before = useMemo(() => (decision ? evaluate(decision) : null), [decision])
@@ -129,31 +162,31 @@ export function Explore() {
         </div>
       </div>
 
-      {/* ── 지금 이 무게로 보면 ─────────────────────── */}
-      <div className="card" style={{ marginTop: 26, padding: 17 }}>
-        <div className="card__label">이렇게 보면</div>
-        <div className="stack" style={{ marginTop: 14, gap: 14 }}>
-          {after.ranked.map((alt, i) => (
-            <div key={alt.alternativeId}>
-              <div className="barhead">
-                <span style={{ fontSize: 14, fontWeight: i === 0 ? 700 : 500 }}>
-                  {ordinalMark(alt.ordinal)} {alt.name}
-                </span>
-                <span
-                  style={{
-                    fontSize: 12,
-                    whiteSpace: 'nowrap',
-                    fontWeight: i === 0 ? 600 : 400,
-                    color: i === 0 ? 'var(--accent)' : 'var(--soft)',
-                  }}
-                >
-                  적합도 {fitLabel(alt.fit)}
-                </span>
-              </div>
-              <FitBar ratio={alt.fit / best} lead={i === 0} />
+      {/* ── 지금 이 무게로 보면 ───────────────────────
+          순위가 바뀌면 줄이 서로 자리를 바꾸며 미끄러진다. 그냥 다시 그리면
+          무엇이 무엇을 제쳤는지 볼 새가 없다 (디자인 §5). */}
+      <div ref={rankRef} className="stack" style={{ marginTop: 26, gap: 14 }}>
+        {after.ranked.map((alt, i) => (
+          <div key={alt.alternativeId} data-alt={alt.alternativeId} className="rankrow">
+            <div className="barhead">
+              <span style={{ fontSize: 14.5, fontWeight: i === 0 ? 700 : 500 }}>
+                <span style={{ color: altColor(alt.ordinal) }}>{ordinalMark(alt.ordinal)}</span>{' '}
+                {alt.name}
+              </span>
+              <span
+                style={{
+                  fontSize: 12,
+                  whiteSpace: 'nowrap',
+                  fontWeight: i === 0 ? 600 : 400,
+                  color: i === 0 ? 'var(--accent)' : 'var(--soft)',
+                }}
+              >
+                적합도 {fitLabel(alt.fit)}
+              </span>
             </div>
-          ))}
-        </div>
+            <FitBar ratio={alt.fit / best} lead={i === 0} ordinal={alt.ordinal} />
+          </div>
+        ))}
       </div>
 
       <div className={`flipbox${flipped ? '' : ' flipbox--same'}`} style={{ marginTop: 12 }}>

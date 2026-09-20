@@ -84,6 +84,39 @@ export function gutConflictSentence(): string {
   return '머리와 마음이 갈렸어요. 어디서 갈렸는지 볼 수 있어요.'
 }
 
+/** 받침이 있으면 '과', 없으면 '와'. "주거비과"가 되지 않게. */
+function andParticle(word: string): string {
+  const code = word.charCodeAt(word.length - 1)
+  if (Number.isNaN(code) || code < 0xac00 || code > 0xd7a3) return '와'
+  return (code - 0xac00) % 28 === 0 ? '와' : '과'
+}
+
+/** 이름 여럿을 "A와 B" / "A, B와 C"로 잇는다. */
+export function joinNames(names: string[]): string {
+  if (names.length === 0) return ''
+  if (names.length === 1) return names[0]!
+  const last = names[names.length - 1]!
+  const head = names.slice(0, -1)
+  const beforeLast = head[head.length - 1]!
+  return `${head.join(', ')}${andParticle(beforeLast)} ${last}`
+}
+
+/**
+ * "차이를 만든 기준" 블록의 첫 문장.
+ *
+ * 작은 표제부("결정적이었던 두 가지")를 걷어내고 그 자리에 들어간다 —
+ * 블록마다 라벨을 얹는 건 사람이 쓴 글의 모양이 아니다 (디자인 §5, 2026-09-20).
+ * 비교 대상은 1위와 2위다. 셋 이상이어도 "앞의 둘"이라고만 말한다.
+ */
+export function differenceLead(result: EvaluationResult): string | null {
+  if (result.ranked.length < 2) return null
+  const names = differenceMakers(result).map((maker) => maker.criterion.name)
+  if (names.length === 0) return null
+  return names.length === 1
+    ? `앞의 둘을 가른 건 ${names[0]} 하나였어요.`
+    : `앞의 둘을 가른 건 ${joinNames(names)}였어요.`
+}
+
 /** 결과 화면에 올릴 "차이를 만든 기준" 묶음. */
 export function differenceRows(result: EvaluationResult) {
   const leader = result.ranked[0]
