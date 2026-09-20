@@ -74,7 +74,7 @@ export function Settings() {
       <TopBar back="/" backLabel="홈으로" center="보관함" />
 
       <div style={{ marginTop: 32 }}>
-        <Title lines={['결정 기록 노트']} size={24} />
+        <Title lines={['보관함']} size={24} />
       </div>
 
       <div className="card m-settle" style={{ marginTop: 24, ...delay(0, 'm-settle', 240) }}>
@@ -90,7 +90,7 @@ export function Settings() {
             <div style={{ fontSize: 15, fontWeight: 600 }}>다른 기기에서도 보기</div>
             <div style={{ marginTop: 4, fontSize: 12, color: 'var(--soft)' }}>
               {configured
-                ? '켜면 기록이 서버로 올라갑니다. 이름도 이메일도 묻지 않아요.'
+                ? '켜면 서버에도 사본이 생깁니다. 계정은 만들지 않아요.'
                 : '이 빌드에는 서버 설정이 들어 있지 않아 기기 저장만 씁니다.'}
             </div>
           </div>

@@ -173,7 +173,7 @@ export function Why() {
           className="btn btn--ghost m-lift"
           style={delay(0, 'm-lift', 660)}
         >
-          진짜 내 마음은
+          무엇이 중요한지 직접 조정해보기
         </Link>
         <Link
           to={`/d/${decision.id}/commit`}

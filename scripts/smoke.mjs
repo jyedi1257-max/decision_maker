@@ -222,13 +222,13 @@ try {
   await shot(page, 'why')
 
   console.log('\n직접 움직여보기')
-  await page.click('text=진짜 내 마음은')
+  await page.click('text=무엇이 중요한지 직접 조정해보기')
   await page.waitForURL(/\/explore$/)
   await page.locator('.tune__slider').first().waitFor({ state: 'visible' })
   const sliders = await page.locator('.tune__slider').count()
   const rows = await page.locator('.tune__name').allInnerTexts()
   check('무게 손잡이가 기준 수만큼 있다', sliders === 3, `손잡이 ${sliders}개 · 기준 [${rows.join(', ')}]`)
-  check('처음엔 적용할 게 없다', await page.isDisabled('button:has-text("이 무게로 바꾸기")'))
+  check('처음엔 적용할 게 없다', await page.isDisabled('button:has-text("이걸로 계산하기")'))
   const leadBefore = await page.locator('.barhead').first().innerText()
 
   // 1순위 기준을 바닥까지 내리고 2순위를 끝까지 올린다
@@ -239,19 +239,27 @@ try {
   check('무게를 밀면 순위가 실제로 움직인다', leadBefore !== leadAfter, `${leadBefore} → ${leadAfter}`)
   check('끝까지 민 손잡이는 그 자리에 있는다', (await page.locator('.tune__slider').nth(1).inputValue()) === '100')
   check('건드리지 않은 손잡이에는 움직임 표시가 없다', (await page.locator('.tune__weight.is-moved').count()) === 2)
-  check('바뀐 결과를 문장으로 알려준다', await visible(page, 'text=처음 계산과 달라졌어요'))
-  check('되돌리기가 생긴다', await visible(page, 'text=원래 무게로 되돌리기'))
+  check('바뀐 결과를 문장으로 알려준다', await visible(page, 'text=로 바뀌네요'))
+  check('되돌리기가 생긴다', await visible(page, 'text=되돌리기'))
   await shot(page, 'explore')
 
   await page.fill('#insight', '비용이라고 생각했는데 사실은 답답한 게 더 컸다')
-  await page.click('button:has-text("이 무게로 바꾸기")')
+  await page.click('button:has-text("이걸로 계산하기")')
   await page.waitForURL(/\/result$/)
   await page.waitForTimeout(400)
-  const afterApply = await page.innerText('body')
-  check('적용한 무게가 결과에 반영된다', afterApply.includes(leadAfter.split('\n')[0].trim()))
+  const newLeader = leadAfter.split('\n')[0].trim()
+  check('적용한 무게가 결과에 반영된다', (await page.innerText('body')).includes(newLeader))
 
   console.log('\n결정 확정')
   await page.click('text=이걸로 정하기')
+  await page.waitForURL(/\/commit$/)
+  await page.waitForTimeout(400)
+  const committedTitle = await page.locator('h1.title').innerText()
+  check(
+    '확정 화면이 결과와 같은 답을 말한다',
+    committedTitle.includes(newLeader.replace(/^[①-⑤]\s*/, '')),
+    `결과 ${newLeader} / 확정 ${committedTitle.split('\n')[0]}`,
+  )
   await page.waitForURL(/\/commit$/)
   await page.fill('#reason', '방이 하나 더 필요하다는 게 제일 컸다')
   await page.click('button[aria-label="마음이 기운 정도 4"]')

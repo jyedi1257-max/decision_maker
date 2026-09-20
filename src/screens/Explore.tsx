@@ -86,10 +86,10 @@ export function Explore() {
 
   return (
     <Paper>
-      <TopBar back={`/d/${decision.id}/why`} backLabel="자세히로 돌아가기" center="진짜 내 마음은" />
+      <TopBar back={`/d/${decision.id}/why`} backLabel="자세히로 돌아가기" center="무엇이 중요한지 직접 조정해보기" />
 
       <div style={{ marginTop: 26 }}>
-        <Title lines={['무게를 바꿔보면', '결과가 어떻게 움직이나']} size={24} />
+        <Title lines={['무게를 바꾸면', '결과가 어떻게 바뀔까']} size={24} />
       </div>
       <p className="lede m-lift" style={delay(0, 'm-lift', 240)}>
         앱이 정해준 무게가 마음과 다르면, 여기서 직접 밀어보세요. 적용하기 전까지는 아무것도 바뀌지 않아요.
@@ -106,7 +106,7 @@ export function Explore() {
                 <span className="tune__name">{criterion.name}</span>
                 <span className={`tune__weight${wasChanged ? ' is-moved' : ''}`}>
                   {weightWord(weights[i] ?? 0, draft.length)}
-                  {wasChanged && ' · 움직임'}
+                  {wasChanged && ' · 바꿈'}
                 </span>
               </div>
               <input
@@ -124,14 +124,14 @@ export function Explore() {
           )
         })}
         <div className="tune__ends" style={{ marginTop: 0 }}>
-          <span>가볍게</span>
-          <span>무겁게</span>
+          <span>거의 안 봄</span>
+          <span>제일 중요</span>
         </div>
       </div>
 
       {/* ── 지금 이 무게로 보면 ─────────────────────── */}
       <div className="card" style={{ marginTop: 26, padding: 17 }}>
-        <div className="card__label">이 무게로 보면</div>
+        <div className="card__label">이렇게 보면</div>
         <div className="stack" style={{ marginTop: 14, gap: 14 }}>
           {after.ranked.map((alt, i) => (
             <div key={alt.alternativeId}>
@@ -160,15 +160,18 @@ export function Explore() {
         <p style={{ margin: 0, fontSize: 14, lineHeight: 1.75 }}>
           {flipped ? (
             <>
-              이 무게에서는 <strong style={{ color: 'var(--pen)' }}>{ordinalMark(leaderAfter!.ordinal)} {leaderAfter!.name}</strong>
-              가 앞섭니다. 처음 계산과 달라졌어요.
+              여기선{' '}
+              <strong style={{ color: 'var(--pen)' }}>
+                {ordinalMark(leaderAfter!.ordinal)} {leaderAfter!.name}
+              </strong>
+              로 바뀌네요.
             </>
           ) : moved ? (
             <>
               꽤 움직였는데도 1위는 그대로예요. 이 결과는 무게에 크게 흔들리지 않습니다.
             </>
           ) : (
-            <>손잡이를 밀어보세요. 어느 기준을 무겁게 봐야 결과가 바뀌는지 바로 보입니다.</>
+            <>마음이 가는 대로 밀어보세요. 그게 진짜 내 기준일 수 있어요.</>
           )}
         </p>
       </div>
@@ -180,7 +183,7 @@ export function Explore() {
           style={{ alignSelf: 'flex-start', marginTop: 4 }}
           onClick={reset}
         >
-          원래 무게로 되돌리기
+          되돌리기
         </button>
       )}
 
@@ -204,16 +207,16 @@ export function Explore() {
       {/* ── 통찰 메모 ───────────────────────────────── */}
       <div className="insight" style={{ marginTop: 26 }}>
         <label htmlFor="insight" style={{ fontSize: 13, fontWeight: 600, color: 'var(--soft)' }}>
-          움직여보니 알게 된 것
+          진짜 중요했던 건
         </label>
         <textarea
           id="insight"
           value={note}
-          placeholder="여기에 적은 건 한 달 뒤 회고에서 다시 읽게 됩니다."
+          placeholder="나중에 이 한 줄이 제일 쓸모 있어요."
           onChange={(e) => setNote(e.target.value)}
         />
         <p style={{ margin: 0, fontSize: 12, lineHeight: 1.7, color: 'var(--meta)' }}>
-          정답을 적는 칸이 아니에요. “비용이라고 생각했는데 사실은 답답한 게 컸다” 같은 한 줄이면 충분합니다.
+          정리된 문장일 필요 없어요. 떠오른 그대로 적으면 됩니다.
         </p>
       </div>
 
@@ -222,12 +225,12 @@ export function Explore() {
       <div className="stack" style={{ gap: 10 }}>
         {decision.commit && moved && (
           <p className="meta" style={{ margin: 0, lineHeight: 1.7 }}>
-            이미 정한 결정이에요. 무게를 바꾸면 결과가 달라질 수 있습니다 — 기록은 그대로 남아요.
+            정한 결정이지만 다시 볼 수 있어요. 예전 기록은 지워지지 않습니다.
           </p>
         )}
         <div className="btnrow">
           <button type="button" className="btn btn--quiet" style={{ flexGrow: 1 }} onClick={saveNoteOnly}>
-            메모만 남기기
+            그냥 나가기
           </button>
           <button
             type="button"
@@ -236,7 +239,7 @@ export function Explore() {
             disabled={!moved}
             onClick={apply}
           >
-            이 무게로 바꾸기
+            이걸로 계산하기
           </button>
         </div>
       </div>
@@ -257,9 +260,9 @@ function weightWord(weight: number, count: number): string {
   if (count <= 1) return '전부'
   const even = 1 / count
   const ratio = weight / even
-  if (ratio >= 2.2) return '아주 무겁게'
-  if (ratio >= 1.35) return '무겁게'
-  if (ratio >= 0.75) return '고르게'
-  if (ratio >= 0.4) return '가볍게'
-  return '아주 가볍게'
+  if (ratio >= 2.2) return '제일 중요'
+  if (ratio >= 1.35) return '중요'
+  if (ratio >= 0.75) return '보통'
+  if (ratio >= 0.4) return '덜 중요'
+  return '거의 안 봄'
 }

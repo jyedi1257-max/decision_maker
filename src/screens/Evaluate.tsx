@@ -148,7 +148,7 @@ export function Evaluate() {
 
       <div className="m-lift" style={{ marginTop: 30, ...delay(0, 'm-lift', 540) }}>
         <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--soft)' }}>
-          그렇게 생각한 근거가 뭐예요?
+          그렇게 생각한 이유가 있나요?
         </div>
         <div className="btnrow" style={{ marginTop: 12, gap: 8 }} role="group" aria-label="점수의 근거">
           {EVIDENCES.map((evidence) => {

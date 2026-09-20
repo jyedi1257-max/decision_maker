@@ -28,10 +28,26 @@ export function Commit() {
     return evaluate(decision).ranked[0] ?? null
   }, [decision])
 
+  /**
+   * 이 화면에 들어온 시점에 이미 정해져 있던 선택지.
+   * 무게를 바꿔 답이 달라졌을 때 "처음엔 이걸로 정했었다"를 말해주기 위해서만 쓴다.
+   * 확정 기록을 고치는 동안 값이 흔들리면 안 되므로 첫 렌더에서 한 번만 잡는다.
+   */
+  const [previousChoiceId] = useState<string | null>(() => decision?.commit?.alternativeId ?? null)
+
   if (!decision || !leader) return <Paper> </Paper>
 
-  // 이미 확정했다면 그 내용을 그대로 고친다.
-  const chosenId = decision.commit?.alternativeId ?? leader.alternativeId
+  /*
+   * 답은 **지금 무게로 계산한 1위**를 따른다.
+   *
+   * 예전에는 commit.alternativeId가 있으면 그걸 우선했는데, 그러면 '직접 조정해보기'에서
+   * 무게를 바꿔 1위가 달라져도 확정 화면은 처음 답을 계속 보여줬다. 결과 화면과 확정 화면이
+   * 서로 다른 답을 말하는 셈이라, 무게를 바꾼 의미가 없어진다.
+   */
+  const chosenId = leader.alternativeId
+  const choiceChanged = previousChoiceId !== null && previousChoiceId !== chosenId
+  const previousChoice = decision.alternatives.find((a) => a.id === previousChoiceId) ?? null
+  const previousOrdinal = decision.alternatives.findIndex((a) => a.id === previousChoiceId) + 1
   const chosen = decision.alternatives.find((a) => a.id === chosenId) ?? leader
   const chosenOrdinal = decision.alternatives.findIndex((a) => a.id === chosenId) + 1
   const reason = decision.commit?.reason ?? ''
@@ -45,13 +61,14 @@ export function Commit() {
       ...d,
       stage: 'committed',
       commit: {
-        alternativeId: chosenId,
         reason,
         confidence,
         committedAt,
         reviewScheduled: scheduled,
         reviewDueAt: dueAt,
         ...d.commit,
+        // 지금 무게가 가리키는 답으로 덮는다. 예전 기록이 이기면 무게를 바꾼 게 묻힌다.
+        alternativeId: chosenId,
         ...patch,
       },
     }))
@@ -85,6 +102,18 @@ export function Commit() {
           이걸로 정합니다.
         </span>
       </h1>
+
+      {choiceChanged && previousChoice && (
+        <div className="card--note m-settle" style={{ marginTop: 20, ...delay(0, 'm-settle', 220) }}>
+          <p style={{ margin: 0, fontSize: 14, lineHeight: 1.75 }}>
+            무게를 바꾸면서 답이 달라졌어요. 처음엔{' '}
+            <strong style={{ color: 'var(--pen)' }}>
+              {ordinalMark(previousOrdinal)} {previousChoice.name}
+            </strong>
+            로 정했었습니다.
+          </p>
+        </div>
+      )}
 
       <div className="write m-lift" style={{ marginTop: 30, gap: 6, ...delay(0, 'm-lift', 280) }}>
         <WriteField
