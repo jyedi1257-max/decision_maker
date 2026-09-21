@@ -47,7 +47,7 @@ export function Privacy() {
       </div>
 
       <div className="block m-settle" style={delay(0, 'm-settle', 560)}>
-        <p className="say">궁금한 점은 [문의 이메일]로 연락해 주세요.</p>
+        <p className="say">궁금한 점은 jyedi1257@gmail.com으로 연락해 주세요.</p>
         <p style={{ marginTop: 16, fontSize: 12, color: 'var(--soft)' }}>2026년 9월 갱신</p>
       </div>
 
