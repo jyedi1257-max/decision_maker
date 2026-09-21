@@ -54,6 +54,25 @@ npm run font:subset
 
 선택지·기준 **이름은 손글씨로 쓰지 않는다.** 사용자가 직접 치는 글자라 서브셋에 담을 수 없다.
 
+## 안드로이드
+
+세션이 열릴 때 `.claude/hooks/session-start.sh`가 npm 의존성과 안드로이드 SDK를
+갖춰 둔다. 이미 깔려 있으면 건너뛰므로 두 번째부터는 몇 초다.
+
+```bash
+npm run build && npx cap sync android
+cd android && ./gradlew assembleDebug     # app/build/outputs/apk/debug/
+```
+
+SDK 버전은 `android/variables.gradle`의 `compileSdkVersion`을 훅이 읽어 따라간다.
+거기를 올리면 다음 세션에 맞는 걸 받는다 — 훅을 따로 고칠 필요 없다.
+
+에뮬레이터는 이 컨테이너에서 못 돌린다(`/dev/kvm` 없음). 켜서 화면이 뜨는지는
+실기기나 CI 밖에서 확인해야 한다.
+
+`google-services.json`은 필요 없다. 앱은 WebView 안에서 Firebase **웹** SDK를 쓰고,
+`android/app/build.gradle`이 그 파일이 있을 때만 플러그인을 적용한다.
+
 ## 검증
 
 ```bash

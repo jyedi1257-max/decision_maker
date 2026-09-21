@@ -1,0 +1,87 @@
+# 밀 때마다 검사하고, 안드로이드 APK까지 뽑아 둔다.
+#
+# 여기서 도는 건 사람이 손으로 하던 것과 같은 명령이다 (CLAUDE.md의 검증 절차).
+# 다르게 돌면 CI가 초록인데 손에서 깨지는 일이 생긴다.
+name: build
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # 결정 엔진 테스트 + 타입 + 빌드 + 13화면 완주(스모크).
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: 결정 엔진 테스트
+        run: npm test
+
+      - name: 타입 + 빌드
+        run: npm run build
+
+      # 스모크는 실제 브라우저로 화면을 클릭해 끝까지 간다.
+      - name: 브라우저 받기
+        run: npx playwright install --with-deps chromium
+
+      - name: 화면 완주 + 스크린샷
+        run: npm run smoke
+
+      # 스모크가 깨졌을 때 화면을 눈으로 보려면 이게 있어야 한다.
+      - name: 스크린샷 올리기
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: docs/screenshots/
+          retention-days: 14
+
+  # 웹이 통과했을 때만 APK를 만든다. 깨진 걸 폰에 깔 이유가 없다.
+  android:
+    needs: web
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # Capacitor 8의 안드로이드 빌드는 JDK 21을 쓴다.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      # ubuntu-latest 러너에는 안드로이드 SDK가 이미 들어 있다.
+      - uses: android-actions/setup-android@v3
+
+      - run: npm ci
+
+      - name: 웹 빌드
+        run: npm run build
+
+      - name: 네이티브로 옮기기
+        run: npx cap sync android
+
+      - name: APK 만들기
+        run: ./gradlew assembleDebug --no-daemon
+        working-directory: android
+
+      - name: APK 올리기
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
