@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Paper } from '@/components/Paper'
 import { Title, TopBar } from '@/components/Controls'
 import { delay } from '@/styles/motion'
@@ -150,6 +150,9 @@ export function Settings() {
             그만두기
           </button>
         )}
+        <Link to="/privacy" className="btn--link">
+          개인정보 처리방침
+        </Link>
       </div>
 
       <div className="spacer" />

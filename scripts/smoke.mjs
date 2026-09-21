@@ -442,6 +442,13 @@ try {
   )
   await shot(page, 'settings')
 
+  console.log('\n개인정보 처리방침')
+  await page.click('text=개인정보 처리방침')
+  await page.waitForURL(/\/privacy$/)
+  check('기본은 수집이 없다고 말한다', await visible(page, 'text=아무것도 수집하지 않습니다'))
+  check('동기화를 켰을 때만 나가는 것도 밝힌다', await visible(page, 'text=익명 로그인'))
+  await shot(page, 'privacy')
+
   console.log('\n모션을 끈 상태')
   await context.close()
   const reduced = await browser.newContext({

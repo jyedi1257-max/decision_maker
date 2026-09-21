@@ -1,5 +1,15 @@
 apply plugin: 'com.android.application'
 
+// 스토어 서명 키. 저장소에는 절대 커밋하지 않는다 (docs/STORE_RELEASE.md 참고).
+// keystore.properties가 없으면 릴리스 빌드는 서명 없이 나온다 — CI의 assembleDebug처럼
+// 서명이 필요 없는 빌드는 이 파일이 없어도 그대로 돌아간다.
+def keystorePropertiesFile = file('keystore.properties')
+def keystoreProperties = new Properties()
+def hasKeystore = keystorePropertiesFile.exists()
+if (hasKeystore) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     namespace = "kr.decisionnote.app"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -7,6 +17,7 @@ android {
         applicationId "kr.decisionnote.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        // 스토어에 올릴 때마다 versionCode를 1씩 올리고 versionName을 사람이 읽는 버전으로 맞춘다.
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -16,10 +27,23 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        if (hasKeystore) {
+            release {
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+            }
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (hasKeystore) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 }

@@ -15,6 +15,7 @@ import { Commit } from '@/screens/Commit'
 import { Matrix } from '@/screens/Matrix'
 import { Review } from '@/screens/Review'
 import { Settings } from '@/screens/Settings'
+import { Privacy } from '@/screens/Privacy'
 
 /**
  * 기본은 깔끔한 주소(BrowserRouter)다. firebase.json이 모든 경로를 index.html로 돌려준다.
@@ -30,6 +31,7 @@ export function App() {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/privacy" element={<Privacy />} />
         <Route path="/d/:id/frame" element={<Frame />} />
         <Route path="/d/:id/alternatives" element={<Alternatives />} />
         <Route path="/d/:id/gut" element={<Gut />} />

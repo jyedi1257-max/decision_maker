@@ -17,6 +17,11 @@ ios/App/build/
 ios/App/App/public/
 android/app/src/main/assets/public/
 
+# 스토어 서명 키 — 저장소에 절대 들어가면 안 된다 (docs/STORE_RELEASE.md)
+android/app/keystore.properties
+*.jks
+*.keystore
+
 # Firebase
 .firebase/
 firebase-debug.log
