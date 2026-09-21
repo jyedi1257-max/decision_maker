@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Paper } from '@/components/Paper'
 import { InkFlourish, InkPhrase } from '@/components/Ink'
-import { PlusIcon } from '@/components/Icons'
+import { CopyIcon, PlusIcon } from '@/components/Icons'
 import { delay } from '@/styles/motion'
 import { useDecisions } from '@/store/decisions'
 import { daysUntil, formatDate } from '@/store/factory'
@@ -16,8 +16,10 @@ export function Main() {
   const loading = useDecisions((s) => s.loading)
   const loadList = useDecisions((s) => s.loadList)
   const create = useDecisions((s) => s.create)
+  const duplicate = useDecisions((s) => s.duplicate)
   const [synced, setSynced] = useState(false)
   const [starting, setStarting] = useState(false)
+  const [duplicatingId, setDuplicatingId] = useState<string | null>(null)
 
   useEffect(() => {
     void loadList()
@@ -29,6 +31,14 @@ export function Main() {
     setStarting(true)
     const decision = await create()
     navigate(`/d/${decision.id}/frame`)
+  }
+
+  async function duplicateAndOpen(id: string) {
+    if (duplicatingId) return
+    setDuplicatingId(id)
+    const copy = await duplicate(id)
+    if (copy) navigate(`/d/${copy.id}/must`)
+    else setDuplicatingId(null)
   }
 
   return (
@@ -89,7 +99,13 @@ export function Main() {
           </p>
         ) : (
           summaries.map((summary, i) => (
-            <DecisionCard key={summary.id} summary={summary} index={i} />
+            <DecisionCard
+              key={summary.id}
+              summary={summary}
+              index={i}
+              onDuplicate={duplicateAndOpen}
+              duplicating={duplicatingId === summary.id}
+            />
           ))
         )}
       </div>
@@ -108,23 +124,44 @@ export function Main() {
 }
 
 /** 결정 하나의 현재 상태를 한 줄로 요약한다. */
-function DecisionCard({ summary, index }: { summary: DecisionSummary; index: number }) {
+function DecisionCard({
+  summary,
+  index,
+  onDuplicate,
+  duplicating,
+}: {
+  summary: DecisionSummary
+  index: number
+  onDuplicate: (id: string) => void
+  duplicating: boolean
+}) {
   const { badge, badgeTone } = statusBadge(summary)
 
   return (
-    <Link
-      to={resumePath(summary)}
-      className="card m-settle"
-      style={{ color: 'inherit', display: 'block', ...delay(index, 'm-settle', 540) }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-        <span style={{ fontSize: 15, fontWeight: 600, overflowWrap: 'anywhere' }}>
-          {summary.question.trim() === '' ? '제목 없는 고민' : summary.question}
-        </span>
-        <span className={`chip chip--sm${badgeTone === 'accent' ? ' chip--pass' : ''}`}>{badge}</span>
-      </div>
-      <div style={{ marginTop: 7, fontSize: 12, color: 'var(--soft)' }}>{subtitle(summary)}</div>
-    </Link>
+    <div className="card m-settle" style={delay(index, 'm-settle', 540)}>
+      <Link to={resumePath(summary)} style={{ color: 'inherit', display: 'block' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+          <span style={{ fontSize: 15, fontWeight: 600, overflowWrap: 'anywhere' }}>
+            {summary.question.trim() === '' ? '제목 없는 고민' : summary.question}
+          </span>
+          <span className={`chip chip--sm${badgeTone === 'accent' ? ' chip--pass' : ''}`}>{badge}</span>
+        </div>
+        <div style={{ marginTop: 7, fontSize: 12, color: 'var(--soft)' }}>{subtitle(summary)}</div>
+      </Link>
+
+      {summary.criteriaCount > 0 && (
+        <button
+          type="button"
+          className="btn--link"
+          disabled={duplicating}
+          onClick={() => onDuplicate(summary.id)}
+          style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 2 }}
+        >
+          <CopyIcon />
+          {duplicating ? '새로 시작하는 중…' : '같은 기준으로 다시 시작'}
+        </button>
+      )}
+    </div>
   )
 }
 

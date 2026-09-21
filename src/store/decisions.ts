@@ -6,7 +6,7 @@ import type { Decision } from '@/core/types'
 import { localRepository } from '@/data/local'
 import type { DecisionSummary } from '@/data/repository'
 import { pushIfEnabled, removeIfEnabled } from '@/data/sync'
-import { newDecision } from './factory'
+import { duplicateDecision, newDecision } from './factory'
 
 interface DecisionStore {
   summaries: DecisionSummary[]
@@ -16,6 +16,8 @@ interface DecisionStore {
   loadList: () => Promise<void>
   load: (id: string) => Promise<Decision | null>
   create: () => Promise<Decision>
+  /** 있는 결정의 틀(대안·기준·무게)로 새 결정을 시작한다. 원본이 없으면 null. */
+  duplicate: (id: string) => Promise<Decision | null>
   update: (patch: (decision: Decision) => Decision) => void
   remove: (id: string) => Promise<void>
 }
@@ -76,6 +78,15 @@ export const useDecisions = create<DecisionStore>((set, get) => ({
     await persist(decision)
     set({ current: decision })
     return decision
+  },
+
+  async duplicate(id) {
+    const original = await localRepository.get(id)
+    if (!original) return null
+    const copy = duplicateDecision(original)
+    await persist(copy)
+    set({ current: copy })
+    return copy
   },
 
   update(patch) {

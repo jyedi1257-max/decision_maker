@@ -40,6 +40,33 @@ export function newMust(name = ''): MustCondition {
   return { id: newId(), name, passes: {} }
 }
 
+/**
+ * 결정 복제 (기획안 9.2 SHOULD) — 대안·기준·MUST 이름·무게 순서까지만 옮기고
+ * 판단은 새로 시작한다. 점수·직감·확정·회고는 이 결정 하나에만 속하는 것이라 가져오지 않는다.
+ * MUST 통과 여부도 새 대안 id에 맞춰 다시 매긴다 (비워두면 "통과"로 본다).
+ */
+export function duplicateDecision(original: Decision): Decision {
+  const now = new Date().toISOString()
+  return {
+    id: newId(),
+    question: original.question,
+    alternatives: original.alternatives.map((a) => ({ ...a, id: newId() })),
+    criteria: original.criteria.map((c) => ({ ...c, id: newId() })),
+    musts: original.musts.map((m) => ({ id: newId(), name: m.name, passes: {} })),
+    scores: {},
+    gut: { alternativeId: null, confidence: null },
+    commit: null,
+    review: null,
+    stage: 'must',
+    createdAt: now,
+    updatedAt: now,
+    hiddenAlternativeAsked: false,
+    dismissedDuplicateHints: [],
+    weightOverride: original.weightOverride ? [...original.weightOverride] : null,
+    insight: null,
+  }
+}
+
 /** 화면에 보이는 단계 순서. 진행 단계바와 "다음" 버튼이 같은 표를 쓴다. */
 export const FLOW = [
   'frame',

@@ -146,6 +146,15 @@ export function CautionIcon() {
   )
 }
 
+export function CopyIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+      <rect x="1" y="1" width="9" height="9" rx="1.5" stroke="var(--pen)" strokeWidth="1.3" />
+      <path d="M5.5 13 H13 V5.5" stroke="var(--pen)" strokeWidth="1.3" strokeLinecap="round" />
+    </svg>
+  )
+}
+
 export function ArrowRightIcon({ delayMs = 0 }: { delayMs?: number }) {
   return (
     <svg width="26" height="14" viewBox="0 0 26 14" fill="none" aria-hidden="true" style={{ flexShrink: 0 }}>

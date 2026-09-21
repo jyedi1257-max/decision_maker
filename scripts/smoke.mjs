@@ -380,12 +380,30 @@ try {
   check('회고 D-day를 센다', await visible(page, 'text=회고 D-30'))
   await shot(page, 'main-with-decision')
 
+  console.log('\n결정 복제 — 같은 기준으로 다시 시작')
+  check('복제 버튼이 목록 카드에 보인다', await visible(page, 'text=같은 기준으로 다시 시작'))
+  await page.click('text=같은 기준으로 다시 시작')
+  await page.waitForURL(/\/must$/)
+  await page.waitForTimeout(300)
+  check('대안이 그대로 옮겨온다', await visible(page, 'text=지금 집 재계약'))
+  const mustName = await page.inputValue('input[aria-label="필수조건 1"]')
+  check('필수조건 이름도 옮겨온다', mustName === '보증금 3억 이하', `실제: ${mustName}`)
+  check(
+    '통과 여부는 새로 판단하게 비워둔다 (아무도 탈락 안 함)',
+    await visible(page, 'button:has-text("남은 선택지 3개 비교하기")'),
+  )
+  await shot(page, 'main-duplicate')
+  await page.goto(`${base}/`)
+  await page.waitForTimeout(300)
+  check('복제한 결정도 목록에 남는다', (await page.locator('.card').count()) === 2)
+
   console.log('\n새로고침 뒤에도 남아 있나')
   await page.reload()
   await page.waitForTimeout(600)
   check('IndexedDB에서 복원된다', await page.isVisible('text=가을에 이사할까'))
 
   console.log('\n30일 뒤 회고')
+  // 복제본이 하나 더 생긴 뒤라 목록의 첫 항목을 그냥 집으면 안 된다 — 확정 기록이 있는 쪽을 찾는다.
   const id = await page.evaluate(async () => {
     const open = indexedDB.open('decision-note')
     const db = await new Promise((res) => {
@@ -395,7 +413,7 @@ try {
       const req = db.transaction('decisions').objectStore('decisions').getAll()
       req.onsuccess = () => res(req.result)
     })
-    return all[0].id
+    return all.find((d) => d.commit !== null).id
   })
   await page.goto(`${base}/d/${id}/review`)
   await page.waitForURL(/\/review$/)
