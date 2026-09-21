@@ -104,6 +104,20 @@ export async function pushIfEnabled(decision: Decision): Promise<void> {
   }
 }
 
+/**
+ * 서버에 올라간 사본을 전부 지운다.
+ *
+ * 기기 전체 삭제가 서버는 놔두고 있었다 — 보관함은 "이미 올라간 사본을 지우려면
+ * 전체 삭제를 해주세요"라고 말하면서. 지우겠다고 말했으면 지워야 한다.
+ * 동기화가 꺼져 있으면 서버에 사본이 없으니 할 일도 없다.
+ */
+export async function clearRemote(): Promise<void> {
+  if (!(await isSyncEnabled())) return
+  const remote = await connect()
+  const theirs = await remote.pull()
+  await Promise.all(theirs.map((d) => remote.del(d.id)))
+}
+
 export async function removeIfEnabled(id: string): Promise<void> {
   if (!(await isSyncEnabled())) return
   try {

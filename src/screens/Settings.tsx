@@ -4,7 +4,7 @@ import { Paper } from '@/components/Paper'
 import { Title, TopBar } from '@/components/Controls'
 import { delay } from '@/styles/motion'
 import { localRepository } from '@/data/local'
-import { disableSync, enableSync, isSyncEnabled } from '@/data/sync'
+import { clearRemote, disableSync, enableSync, isSyncEnabled } from '@/data/sync'
 import { isFirebaseConfigured } from '@/firebase/config'
 import { useDecisions } from '@/store/decisions'
 
@@ -63,9 +63,21 @@ export function Settings() {
       setConfirmClear(true)
       return
     }
+    if (busy) return
+    setBusy(true)
+    setError(null)
+    // 서버를 먼저 지운다. 기기를 먼저 비우면 무엇을 지워야 할지 알 수 없게 된다.
+    try {
+      await clearRemote()
+    } catch {
+      setError('서버에 올라간 사본은 지우지 못했어요. 기기 기록은 그대로 두었습니다. 잠시 뒤에 다시 해주세요.')
+      setBusy(false)
+      return
+    }
     await localRepository.clear()
     await loadList()
     setConfirmClear(false)
+    setBusy(false)
     navigate('/')
   }
 
@@ -108,7 +120,8 @@ export function Settings() {
         </div>
         {synced && (
           <p style={{ margin: '12px 0 0', fontSize: 12, lineHeight: 1.7, color: 'var(--soft)' }}>
-            끄면 새 기록은 더 올라가지 않습니다. 이미 올라간 사본을 지우려면 아래에서 전체 삭제를 해주세요.
+            끄면 새 기록은 더 올라가지 않지만, 이미 올라간 사본은 서버에 남습니다. 지우려면
+            동기화를 켜둔 채로 아래에서 전체 삭제를 해주세요.
           </p>
         )}
         {error && (
