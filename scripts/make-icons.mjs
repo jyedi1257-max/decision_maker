@@ -176,7 +176,8 @@ for (const [dir, w, h] of SPLASHES) {
 console.log(`  스플래시  ${SPLASHES.length}장 (세로·가로 5밀도 + 기본)`)
 
 // 눈으로 확인할 때 쓰는 미리보기. 안드로이드에서 실제로 보이는 모양이다.
-await bake(iconAdaptive(), 512, join(root, 'docs/screenshots/00-icon.png'))
+// docs/screenshots/는 스모크가 매번 통째로 비우므로 그 바깥에 둔다.
+await bake(iconAdaptive(), 512, join(root, 'docs/icon.png'))
 
 await browser.close()
 console.log(`\n→ ${count}장 + 적응형 배경색 + 미리보기 1장`)
