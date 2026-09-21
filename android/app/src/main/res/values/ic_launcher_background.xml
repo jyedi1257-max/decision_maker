@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 적응형 아이콘의 배경. 디자인 시스템 §1의 종이색이다.
+     앞면은 mipmap/ic_launcher_foreground. 손으로 고치지 말고 npm run icons를 돌린다.
+     (XML 주석 안에는 하이픈 두 개를 쓸 수 없어서 토큰 이름을 그대로 적지 않는다.) -->
 <resources>
-    <color name="ic_launcher_background">#FFFFFF</color>
+    <color name="ic_launcher_background">#FAF9F6</color>
 </resources>

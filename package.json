@@ -17,7 +17,8 @@
     "deploy": "npm run build && firebase deploy",
     "deploy:hosting": "npm run build && firebase deploy --only hosting",
     "deploy:rules": "firebase deploy --only firestore:rules",
-    "emulators": "firebase emulators:start --only auth,firestore,hosting"
+    "emulators": "firebase emulators:start --only auth,firestore,hosting",
+    "icons": "node scripts/make-icons.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^8.5.2",
