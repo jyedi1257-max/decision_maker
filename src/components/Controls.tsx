@@ -1,9 +1,9 @@
 import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import type { PointerEvent as ReactPointerEvent } from 'react'
-import { BackIcon, DragHandleIcon } from './Icons'
+import { BackIcon } from './Icons'
 import { InkUnderline } from './Ink'
 import { delay } from '@/styles/motion'
+import { STEP_COUNT } from '@/store/factory'
 
 /** 화면 머리말. 뒤로가기 · 단계 표시 · 저장 상태 (§6 화면 구성 공통) */
 export function TopBar({
@@ -39,8 +39,8 @@ export function TopBar({
   )
 }
 
-/** 7칸 진행 단계바 (§5). 완료 구간 --ink, 미완료 --border. */
-export function StepBar({ step, total = 7 }: { step: number; total?: number }) {
+/** 진행 단계바 (§5). 완료 구간 --ink, 미완료 --border. */
+export function StepBar({ step, total = STEP_COUNT }: { step: number; total?: number }) {
   return (
     <div className="stepbar" role="img" aria-label={`${total}단계 중 ${step}단계`}>
       {Array.from({ length: total }, (_, i) => {
@@ -100,30 +100,44 @@ export function Scale5({
   )
 }
 
-/** 1~5 점수 고르기 (평가 화면). 비우면 "잘 모르겠다"로 남는다. */
+/**
+ * 1~5 점수 고르기 (평가 화면). 비우면 "잘 모르겠다"로 남는다.
+ * 양 끝에는 방향만 적는다(bad ↔ good). 칸마다 말을 붙이면 '매우 만족'처럼
+ * 기준에 안 맞는 말이 끼어든다.
+ */
 export function Score5({
   value,
   onChange,
+  lowLabel = 'bad',
+  highLabel = 'good',
 }: {
   value: number | null
   onChange: (v: number) => void
+  lowLabel?: string
+  highLabel?: string
 }) {
   return (
-    <div className="score5" role="radiogroup" aria-label="이 기준에서의 점수">
-      {[1, 2, 3, 4, 5].map((n) => (
-        <button
-          key={n}
-          type="button"
-          role="radio"
-          aria-checked={value === n}
-          aria-label={`${n}점`}
-          className={`score5__cell${value === n ? ' is-picked' : ''}`}
-          onClick={() => onChange(n)}
-        >
-          {n}
-        </button>
-      ))}
-    </div>
+    <>
+      <div className="score5" role="radiogroup" aria-label="이 기준에서의 점수">
+        {[1, 2, 3, 4, 5].map((n) => (
+          <button
+            key={n}
+            type="button"
+            role="radio"
+            aria-checked={value === n}
+            aria-label={n === 1 ? `1점, ${lowLabel}` : n === 5 ? `5점, ${highLabel}` : `${n}점`}
+            className={`score5__cell${value === n ? ' is-picked' : ''}`}
+            onClick={() => onChange(n)}
+          >
+            {n}
+          </button>
+        ))}
+      </div>
+      <div className="scale5__ends" aria-hidden="true">
+        <span>{lowLabel}</span>
+        <span>{highLabel}</span>
+      </div>
+    </>
   )
 }
 
@@ -177,80 +191,6 @@ export function altColor(ordinal: number): string {
   return `var(--alt-${Math.min(Math.max(ordinal, 1), 5)})`
 }
 
-/** 순서 바꾸기 손잡이 — 드래그와 키보드 두 경로를 함께 둔다. */
-/**
- * 순서 바꾸기 — 위/아래 버튼과 끌기 손잡이.
- *
- * 버튼은 키보드와 보조기기를 위한 길이고, 손잡이는 손가락을 위한 길이다.
- * 둘 다 있어야 한다: 손잡이만 두면 키보드로 못 옮기고, 버튼만 두면
- * 손잡이 모양을 보고 끌어본 사람이 "안 움직인다"고 느낀다.
- */
-export function ReorderHandle({
-  label,
-  onUp,
-  onDown,
-  canUp,
-  canDown,
-  onGrab,
-}: {
-  label: string
-  onUp: () => void
-  onDown: () => void
-  canUp: boolean
-  canDown: boolean
-  /** 손잡이를 잡았을 때. 주지 않으면 손잡이는 장식으로만 남는다. */
-  onGrab?: (event: ReactPointerEvent<HTMLElement>) => void
-}) {
-  return (
-    <span style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-      <button
-        type="button"
-        className="iconbtn"
-        style={{ width: 34, height: 44 }}
-        aria-label={`${label} 위로`}
-        disabled={!canUp}
-        onClick={onUp}
-      >
-        <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true">
-          <path
-            d="M1 8 L7 2 L13 8"
-            stroke={canUp ? 'var(--soft)' : 'var(--border)'}
-            strokeWidth="1.7"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </button>
-      <button
-        type="button"
-        className="iconbtn"
-        style={{ width: 34, height: 44 }}
-        aria-label={`${label} 아래로`}
-        disabled={!canDown}
-        onClick={onDown}
-      >
-        <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true">
-          <path
-            d="M1 2 L7 8 L13 2"
-            stroke={canDown ? 'var(--soft)' : 'var(--border)'}
-            strokeWidth="1.7"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </button>
-      <span
-        aria-hidden="true"
-        className={onGrab ? 'grip' : undefined}
-        style={{ display: 'flex', paddingLeft: 2 }}
-        onPointerDown={onGrab}
-      >
-        <DragHandleIcon />
-      </span>
-    </span>
-  )
-}
-
 /** 원형 번호 ①②③ (§5) — 후보·기준 순서 표시에만. */
 const CIRCLED = ['①', '②', '③', '④', '⑤'] as const
 export function CircleNum({ n, size = 19 }: { n: number; size?: number }) {
@@ -262,26 +202,6 @@ export function CircleNum({ n, size = 19 }: { n: number; size?: number }) {
 }
 export function circledLabel(n: number): string {
   return CIRCLED[n - 1] ?? `(${n})`
-}
-
-/** 펜으로 동그라미 친 순위 번호 (중요한 순서 화면). */
-export function RankNum({ n, delayMs = 0 }: { n: number; delayMs?: number }) {
-  return (
-    <span className="ranknum">
-      {n}
-      <svg className="ranknum__circle" width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true">
-        <circle
-          className="m-draw"
-          cx="17"
-          cy="17"
-          r="15"
-          stroke="var(--pen)"
-          strokeWidth="1.8"
-          style={{ strokeDasharray: 96, strokeDashoffset: 96, '--d': `${delayMs}ms` } as object}
-        />
-      </svg>
-    </span>
-  )
 }
 
 /** 화면 제목 — 줄마다 왼쪽에서 쓰이듯 나타난다 (§4 write-on, 줄당 80ms). */

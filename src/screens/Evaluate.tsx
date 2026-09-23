@@ -9,7 +9,7 @@ import { EVIDENCE_LABEL, scoreKey, type Evidence } from '@/core/types'
 import { ordinalMark } from '@/core/narrate'
 import { useDecision } from '@/app/useDecision'
 import { flushPendingSave } from '@/store/decisions'
-import { prevPath, stepNumber } from '@/store/factory'
+import { prevPath, stepNumber, STEP_COUNT } from '@/store/factory'
 
 const EVIDENCES: Evidence[] = ['fact', 'estimate', 'feeling']
 
@@ -95,12 +95,32 @@ export function Evaluate() {
   }
 
   return (
-    <Paper>
+    <Paper
+      footer={
+        <div className="btnrow">
+          <button
+            type="button"
+            className="btn btn--quiet m-lift"
+            style={{ width: 100, ...delay(0, 'm-lift', 640) }}
+            onClick={skip}
+          >
+            건너뛰기
+          </button>
+          <button
+            type="button"
+            className="btn btn--primary m-lift"
+            style={{ flexGrow: 1, ...delay(0, 'm-lift', 680) }}
+            onClick={advance}
+          >
+            {isLast ? '결과 보기' : '다음 평가'}
+          </button>
+        </div>
+      }
+    >
       <TopBar
         onBack={back}
         backLabel={index > 0 ? '앞 문항으로' : '뒤로'}
-        center={`${stepNumber('evaluate')} / 7`}
-        right={<span className="meta">저장됨</span>}
+        center={`${stepNumber('evaluate')} / ${STEP_COUNT}`}
       />
       <StepBar step={stepNumber('evaluate')} />
 
@@ -186,27 +206,6 @@ export function Evaluate() {
         <span style={{ fontSize: 13, lineHeight: 1.6, color: 'var(--soft)' }}>
           잘 모르겠으면 비워두세요. 빈 칸도 결과에 반영됩니다.
         </span>
-      </div>
-
-      <div className="spacer" />
-
-      <div className="btnrow">
-        <button
-          type="button"
-          className="btn btn--quiet m-lift"
-          style={{ width: 100, ...delay(0, 'm-lift', 640) }}
-          onClick={skip}
-        >
-          건너뛰기
-        </button>
-        <button
-          type="button"
-          className="btn btn--primary m-lift"
-          style={{ flexGrow: 1, ...delay(0, 'm-lift', 680) }}
-          onClick={advance}
-        >
-          {isLast ? '결과 보기' : '다음 평가'}
-        </button>
       </div>
     </Paper>
   )

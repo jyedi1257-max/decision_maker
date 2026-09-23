@@ -50,23 +50,44 @@ export function Result() {
 
   if (!top || !conclusion) {
     return (
-      <Paper>
+      <Paper
+        footer={
+          <Link to={`/d/${decision.id}/must`} className="btn btn--primary">
+            필수조건 다시 보기
+          </Link>
+        }
+      >
         <TopBar back={`/d/${decision.id}/must`} center="결과" />
         <div style={{ marginTop: 40 }}>
           <p className="empty">
             필수조건을 지키는 선택지가 남지 않았어요. 조건을 다시 보거나 선택지를 더 적어주세요.
           </p>
         </div>
-        <div className="spacer" />
-        <Link to={`/d/${decision.id}/must`} className="btn btn--primary">
-          필수조건 다시 보기
-        </Link>
       </Paper>
     )
   }
 
   return (
-    <Paper>
+    <Paper
+      footer={
+        <div className="btnrow">
+          <Link
+            to={`/d/${decision.id}/why`}
+            className="btn btn--ghost m-lift"
+            style={{ flexGrow: 1, whiteSpace: 'nowrap', ...delay(0, 'm-lift', 680) }}
+          >
+            판단 기준 자세히 보기
+          </Link>
+          <Link
+            to={`/d/${decision.id}/commit`}
+            className="btn btn--primary m-lift"
+            style={{ flexGrow: 1, color: 'var(--paper)', ...delay(0, 'm-lift', 680) }}
+          >
+            이걸로 정하기
+          </Link>
+        </div>
+      }
+    >
       <TopBar back={`/d/${decision.id}/evaluate`} center="결과" />
 
       <div className="m-lift" style={{ marginTop: 34, fontSize: 13, color: 'var(--soft)', ...delay(0, 'm-lift', 80) }}>
@@ -97,7 +118,7 @@ export function Result() {
                 <span
                   style={{
                     fontSize: 12,
-                    color: lead ? 'var(--accent)' : 'var(--soft)',
+                    color: lead ? altColor(alt.ordinal) : 'var(--soft)',
                     fontWeight: lead ? 600 : 400,
                     whiteSpace: 'nowrap',
                   }}
@@ -117,14 +138,14 @@ export function Result() {
           <div className="stack" style={{ marginTop: 16, gap: 13 }}>
             {differences.map(({ maker, text }) => (
               <div key={maker.criterion.id} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                {maker.favorsLeader ? <ArrowUpIcon /> : <ArrowDownIcon />}
+                {maker.favorsLeader ? <ArrowUpIcon color="var(--ink)" /> : <ArrowDownIcon />}
                 <span style={{ flexGrow: 1, fontSize: 15.5 }}>{maker.criterion.name}</span>
                 <span
                   style={{
                     fontSize: 13,
-                    fontWeight: 600,
+                    fontWeight: maker.favorsLeader ? 600 : 500,
                     whiteSpace: 'nowrap',
-                    color: maker.favorsLeader ? 'var(--accent)' : 'var(--pen)',
+                    color: maker.favorsLeader ? 'var(--ink)' : 'var(--soft)',
                   }}
                 >
                   {text}
@@ -158,25 +179,6 @@ export function Result() {
         </div>
       )}
 
-
-      <div className="spacer" />
-
-      <div className="btnrow">
-        <Link
-          to={`/d/${decision.id}/why`}
-          className="btn btn--ghost m-lift"
-          style={{ flexGrow: 1, whiteSpace: 'nowrap', ...delay(0, 'm-lift', 680) }}
-        >
-          판단 기준 자세히 보기
-        </Link>
-        <Link
-          to={`/d/${decision.id}/commit`}
-          className="btn btn--primary m-lift"
-          style={{ flexGrow: 1, color: 'var(--paper)', ...delay(0, 'm-lift', 680) }}
-        >
-          이걸로 정하기
-        </Link>
-      </div>
     </Paper>
   )
 }

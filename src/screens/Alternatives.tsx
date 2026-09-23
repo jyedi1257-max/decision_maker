@@ -8,7 +8,7 @@ import { advisor } from '@/core/advisor'
 import { MAX_ALTERNATIVES, MIN_ALTERNATIVES } from '@/core/types'
 import { useDecision } from '@/app/useDecision'
 import { flushPendingSave } from '@/store/decisions'
-import { newAlternative, nextPath, prevPath, stepNumber } from '@/store/factory'
+import { newAlternative, nextPath, prevPath, stepNumber, STEP_COUNT } from '@/store/factory'
 import { slotPlaceholder } from '@/copy/examples'
 
 /** 2 · 선택지 적기 — 2~5개로 제한한다 (기획안 8.2 choice complexity 관리) */
@@ -100,11 +100,22 @@ export function Alternatives() {
   }
 
   return (
-    <Paper>
+    <Paper
+      footer={
+        <button
+          type="button"
+          className="btn btn--primary m-lift"
+          disabled={!ready}
+          onClick={next}
+          style={delay(0, 'm-lift', 680)}
+        >
+          {ready ? '다음' : '선택지를 두 개 이상 적어주세요'}
+        </button>
+      }
+    >
       <TopBar
         back={prevPath(decision.id, 'alternatives')}
-        center={`${stepNumber('alternatives')} / 7`}
-        right={<span className="meta">저장됨</span>}
+        center={`${stepNumber('alternatives')} / ${STEP_COUNT}`}
       />
       <StepBar step={stepNumber('alternatives')} />
 
@@ -177,18 +188,6 @@ export function Alternatives() {
           </div>
         </div>
       )}
-
-      <div className="spacer" />
-
-      <button
-        type="button"
-        className="btn btn--primary m-lift"
-        disabled={!ready}
-        onClick={next}
-        style={delay(0, 'm-lift', 680)}
-      >
-        {ready ? '다음' : '선택지를 두 개 이상 적어주세요'}
-      </button>
     </Paper>
   )
 }

@@ -64,19 +64,6 @@ export function CheckIcon({ delayMs = 0 }: { delayMs?: number }) {
   )
 }
 
-export function DragHandleIcon() {
-  return (
-    <svg width="16" height="14" viewBox="0 0 16 14" fill="none" aria-hidden="true">
-      <path
-        d="M1 3 H15 M1 7 H15 M1 11 H15"
-        stroke="var(--bar-rest)"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-    </svg>
-  )
-}
-
 export function ArrowUpIcon({ color = 'var(--accent)' }: { color?: string }) {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -91,7 +78,7 @@ export function ArrowUpIcon({ color = 'var(--accent)' }: { color?: string }) {
   )
 }
 
-export function ArrowDownIcon({ color = 'var(--pen)' }: { color?: string }) {
+export function ArrowDownIcon({ color = 'var(--soft)' }: { color?: string }) {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
       <path
@@ -149,8 +136,8 @@ export function CautionIcon() {
 export function CopyIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-      <rect x="1" y="1" width="9" height="9" rx="1.5" stroke="var(--pen)" strokeWidth="1.3" />
-      <path d="M5.5 13 H13 V5.5" stroke="var(--pen)" strokeWidth="1.3" strokeLinecap="round" />
+      <rect x="1" y="1" width="9" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.3" />
+      <path d="M5.5 13 H13 V5.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
     </svg>
   )
 }
@@ -167,6 +154,16 @@ export function ArrowRightIcon({ delayMs = 0 }: { delayMs?: number }) {
         strokeLinejoin="round"
         style={{ strokeDasharray: 48, strokeDashoffset: 48, '--d': `${delayMs}ms` } as object}
       />
+    </svg>
+  )
+}
+
+/** 보관함 — 뚜껑 덮인 상자. */
+export function ArchiveIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <rect x="1.5" y="2.5" width="13" height="3.5" rx="1" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M2.8 6 V13.5 H13.2 V6 M6.2 9 H9.8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * 스모크 — 13화면 흐름을 실제로 클릭해 끝까지 완주한다.
+ * 스모크 — 전체 화면 흐름을 실제로 클릭해 끝까지 완주한다.
  *
  *   npm run build && npm run smoke
  *
@@ -60,6 +60,13 @@ async function visible(page, selector, timeout = 4000) {
   } catch {
     return false
   }
+}
+
+/** 다음으로 가는 버튼이 스크롤 없이 첫 화면 안에 온전히 보이는가 (하단 버튼 영역, 디자인 §5). */
+async function ctaInView(page, label) {
+  const box = await page.locator('.paper__foot').last().boundingBox()
+  const vh = page.viewportSize().height
+  check(`${label} — 주 버튼이 잘리지 않고 첫 화면에 보인다`, Boolean(box) && box.y >= 0 && box.y + box.height <= vh, box ? `y ${Math.round(box.y)}~${Math.round(box.y + box.height)} / ${vh}` : '하단 영역 없음')
 }
 
 function check(label, condition, detail = '') {
@@ -149,6 +156,7 @@ try {
   check('직감 없이는 넘어가지 못한다', await page.isDisabled('button:has-text("판단 기준 정하기")'))
   await page.click('button[role="radio"]:has-text("지금 집 재계약")')
   await page.click('button[aria-label="마음이 기운 정도 3"]')
+  await ctaInView(page, '직감')
   await shot(page, 'gut')
 
   console.log('\n4 · 기준 세 개')
@@ -164,7 +172,69 @@ try {
   await shot(page, 'criteria-duplicate')
   await page.click('button:has-text("하나로")')
   await page.waitForTimeout(350)
-  check('묶으면 기준이 셋으로 돌아온다', (await page.locator('.row input').count()) === 3)
+  check('묶으면 기준이 셋으로 돌아온다', (await page.locator('ol .row').count()) === 3)
+
+  // 순서는 이 화면에서 잡는다 — 따로 '중요한 순서' 단계가 없다.
+  const criteriaOrder = () =>
+    page.$$eval('ol .row', (rows) =>
+      rows.map((row) => {
+        const input = row.querySelector('input')
+        return input ? input.value : (row.querySelector('.row__edit')?.textContent ?? '')
+      }),
+    )
+  const rowOf = (name) => page.locator(`ol .row:has(.row__edit:text-is("${name}"))`)
+
+  await page.locator('ol .row').first().click({ position: { x: 8, y: 8 } }) // 입력칸 밖을 눌러 포커스를 뺀다
+  await page.click('.row__edit:text-is("월 주거비")')
+  check('적은 기준은 눌러서 다시 고칠 수 있다', (await page.locator('input[aria-label="기준 1"]').inputValue()) === '월 주거비')
+  await page.locator('input[aria-label="기준 1"]').blur()
+  await page.waitForTimeout(100)
+
+  // 길게 누르지 않고 바로 움직이면 스크롤이다 — 줄이 딸려오면 안 된다.
+  {
+    const box = await rowOf('방 개수').boundingBox()
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2)
+    await page.mouse.down()
+    for (let i = 1; i <= 5; i++) {
+      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2 + i * 30)
+      await page.waitForTimeout(16)
+    }
+    await page.mouse.up()
+    await page.waitForTimeout(250)
+    const after = await criteriaOrder()
+    check('바로 끌면 순서가 안 바뀐다 (스크롤과 구분)', after[1] === '방 개수', `실제: ${after.join(' > ')}`)
+  }
+
+  // 길게 눌러 들고 맨 아래로.
+  {
+    const box = await rowOf('월 주거비').boundingBox()
+    const last = await page.locator('ol .row').last().boundingBox()
+    const x = box.x + box.width / 2
+    const y = box.y + box.height / 2
+    await page.mouse.move(x, y)
+    await page.mouse.down()
+    await page.waitForTimeout(450)
+    check('길게 누르면 줄이 들린다', (await page.locator('.row--held').count()) === 1)
+    for (let i = 1; i <= 6; i++) {
+      await page.mouse.move(x, y + ((last.y - box.y) * i) / 6)
+      await page.waitForTimeout(30)
+    }
+    await page.mouse.up()
+    await page.waitForTimeout(350)
+    const after = await criteriaOrder()
+    check('길게 눌러 끌면 순서가 바뀐다', after[2] === '월 주거비', `실제: ${after.join(' > ')}`)
+    check('들었다 놓은 손길은 고치기로 번지지 않는다', (await page.locator('ol .row input').count()) === 0)
+  }
+
+  // 키보드·보조기기 길: Alt+위/아래. 월 주거비를 둘째로 되돌린다.
+  await page.focus('.row__edit:text-is("월 주거비")')
+  await page.keyboard.press('Alt+ArrowUp')
+  await page.waitForTimeout(250)
+  {
+    const after = await criteriaOrder()
+    check('키보드로도 순서가 바뀐다', after.join('|') === '방 개수|월 주거비|출퇴근 시간', `실제: ${after.join(' > ')}`)
+  }
+  check('옮긴 뒤에도 포커스가 그 줄에 남는다', await page.evaluate(() => document.activeElement?.textContent === '월 주거비'))
   await shot(page, 'criteria')
 
   console.log('\n5 · 필수조건')
@@ -179,51 +249,12 @@ try {
   check('남은 둘을 비교하자고 한다', await visible(page, 'button:has-text("남은 선택지 2개 비교하기")'))
   await shot(page, 'must')
 
-  console.log('\n6 · 중요한 순서')
+  console.log('\n6 · 평가')
   await page.click('button:has-text("남은 선택지 2개")')
-  await page.waitForURL(/\/weight$/)
-  await page.click('button[aria-label="방 개수 위로"]')
-  await page.waitForTimeout(300)
-  const order = await page.locator('.row__text').allInnerTexts()
-  check('키보드 경로로 순서가 바뀐다', order[0] === '방 개수', `실제: ${order.join(' > ')}`)
-
-  // 손잡이를 끌어서도 움직여야 한다. HTML5 드래그앤드롭으로 짜여 있던 동안은
-  // 터치에서 아예 동작하지 않았다 — 손잡이만 보고 끌어본 사람에겐 고장난 화면이었다.
-  const grips = page.locator('.grip')
-  const firstRow = page.locator('.row').first()
-  const lastRow = page.locator('.row').last()
-  const from = await grips.first().boundingBox()
-  const a = await firstRow.boundingBox()
-  const b = await lastRow.boundingBox()
-  await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2)
-  await page.mouse.down()
-  // 한 번에 튀지 않게 몇 걸음 나눠 내린다 — 실제 손가락처럼.
-  for (let i = 1; i <= 6; i++) {
-    await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2 + ((b.y - a.y) * i) / 6)
-    await page.waitForTimeout(30)
-  }
-  await page.mouse.up()
-  await page.waitForTimeout(350)
-  const dragged = await page.locator('.row__text').allInnerTexts()
-  check('손잡이를 끌어서도 순서가 바뀐다', dragged[dragged.length - 1] === '방 개수', `실제: ${dragged.join(' > ')}`)
-
-  // 원래 순서로 돌려놓는다 — 뒤 단계의 기대값이 이 순서에 기대고 있다.
-  await page.click('button[aria-label="방 개수 위로"]')
-  await page.waitForTimeout(150)
-  await page.click('button[aria-label="방 개수 위로"]')
-  await page.waitForTimeout(250)
-  const restored = await page.locator('.row__text').allInnerTexts()
-  check('되돌려 놓았다', restored[0] === '방 개수', `실제: ${restored.join(' > ')}`)
-
-  await page.click('button:has-text("숫자 보기")')
-  await page.waitForTimeout(200)
-  check('ROC 비중이 61/28/11로 나온다', await page.isVisible('text=61%'))
-  await shot(page, 'weight')
-
-  console.log('\n7 · 평가')
-  await page.click('button:has-text("평가하러 가기")')
   await page.waitForURL(/\/evaluate$/)
   check('탈락 후보는 평가하지 않는다 (2후보 × 3기준 = 6칸)', await visible(page, 'text=평가 1 / 6'))
+  check('점수 양 끝에 방향만 적는다 (bad ↔ good)', await visible(page, '.scale5__ends:has-text("bad"):has-text("good")'))
+  check('칸마다 붙던 만족/불만족 말이 없다', !(await page.isVisible('text=만족')))
   await shot(page, 'evaluate')
 
   // ①은 방 개수에 약하고 주거비에 강하다. ②는 그 반대.
@@ -296,6 +327,7 @@ try {
   const body = await page.innerText('body')
   check('총점 숫자를 노출하지 않는다', !/\b0\.\d{2,}\b/.test(body), body.match(/0\.\d{2,}/)?.[0])
   check('직감 충돌을 짚는다', await visible(page, 'text=처음 마음은'))
+  await ctaInView(page, '결과')
   await shot(page, 'result')
 
   console.log('\n왜 이런 결과인지')
@@ -370,6 +402,7 @@ try {
   check('도장이 찍힌다', await visible(page, '.stamp__word'))
   check('도장 글자가 손글씨다', (await page.locator('.stamp__word').innerText()) === '결정함')
   check('30일 뒤 회고를 예약한다', await page.isVisible('text=30일 뒤에 다시 물어보기'))
+  await ctaInView(page, '확정')
   await shot(page, 'commit')
 
   console.log('\n홈으로 — 저장 확인')
@@ -378,6 +411,7 @@ try {
   await page.waitForTimeout(400)
   check('목록에 남는다', await page.isVisible('text=가을에 이사할까'))
   check('회고 D-day를 센다', await visible(page, 'text=회고 D-30'))
+  check('마음이 기운 정도를 숫자 대신 말로 적는다', await visible(page, 'text=마음 꽤 기욺'))
   await shot(page, 'main-with-decision')
 
   console.log('\n결정 복제 — 같은 기준으로 다시 시작')
@@ -423,12 +457,16 @@ try {
   await page.click('button[aria-label="돌아보면 4"]')
   await page.selectOption('#now-top', { index: 2 })
   check('패턴을 지어내지 않는다 (표본 1건)', !(await page.isVisible('text=지금까지 모인 패턴')))
+  await ctaInView(page, '회고')
   await shot(page, 'review')
   await page.click('button:has-text("기록 남기기")')
   await page.waitForURL(`${base}/`)
 
   console.log('\n보관함')
-  await page.goto(`${base}/settings`)
+  await page.goto(base)
+  await page.click('a:has-text("보관함")')
+  await page.waitForURL(/\/settings$/)
+  check('홈 우상단에서 보관함으로 간다', true)
   check('기기 저장을 설명한다', await visible(page, 'text=전부 이 기기에만 있습니다'))
   check(
     '동기화를 켤 수 있다 (Firebase 설정이 들어 있음)',

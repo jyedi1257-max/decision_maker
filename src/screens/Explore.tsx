@@ -118,7 +118,31 @@ export function Explore() {
   }
 
   return (
-    <Paper>
+    <Paper
+      footer={
+        <div className="stack" style={{ gap: 10 }}>
+          {decision.commit && moved && (
+            <p className="meta" style={{ margin: 0, lineHeight: 1.7 }}>
+              정한 결정이지만 다시 볼 수 있어요. 예전 기록은 지워지지 않습니다.
+            </p>
+          )}
+          <div className="btnrow">
+            <button type="button" className="btn btn--quiet" style={{ flexGrow: 1 }} onClick={saveNoteOnly}>
+              그냥 나가기
+            </button>
+            <button
+              type="button"
+              className="btn btn--primary"
+              style={{ flexGrow: 1 }}
+              disabled={!moved}
+              onClick={apply}
+            >
+              이걸로 계산하기
+            </button>
+          </div>
+        </div>
+      }
+    >
       <TopBar back={`/d/${decision.id}/why`} backLabel="자세히로 돌아가기" center="무엇이 중요한지 직접 조정해보기" />
 
       <div style={{ marginTop: 26 }}>
@@ -178,7 +202,7 @@ export function Explore() {
                   fontSize: 12,
                   whiteSpace: 'nowrap',
                   fontWeight: i === 0 ? 600 : 400,
-                  color: i === 0 ? 'var(--accent)' : 'var(--soft)',
+                  color: i === 0 ? altColor(alt.ordinal) : 'var(--soft)',
                 }}
               >
                 적합도 {fitLabel(alt.fit)}
@@ -194,7 +218,7 @@ export function Explore() {
           {flipped ? (
             <>
               여기선{' '}
-              <strong style={{ color: 'var(--pen)' }}>
+              <strong style={{ color: altColor(leaderAfter!.ordinal) }}>
                 {ordinalMark(leaderAfter!.ordinal)} {leaderAfter!.name}
               </strong>
               로 바뀌네요.
@@ -251,30 +275,6 @@ export function Explore() {
         <p style={{ margin: 0, fontSize: 12, lineHeight: 1.7, color: 'var(--meta)' }}>
           정리된 문장일 필요 없어요. 떠오른 그대로 적으면 됩니다.
         </p>
-      </div>
-
-      <div className="spacer" />
-
-      <div className="stack" style={{ gap: 10 }}>
-        {decision.commit && moved && (
-          <p className="meta" style={{ margin: 0, lineHeight: 1.7 }}>
-            정한 결정이지만 다시 볼 수 있어요. 예전 기록은 지워지지 않습니다.
-          </p>
-        )}
-        <div className="btnrow">
-          <button type="button" className="btn btn--quiet" style={{ flexGrow: 1 }} onClick={saveNoteOnly}>
-            그냥 나가기
-          </button>
-          <button
-            type="button"
-            className="btn btn--primary"
-            style={{ flexGrow: 1 }}
-            disabled={!moved}
-            onClick={apply}
-          >
-            이걸로 계산하기
-          </button>
-        </div>
       </div>
     </Paper>
   )

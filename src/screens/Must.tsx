@@ -9,7 +9,7 @@ import { evaluate } from '@/core/evaluate'
 import { MAX_MUSTS } from '@/core/types'
 import { useDecision } from '@/app/useDecision'
 import { flushPendingSave } from '@/store/decisions'
-import { newMust, nextPath, prevPath, stepNumber } from '@/store/factory'
+import { newMust, nextPath, prevPath, stepNumber, STEP_COUNT } from '@/store/factory'
 
 /**
  * 5 · 필수조건
@@ -53,7 +53,7 @@ export function Must() {
   }
 
   async function next() {
-    update((d) => ({ ...d, musts: d.musts.filter((m) => m.name.trim() !== ''), stage: 'weight' }))
+    update((d) => ({ ...d, musts: d.musts.filter((m) => m.name.trim() !== ''), stage: 'evaluate' }))
     await flushPendingSave()
     navigate(nextPath(decision!.id, 'must'))
   }
@@ -61,11 +61,34 @@ export function Must() {
   const namedMusts = decision.musts.filter((m) => m.name.trim() !== '')
 
   return (
-    <Paper>
+    <Paper
+      footer={
+        <>
+          {survivors === 0 ? (
+            <p className="empty" style={{ marginBottom: 12 }}>
+              조건을 지키는 선택지가 하나도 남지 않았어요. 조건을 다시 보거나 선택지를 더 적어주세요.
+            </p>
+          ) : null}
+
+          <button
+            type="button"
+            className="btn btn--primary m-lift"
+            disabled={survivors === 0}
+            onClick={next}
+            style={delay(0, 'm-lift', 720)}
+          >
+            {namedMusts.length === 0
+              ? '조건 없이 넘어가기'
+              : survivors === 1
+                ? '남은 선택지 보여주기'
+                : `남은 선택지 ${survivors}개 비교하기`}
+          </button>
+        </>
+      }
+    >
       <TopBar
         back={prevPath(decision.id, 'must')}
-        center={`${stepNumber('must')} / 7`}
-        right={<span className="meta">저장됨</span>}
+        center={`${stepNumber('must')} / ${STEP_COUNT}`}
       />
       <StepBar step={stepNumber('must')} />
 
@@ -162,28 +185,6 @@ export function Must() {
           </p>
         </>
       )}
-
-      <div className="spacer" />
-
-      {survivors === 0 ? (
-        <p className="empty" style={{ marginBottom: 12 }}>
-          조건을 지키는 선택지가 하나도 남지 않았어요. 조건을 다시 보거나 선택지를 더 적어주세요.
-        </p>
-      ) : null}
-
-      <button
-        type="button"
-        className="btn btn--primary m-lift"
-        disabled={survivors === 0}
-        onClick={next}
-        style={delay(0, 'm-lift', 720)}
-      >
-        {namedMusts.length === 0
-          ? '조건 없이 넘어가기'
-          : survivors === 1
-            ? '남은 선택지 보여주기'
-            : `남은 선택지 ${survivors}개 비교하기`}
-      </button>
     </Paper>
   )
 }

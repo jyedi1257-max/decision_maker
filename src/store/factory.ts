@@ -74,11 +74,13 @@ export const FLOW = [
   'gut',
   'criteria',
   'must',
-  'weight',
   'evaluate',
 ] as const
 
 export type FlowStep = (typeof FLOW)[number]
+
+/** 단계 수. 진행 표시 "n / 6"과 단계바 칸 수가 이것 하나를 따른다. */
+export const STEP_COUNT = FLOW.length
 
 export function stepNumber(step: FlowStep): number {
   return FLOW.indexOf(step) + 1

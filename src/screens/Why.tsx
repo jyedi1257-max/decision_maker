@@ -35,7 +35,26 @@ export function Why() {
   if (result.ranked.length === 0) return <Paper> </Paper>
 
   return (
-    <Paper>
+    <Paper
+      footer={
+        <div className="stack" style={{ gap: 10 }}>
+          <Link
+            to={`/d/${decision.id}/explore`}
+            className="btn btn--ghost m-lift"
+            style={delay(0, 'm-lift', 660)}
+          >
+            무엇이 중요한지 직접 조정해보기
+          </Link>
+          <Link
+            to={`/d/${decision.id}/commit`}
+            className="btn btn--primary m-lift"
+            style={{ color: 'var(--paper)', ...delay(0, 'm-lift', 680) }}
+          >
+            이만하면 됐어요, 정할게요
+          </Link>
+        </div>
+      }
+    >
       <TopBar back={`/d/${decision.id}/result`} backLabel="결과로 돌아가기" center="자세히" />
 
       <div style={{ marginTop: 26 }}>
@@ -47,12 +66,27 @@ export function Why() {
 
         {sensitivity.weightFlip && (
           <>
-            <div style={{ marginTop: 14, position: 'relative', height: 26 }} aria-hidden="true">
+            {/* 만질 수 있는 슬라이더처럼 보이면 안 된다 — 손잡이 없이 눈금만 둔다.
+                직접 움직이는 건 '직접 조정해보기'의 몫이다. */}
+            <div style={{ marginTop: 14, position: 'relative', height: 42 }} aria-hidden="true">
+              <span
+                className="meta"
+                style={{
+                  position: 'absolute',
+                  left: `${sensitivity.weightFlip.currentPosition * 100}%`,
+                  top: 0,
+                  transform: 'translateX(-50%)',
+                  fontSize: 11,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                지금
+              </span>
               <span
                 style={{
                   position: 'absolute',
                   left: 0,
-                  top: 11,
+                  top: 27,
                   width: '100%',
                   height: 4,
                   borderRadius: 999,
@@ -64,7 +98,7 @@ export function Why() {
                 style={{
                   position: 'absolute',
                   left: 0,
-                  top: 11,
+                  top: 27,
                   width: `${sensitivity.weightFlip.currentPosition * 100}%`,
                   height: 4,
                   borderRadius: 999,
@@ -76,22 +110,21 @@ export function Why() {
                 style={{
                   position: 'absolute',
                   left: `${sensitivity.weightFlip.currentPosition * 100}%`,
-                  top: 4,
-                  width: 18,
-                  height: 18,
-                  marginLeft: -9,
-                  borderRadius: '50%',
-                  background: 'var(--paper)',
-                  border: '2px solid var(--ink)',
+                  top: 19,
+                  width: 2,
+                  height: 20,
+                  marginLeft: -1,
+                  background: 'var(--ink)',
                 }}
               />
               <span
                 style={{
                   position: 'absolute',
                   left: `${sensitivity.weightFlip.flipPosition * 100}%`,
-                  top: 0,
+                  top: 16,
                   width: 2,
                   height: 26,
+                  marginLeft: -1,
                   background: 'var(--pen)',
                 }}
               />
@@ -132,25 +165,6 @@ export function Why() {
           </p>
         </div>
       )}
-
-      <div className="spacer" />
-
-      <div className="stack" style={{ gap: 10 }}>
-        <Link
-          to={`/d/${decision.id}/explore`}
-          className="btn btn--ghost m-lift"
-          style={delay(0, 'm-lift', 660)}
-        >
-          무엇이 중요한지 직접 조정해보기
-        </Link>
-        <Link
-          to={`/d/${decision.id}/commit`}
-          className="btn btn--primary m-lift"
-          style={{ color: 'var(--paper)', ...delay(0, 'm-lift', 680) }}
-        >
-          이만하면 됐어요, 정할게요
-        </Link>
-      </div>
     </Paper>
   )
 }

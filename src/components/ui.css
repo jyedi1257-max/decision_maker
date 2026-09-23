@@ -15,6 +15,17 @@
   display: block;
 }
 
+.archive-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 2px 0 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--soft);
+}
+
 .eyebrow {
   font-size: 11px;
   letter-spacing: 0.22em;
@@ -141,24 +152,6 @@
   flex-shrink: 0;
 }
 
-.ranknum {
-  position: relative;
-  width: 34px;
-  height: 34px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-title);
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--pen);
-}
-.ranknum__circle {
-  position: absolute;
-  inset: 0;
-}
-
 .ordinal {
   width: 22px;
   height: 22px;
@@ -271,7 +264,10 @@
 .btn--link {
   border: 0;
   background: transparent;
-  color: var(--pen);
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--rule-ink);
+  text-underline-offset: 4px;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -379,20 +375,6 @@
 }
 
 /* 가중치 비중 띠 */
-.weightbar {
-  margin-top: 10px;
-  display: flex;
-  height: 12px;
-  border-radius: 999px;
-  overflow: hidden;
-  background: var(--rule);
-}
-.weightbar__seg {
-  transform-origin: left;
-}
-
-/* ── 선택 카드 (직감·후보) ────────────────────────────── */
-
 .pick {
   display: flex;
   align-items: center;
@@ -606,7 +588,7 @@
   white-space: nowrap;
 }
 .tune__weight.is-moved {
-  color: var(--pen);
+  color: var(--ink);
   font-weight: 600;
 }
 
@@ -648,7 +630,7 @@
   border: 2px solid var(--ink);
 }
 .tune__slider:focus-visible::-webkit-slider-thumb {
-  border-color: var(--pen);
+  border-color: var(--accent);
 }
 
 .tune__ends {
@@ -692,7 +674,7 @@
 .insight textarea:focus {
   outline: none;
   border-style: solid;
-  border-color: var(--pen);
+  border-color: var(--ink);
 }
 
 /* ── 내가 매긴 표 (매트릭스) ─────────────────────────────────
@@ -803,38 +785,49 @@
   }
 }
 
-/* ── 순서 바꾸기 손잡이 ──────────────────────────────────────
-   포인터 이벤트로 끈다. touch-action을 끄지 않으면 손가락을 내리는 순간
-   브라우저가 스크롤로 가져가 버려서 행이 안 따라온다.
+/* ── 길게 눌러 순서 바꾸기 (기준 화면) ─────────────────────────
+   손잡이 없이 줄 자체를 길게 누른다. 누르는 동안 글자 선택·길게 누르기 메뉴가
+   끼어들지 않게 막고, 들린 줄은 종이 띠를 집어 든 것처럼 살짝 기운다.
+   스크롤과 구분하는 건 시간이다 — 손가락이 먼저 움직이면 스크롤로 넘겨준다.
 */
-.grip {
-  touch-action: none;
+.row--pressable {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
   cursor: grab;
-  padding: 6px 4px;
-  margin: -6px -4px;
+}
+.row__edit {
+  flex-grow: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: normal;
+  overflow-wrap: anywhere;
+  cursor: text;
 }
 
-.grip:active {
+/* 끄는 동안 다른 줄은 자리를 비켜준다 */
+.row--sorting {
+  transition: transform 180ms var(--ease), box-shadow 180ms var(--ease);
+}
+
+/* 잡고 있는 줄은 손가락을 그대로 따라온다 — 지연을 주면 안 붙는다 */
+.row--held {
+  transition: box-shadow 180ms var(--ease);
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 10px 24px rgba(35, 32, 28, 0.16);
+  border-color: var(--ink);
   cursor: grabbing;
 }
 
-/* 끄는 동안 다른 행은 자리를 비켜준다 */
-.row--sorting {
-  transition: transform 180ms var(--ease);
-  user-select: none;
-}
-
-/* 잡고 있는 행은 손가락을 그대로 따라온다 — 지연을 주면 안 붙는다 */
-.row--held {
-  transition: none;
-  position: relative;
-  z-index: 2;
-  box-shadow: 0 6px 18px rgba(35, 32, 28, 0.13);
-  border-color: var(--pen);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .row--sorting {
+  .row--sorting,
+  .row--held {
     transition: none;
   }
 }

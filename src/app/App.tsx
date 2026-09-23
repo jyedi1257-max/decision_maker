@@ -6,7 +6,6 @@ import { Alternatives } from '@/screens/Alternatives'
 import { Gut } from '@/screens/Gut'
 import { Criteria } from '@/screens/Criteria'
 import { Must } from '@/screens/Must'
-import { Weight } from '@/screens/Weight'
 import { Evaluate } from '@/screens/Evaluate'
 import { Result } from '@/screens/Result'
 import { Why } from '@/screens/Why'
@@ -37,7 +36,8 @@ export function App() {
         <Route path="/d/:id/gut" element={<Gut />} />
         <Route path="/d/:id/criteria" element={<Criteria />} />
         <Route path="/d/:id/must" element={<Must />} />
-        <Route path="/d/:id/weight" element={<Weight />} />
+        {/* 예전 '중요한 순서' 화면. 순서는 이제 기준 화면에서 잡는다. */}
+        <Route path="/d/:id/weight" element={<Navigate to="../criteria" relative="path" replace />} />
         <Route path="/d/:id/evaluate" element={<Evaluate />} />
         <Route path="/d/:id/result" element={<Result />} />
         <Route path="/d/:id/why" element={<Why />} />

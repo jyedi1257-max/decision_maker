@@ -5,7 +5,7 @@ import { CheckIcon, LockIcon } from '@/components/Icons'
 import { delay } from '@/styles/motion'
 import { useDecision } from '@/app/useDecision'
 import { flushPendingSave } from '@/store/decisions'
-import { nextPath, prevPath, stepNumber } from '@/store/factory'
+import { nextPath, prevPath, stepNumber, STEP_COUNT } from '@/store/factory'
 
 /**
  * 3 · 직감 봉인
@@ -28,11 +28,22 @@ export function Gut() {
   }
 
   return (
-    <Paper>
+    <Paper
+      footer={
+        <button
+          type="button"
+          className="btn btn--primary m-lift"
+          disabled={!ready}
+          onClick={next}
+          style={delay(0, 'm-lift', 680)}
+        >
+          판단 기준 정하기
+        </button>
+      }
+    >
       <TopBar
         back={prevPath(decision.id, 'gut')}
-        center={`${stepNumber('gut')} / 7`}
-        right={<span className="meta">저장됨</span>}
+        center={`${stepNumber('gut')} / ${STEP_COUNT}`}
       />
       <StepBar step={stepNumber('gut')} />
 
@@ -90,18 +101,6 @@ export function Gut() {
           예요. 결과와 다르면 그 지점을 같이 봅니다.
         </span>
       </div>
-
-      <div className="spacer" />
-
-      <button
-        type="button"
-        className="btn btn--primary m-lift"
-        disabled={!ready}
-        onClick={next}
-        style={delay(0, 'm-lift', 680)}
-      >
-        판단 기준 정하기
-      </button>
     </Paper>
   )
 }

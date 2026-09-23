@@ -67,6 +67,7 @@ export type DecisionStage =
   | 'gut'
   | 'criteria'
   | 'must'
+  /** 예전 '중요한 순서' 단계. 이제는 기준 화면에서 순서를 잡는다 — 저장된 옛 결정을 읽기 위해서만 남긴다. */
   | 'weight'
   | 'evaluate'
   | 'result'

@@ -104,7 +104,38 @@ export function Matrix() {
   const empty = data.alternatives.length === 0
 
   return (
-    <Paper>
+    <Paper
+      footer={
+        <>
+          {/* 그리는 동안엔 건너뛰기 하나만 크게 띄운다. 흐릿한 '다음으로'를
+              같이 두면 눌리지 않는 버튼을 쳐다보게 된다. */}
+          {done || empty ? (
+            <div className="btnrow">
+              <button
+                type="button"
+                className="btn btn--quiet"
+                style={{ flexShrink: 0, paddingInline: 18 }}
+                onClick={() => setRun((r) => r + 1)}
+              >
+                다시 보기
+              </button>
+              <button
+                type="button"
+                className="btn btn--primary"
+                style={{ flexGrow: 1 }}
+                onClick={() => navigate(`/d/${decision.id}/result`)}
+              >
+                결과 보기
+              </button>
+            </div>
+          ) : (
+            <button type="button" className="btn btn--ghost" onClick={skip}>
+              그리는 건 건너뛰기
+            </button>
+          )}
+        </>
+      }
+    >
       <TopBar
         back={`/d/${decision.id}/evaluate`}
         center="내가 매긴 표"
@@ -173,35 +204,6 @@ export function Matrix() {
           ))}
           는 표에서 뺐습니다.
         </p>
-      )}
-
-      <div className="spacer" />
-
-      {/* 그리는 동안엔 건너뛰기 하나만 크게 띄운다. 흐릿한 '다음으로'를
-          같이 두면 눌리지 않는 버튼을 쳐다보게 된다. */}
-      {done || empty ? (
-        <div className="btnrow">
-          <button
-            type="button"
-            className="btn btn--quiet"
-            style={{ flexShrink: 0, paddingInline: 18 }}
-            onClick={() => setRun((r) => r + 1)}
-          >
-            다시 보기
-          </button>
-          <button
-            type="button"
-            className="btn btn--primary"
-            style={{ flexGrow: 1 }}
-            onClick={() => navigate(`/d/${decision.id}/result`)}
-          >
-            결과 보기
-          </button>
-        </div>
-      ) : (
-        <button type="button" className="btn btn--ghost" onClick={skip}>
-          그리는 건 건너뛰기
-        </button>
       )}
     </Paper>
   )

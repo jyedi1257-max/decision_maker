@@ -5,7 +5,7 @@ import { delay } from '@/styles/motion'
 import { questionExamples, questionPlaceholder } from '@/copy/examples'
 import { useDecision } from '@/app/useDecision'
 import { flushPendingSave } from '@/store/decisions'
-import { nextPath, prevPath, stepNumber } from '@/store/factory'
+import { nextPath, prevPath, stepNumber, STEP_COUNT } from '@/store/factory'
 
 /** 1 · 고민 한 문장 — Decision Quality의 frame (기획안 5.9) */
 export function Frame() {
@@ -22,11 +22,22 @@ export function Frame() {
   }
 
   return (
-    <Paper>
+    <Paper
+      footer={
+        <button
+          type="button"
+          className="btn btn--primary m-lift"
+          disabled={!ready}
+          onClick={next}
+          style={delay(0, 'm-lift', 680)}
+        >
+          선택지 적기
+        </button>
+      }
+    >
       <TopBar
         back={prevPath(decision.id, 'frame')}
-        center={`${stepNumber('frame')} / 7`}
-        right={<span className="meta">저장됨</span>}
+        center={`${stepNumber('frame')} / ${STEP_COUNT}`}
       />
       <StepBar step={stepNumber('frame')} />
 
@@ -60,18 +71,6 @@ export function Frame() {
           ))}
         </div>
       </div>
-
-      <div className="spacer" />
-
-      <button
-        type="button"
-        className="btn btn--primary m-lift"
-        disabled={!ready}
-        onClick={next}
-        style={delay(0, 'm-lift', 680)}
-      >
-        선택지 적기
-      </button>
     </Paper>
   )
 }

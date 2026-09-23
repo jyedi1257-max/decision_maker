@@ -11,6 +11,7 @@ import { useDecision } from '@/app/useDecision'
 import { flushPendingSave } from '@/store/decisions'
 import { formatFullDate } from '@/store/factory'
 import type { Decision } from '@/core/types'
+import { leanWords } from '@/copy/scale-words'
 
 /**
  * 30일 뒤 회고
@@ -34,15 +35,17 @@ export function Review() {
   const commit = decision.commit
   if (!commit) {
     return (
-      <Paper>
+      <Paper
+        footer={
+          <button type="button" className="btn btn--primary" onClick={() => navigate(`/d/${decision.id}/result`)}>
+            결과로 가기
+          </button>
+        }
+      >
         <TopBar back="/" backLabel="홈으로" center="회고" />
         <div style={{ marginTop: 40 }}>
           <p className="empty">아직 확정하지 않은 결정이에요. 먼저 결정을 마무리해 주세요.</p>
         </div>
-        <div className="spacer" />
-        <button type="button" className="btn btn--primary" onClick={() => navigate(`/d/${decision.id}/result`)}>
-          결과로 가기
-        </button>
       </Paper>
     )
   }
@@ -75,7 +78,29 @@ export function Review() {
   }
 
   return (
-    <Paper>
+    <Paper
+      footer={
+        <div className="btnrow">
+          <button
+            type="button"
+            className="btn btn--quiet m-lift"
+            style={{ width: 118, ...delay(0, 'm-lift', 640) }}
+            onClick={() => navigate('/')}
+          >
+            나중에
+          </button>
+          <button
+            type="button"
+            className="btn btn--primary m-lift"
+            style={{ flexGrow: 1, ...delay(0, 'm-lift', 680) }}
+            disabled={review?.satisfaction == null}
+            onClick={save}
+          >
+            기록 남기기
+          </button>
+        </div>
+      }
+    >
       <TopBar back="/" backLabel="홈으로" center="회고" />
 
       <div style={{ marginTop: 32 }}>
@@ -85,7 +110,7 @@ export function Review() {
       <div className="card m-settle" style={{ marginTop: 24, padding: 17, ...delay(0, 'm-settle', 260) }}>
         <div style={{ fontSize: 12, color: 'var(--soft)' }}>
           {formatFullDate(commit.committedAt)}
-          {commit.confidence !== null && ` · 마음 ${commit.confidence}`}
+          {commit.confidence !== null && ` · ${leanWords(commit.confidence)}`}
         </div>
         <div style={{ marginTop: 8, fontFamily: 'var(--font-title)', fontSize: 19, fontWeight: 700 }}>
           {ordinalMark(chosenOrdinal)} {chosen?.name ?? '고른 선택지'}
@@ -196,28 +221,6 @@ export function Review() {
           </p>
         </div>
       )}
-
-      <div className="spacer" />
-
-      <div className="btnrow">
-        <button
-          type="button"
-          className="btn btn--quiet m-lift"
-          style={{ width: 118, ...delay(0, 'm-lift', 640) }}
-          onClick={() => navigate('/')}
-        >
-          나중에
-        </button>
-        <button
-          type="button"
-          className="btn btn--primary m-lift"
-          style={{ flexGrow: 1, ...delay(0, 'm-lift', 680) }}
-          disabled={review?.satisfaction == null}
-          onClick={save}
-        >
-          기록 남기기
-        </button>
-      </div>
     </Paper>
   )
 }

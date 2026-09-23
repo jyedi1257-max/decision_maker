@@ -44,11 +44,8 @@ button {
 }
 
 a {
-  color: var(--pen);
+  color: var(--ink);
   text-decoration: none;
-}
-a:hover {
-  color: var(--pen-hover);
 }
 
 input {
@@ -57,7 +54,7 @@ input {
 }
 
 :focus-visible {
-  outline: 2px solid var(--pen);
+  outline: 2px solid var(--ink);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -105,6 +102,7 @@ input {
   width: 1px;
   background: var(--margin-line);
   pointer-events: none;
+  z-index: 1; /* 하단 버튼 영역이 종이색으로 덮어도 여백선은 이어진다 */
 }
 
 .sheet {
@@ -116,6 +114,27 @@ input {
     var(--paper-pad-left);
   overflow-y: auto;
   overscroll-behavior: contain;
+}
+
+/* 하단 버튼 영역 — 스크롤 밖에 붙는다. 위로 옅게 번져서
+   "아래로 내용이 더 있다"를 선 없이 알려준다. */
+.paper__foot {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column; /* 버튼은 폭을 제 글자에 맞추려 하므로 늘려준다 */
+  padding: 10px var(--paper-pad-right) var(--paper-pad-bottom) var(--paper-pad-left);
+  background: var(--paper);
+}
+.paper__foot::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -20px;
+  height: 20px;
+  background: linear-gradient(to bottom, transparent, var(--paper));
+  pointer-events: none;
 }
 
 /* 화면 하단에 붙는 확정 버튼 위의 밀어내기 */

@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Paper } from '@/components/Paper'
 import { InkFlourish, InkPhrase } from '@/components/Ink'
-import { CopyIcon, PlusIcon } from '@/components/Icons'
+import { ArchiveIcon, CopyIcon, PlusIcon } from '@/components/Icons'
 import { delay } from '@/styles/motion'
 import { useDecisions } from '@/store/decisions'
 import { daysUntil, formatDate } from '@/store/factory'
 import { isSyncEnabled } from '@/data/sync'
 import type { DecisionSummary } from '@/data/repository'
+import { leanWords, lookingBackWords } from '@/copy/scale-words'
 
 /** 홈 · 결정 노트 */
 export function Main() {
@@ -43,9 +44,15 @@ export function Main() {
 
   return (
     <Paper ruled>
-      <div className="eyebrow m-lift">결정 노트</div>
+      <div className="m-lift" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '-12px 0' }}>
+        <span className="eyebrow">결정 노트</span>
+        <Link to="/settings" className="archive-link">
+          <ArchiveIcon />
+          보관함
+        </Link>
+      </div>
 
-      <h1 className="title" style={{ fontSize: 29, marginTop: 16 }}>
+      <h1 className="title" style={{ fontSize: 29, marginTop: 28 }}>
         <span className="m-write" style={delay(0, 'm-write', 60)}>
           오늘은 어떤 걸
         </span>
@@ -87,9 +94,7 @@ export function Main() {
         <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.04em', color: 'var(--soft)' }}>
           지난 결정기록
         </span>
-        <Link to="/settings" className="meta" style={{ color: 'var(--meta)' }}>
-          {synced ? '다른 기기와 함께 보는 중' : '고민은 이 기기에만 저장됩니다'}
-        </Link>
+        <span className="meta">{synced ? '다른 기기와 함께 보는 중' : '고민은 이 기기에만 저장됩니다'}</span>
       </div>
 
       <div className="stack" style={{ marginTop: 14, gap: 12 }}>
@@ -140,8 +145,8 @@ function DecisionCard({
   return (
     <div className="card m-settle" style={delay(index, 'm-settle', 540)}>
       <Link to={resumePath(summary)} style={{ color: 'inherit', display: 'block' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-          <span style={{ fontSize: 15, fontWeight: 600, overflowWrap: 'anywhere' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 10 }}>
+          <span style={{ flex: 1, minWidth: 0, fontSize: 15, fontWeight: 600, lineHeight: 1.55, wordBreak: 'keep-all', overflowWrap: 'anywhere' }}>
             {summary.question.trim() === '' ? '제목 없는 고민' : summary.question}
           </span>
           <span className={`chip chip--sm${badgeTone === 'accent' ? ' chip--pass' : ''}`}>{badge}</span>
@@ -166,7 +171,7 @@ function DecisionCard({
 }
 
 function statusBadge(s: DecisionSummary): { badge: string; badgeTone: 'neutral' | 'accent' } {
-  if (s.satisfaction !== null) return { badge: `돌아보니 ${s.satisfaction}`, badgeTone: 'neutral' }
+  if (s.satisfaction !== null) return { badge: lookingBackWords(s.satisfaction), badgeTone: 'neutral' }
   if (s.committedAt && s.reviewDueAt) {
     const days = daysUntil(s.reviewDueAt)
     if (days <= 0) return { badge: '회고할 때', badgeTone: 'accent' }
@@ -179,7 +184,7 @@ function statusBadge(s: DecisionSummary): { badge: string; badgeTone: 'neutral' 
 function subtitle(s: DecisionSummary): string {
   if (s.committedAt) {
     const parts = [`${formatDate(s.committedAt)} 확정`, `기준 ${s.criteriaCount}개`]
-    if (s.confidence !== null) parts.push(`마음 ${s.confidence}`)
+    if (s.confidence !== null) parts.push(leanWords(s.confidence))
     if (s.satisfaction !== null) parts.push('회고 완료')
     return parts.join(' · ')
   }
@@ -194,6 +199,7 @@ function resumePath(s: DecisionSummary): string {
   if (s.committedAt) {
     return daysUntil(s.reviewDueAt ?? '') <= 0 ? `/d/${s.id}/review` : `/d/${s.id}/result`
   }
+  if (s.stage === 'weight') return `/d/${s.id}/criteria`
   const stage = s.stage === 'result' || s.stage === 'committed' ? 'result' : s.stage
   return `/d/${s.id}/${stage}`
 }

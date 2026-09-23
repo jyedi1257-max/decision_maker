@@ -95,7 +95,19 @@ export function Commit() {
   }
 
   return (
-    <Paper>
+    <Paper
+      footer={
+        <button
+          type="button"
+          className="btn btn--primary m-lift"
+          onClick={finish}
+          disabled={saving}
+          style={delay(0, 'm-lift', 680)}
+        >
+          기록하고 나가기
+        </button>
+      }
+    >
       <TopBar back={`/d/${decision.id}/result`} center="마무리" />
 
       <h1 className="title" style={{ fontSize: 27, marginTop: 32 }}>
@@ -111,7 +123,7 @@ export function Commit() {
         <div className="card--note m-settle" style={{ marginTop: 20, ...delay(0, 'm-settle', 220) }}>
           <p style={{ margin: 0, fontSize: 14, lineHeight: 1.75 }}>
             무게를 바꾸면서 답이 달라졌어요. 처음엔{' '}
-            <strong style={{ color: 'var(--pen)' }}>
+            <strong>
               {ordinalMark(previousOrdinal)} {previousChoice.name}
             </strong>
             로 정했었습니다.
@@ -184,18 +196,6 @@ export function Commit() {
           <span className="stamp__date">{formatFullDate(committedAt)}</span>
         </div>
       </div>
-
-      <div className="spacer" />
-
-      <button
-        type="button"
-        className="btn btn--primary m-lift"
-        onClick={finish}
-        disabled={saving}
-        style={delay(0, 'm-lift', 680)}
-      >
-        기록하고 나가기
-      </button>
     </Paper>
   )
 }
