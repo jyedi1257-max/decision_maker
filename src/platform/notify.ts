@@ -55,22 +55,27 @@ export async function scheduleReview(
   const body = question.trim() === '' ? '그때 적어둔 결정을 다시 볼 시간이에요.' : question
 
   const plugin = await nativePlugin()
-  if (plugin) {
-    const permission = await plugin.requestPermissions()
-    if (permission.display !== 'granted') return 'denied'
-    await plugin.schedule({
-      notifications: [
-        { id: notificationId(decisionId), title: '한 달 전 그 결정, 지금은 어때요?', body, schedule: { at } },
-      ],
-    })
-    return 'scheduled'
-  }
+  // 권한 거절·정확한 알람 제한 등으로 플러그인이 던져도 호출한 쪽(확정 화면)을 막으면 안 된다.
+  try {
+    if (plugin) {
+      const permission = await plugin.requestPermissions()
+      if (permission.display !== 'granted') return 'denied'
+      await plugin.schedule({
+        notifications: [
+          { id: notificationId(decisionId), title: '한 달 전 그 결정, 지금은 어때요?', body, schedule: { at } },
+        ],
+      })
+      return 'scheduled'
+    }
 
-  // 웹: 브라우저를 계속 열어둘 수는 없으므로 권한만 받아두고
-  // 실제 안내는 홈 화면의 "회고 D-7" 배지가 맡는다.
-  if (typeof Notification === 'undefined') return 'unsupported'
-  const permission = await Notification.requestPermission()
-  return permission === 'granted' ? 'scheduled' : 'denied'
+    // 웹: 브라우저를 계속 열어둘 수는 없으므로 권한만 받아두고
+    // 실제 안내는 홈 화면의 "회고 D-7" 배지가 맡는다.
+    if (typeof Notification === 'undefined') return 'unsupported'
+    const permission = await Notification.requestPermission()
+    return permission === 'granted' ? 'scheduled' : 'denied'
+  } catch {
+    return 'unsupported'
+  }
 }
 
 export async function cancelReview(decisionId: string): Promise<void> {

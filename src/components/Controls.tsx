@@ -104,11 +104,9 @@ export function Scale5({
 export function Score5({
   value,
   onChange,
-  labels,
 }: {
   value: number | null
   onChange: (v: number) => void
-  labels: readonly string[]
 }) {
   return (
     <div className="score5" role="radiogroup" aria-label="이 기준에서의 점수">
@@ -118,7 +116,7 @@ export function Score5({
           type="button"
           role="radio"
           aria-checked={value === n}
-          aria-label={labels[n - 1]}
+          aria-label={`${n}점`}
           className={`score5__cell${value === n ? ' is-picked' : ''}`}
           onClick={() => onChange(n)}
         >

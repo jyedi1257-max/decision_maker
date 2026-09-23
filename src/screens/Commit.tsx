@@ -85,9 +85,13 @@ export function Commit() {
     if (saving) return
     setSaving(true)
     patchCommit({})
-    if (scheduled) await scheduleReview(decision!.id, decision!.question, new Date(dueAt))
-    await flushPendingSave()
-    navigate('/')
+    try {
+      await flushPendingSave()
+    } finally {
+      navigate('/')
+    }
+    // 알림은 기록이 끝난 뒤에. 권한 창이 늦게 뜨거나 실패해도 나가는 길을 막지 않는다.
+    if (scheduled) void scheduleReview(decision!.id, decision!.question, new Date(dueAt))
   }
 
   return (

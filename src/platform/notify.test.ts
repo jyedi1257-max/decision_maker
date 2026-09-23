@@ -1,5 +1,26 @@
-import { describe, expect, it } from 'vitest'
-import { notificationId } from './notify'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { notificationId, scheduleReview } from './notify'
+
+describe('scheduleReview', () => {
+  afterEach(() => {
+    vi.doUnmock('@capacitor/local-notifications')
+    delete (globalThis as { Capacitor?: unknown }).Capacitor
+  })
+
+  it('플러그인이 던져도 호출한 쪽으로 예외를 넘기지 않는다', async () => {
+    ;(globalThis as { Capacitor?: unknown }).Capacitor = { isNativePlatform: () => true }
+    vi.doMock('@capacitor/local-notifications', () => ({
+      LocalNotifications: {
+        requestPermissions: async () => ({ display: 'granted' }),
+        schedule: async () => {
+          throw new Error('exact alarm not permitted')
+        },
+        cancel: async () => undefined,
+      },
+    }))
+    await expect(scheduleReview('d1', '이사 갈까', new Date())).resolves.toBe('unsupported')
+  })
+})
 
 describe('notificationId', () => {
   it('같은 결정은 같은 알림 id를 쓴다', () => {

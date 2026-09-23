@@ -11,7 +11,6 @@ import { useDecision } from '@/app/useDecision'
 import { flushPendingSave } from '@/store/decisions'
 import { prevPath, stepNumber } from '@/store/factory'
 
-const SCORE_LABELS = ['매우 불만족', '불만족', '보통', '만족', '매우 만족'] as const
 const EVIDENCES: Evidence[] = ['fact', 'estimate', 'feeling']
 
 /** 한 칸당 대략 이만큼 걸린다고 보고 남은 시간을 어림한다. */
@@ -140,11 +139,7 @@ export function Evaluate() {
       </div>
 
       <div className="m-lift" style={{ marginTop: 30, ...delay(0, 'm-lift', 420) }}>
-        <Score5 value={score?.value ?? null} onChange={setScore} labels={SCORE_LABELS} />
-      </div>
-      <div className="scale5__ends m-lift" style={delay(0, 'm-lift', 480)}>
-        <span>{SCORE_LABELS[0]}</span>
-        <span>{SCORE_LABELS[4]}</span>
+        <Score5 value={score?.value ?? null} onChange={setScore} />
       </div>
 
       <div className="m-lift" style={{ marginTop: 30, ...delay(0, 'm-lift', 540) }}>
