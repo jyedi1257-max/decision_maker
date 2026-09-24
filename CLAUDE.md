@@ -72,6 +72,17 @@ npm run icons
 손글씨는 앱에 실린 `penink.woff2`를 그대로 쓴다. 문구를 바꾸면 그 글자가
 서브셋에 있는지 먼저 확인한다(`INK_GLYPHS`).
 
+## 스티커를 고칠 때
+
+`scripts/make-stickers.mjs`가 유일한 원본이다. 고쳤으면 반드시:
+
+```bash
+npm run stickers
+```
+
+`src/assets/stickers/`의 SVG와 `index.json`이 통째로 다시 나온다. SVG를 손으로 고치지 않는다.
+색은 디자인 시스템에 있는 먹·흰색·회색 종이만 쓴다.
+
 ## 안드로이드
 
 세션이 열릴 때 `.claude/hooks/session-start.sh`가 npm 의존성과 안드로이드 SDK를
