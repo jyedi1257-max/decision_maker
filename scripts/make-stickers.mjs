@@ -5,7 +5,8 @@
  *   npm run stickers
  *
  * 그림의 모양은 이 파일 한 곳에만 있다. 바탕 6가지 × 외곽선(흰 오림선) 있음/없음을
- * 전부 src/assets/stickers/에 SVG로 뽑고, 목록을 index.json에 적는다.
+ * 전부 src/assets/stickers/에 SVG로 뽑고, 목록을 index.json에, 피그마용 전체 시트를
+ * figma-sheet.svg에 적는다. 스티커마다 '외곽선·칠·먹선' 레이어가 나뉘어 있다.
  * SVG를 손으로 고치면 어느 게 최신인지 알 수 없게 되므로 여기서 고치고 다시 돌린다.
  *
  * 색은 디자인 시스템 §1에 이미 있는 값만 쓴다 — 먹(--ink), 카드 흰색(--card),
@@ -205,17 +206,15 @@ const attrs = (o) =>
     .map(([k, v]) => `${k}="${v}"`)
     .join(' ')
 
-function paint(role, fill) {
-  if (role === 'line') return { fill: 'none', stroke: C.ink }
-  if (role === 'ink') return { fill: C.ink, stroke: C.ink }
-  return { fill: role === 'main' ? fill.main : fill.sub, stroke: C.ink }
-}
-
-function renderSticker(item, fillKey, cut, uid) {
+/**
+ * 스티커 한 장을 레이어로 나눠 그린다. 피그마에 붙여넣으면 그룹 id가 레이어 이름이 된다.
+ *   외곽선 — 흰 오림선 (없음이면 빠진다)
+ *   칠     — 바탕·무늬. 선 없이 면만
+ *   먹선   — 그림 선. 면 없이 선만 (연필심처럼 먹으로 칠한 작은 점은 여기에)
+ * 칠과 먹선을 따로 두어야 피그마에서 선만 쓰거나 칠 색만 바꿀 수 있다.
+ */
+function stickerLayers(item, fillKey, cut, uid) {
   const fill = FILLS[fillKey]
-  const [w, h] = item.box
-  const pad = cut ? PAD : 2
-  const vb = `${-pad} ${-pad} ${w + pad * 2} ${h + pad * 2}`
   const common = { 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }
   const geo = (a) => {
     const g = { ...a }
@@ -231,32 +230,66 @@ function renderSticker(item, fillKey, cut, uid) {
       item.parts
         .map(([tag, a]) => `<${tag} ${attrs({ ...geo(a), fill: color, stroke: color, 'stroke-width': width, ...common })}/>`)
         .join('')
-    halo = `<g>${band(C.edge, HALO * 2 + 1.6)}${band(C.white, HALO * 2)}</g>`
+    halo = `<g id="외곽선">${band(C.edge, HALO * 2 + 1.6)}${band(C.white, HALO * 2)}</g>`
   }
 
-  const art = item.parts
+  const faces = item.parts
+    .filter(([, , role]) => role === 'main' || role === 'sub')
     .map(([tag, a, role]) => {
-      const p = paint(role, fill)
-      return `<${tag} ${attrs({ 'stroke-width': LINE, ...a, fill: p.fill, stroke: p.stroke, ...common })}/>`
+      const f = role === 'main' ? fill.main : fill.sub
+      return f === 'none' ? '' : `<${tag} ${attrs({ ...geo(a), fill: f.replace('P-', `${uid}-`), stroke: 'none' })}/>`
     })
     .join('')
 
-  const pattern = fillKey in PATTERNS ? `<defs>${PATTERNS[fillKey]}</defs>` : ''
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" width="${w + pad * 2}" height="${h + pad * 2}">${pattern}${halo}${art}</svg>\n`
-  // 여러 스티커를 한 문서에 인라인해도 무늬 id가 부딪히지 않게 파일마다 고유하게
-  return svg.replaceAll('P-', `${uid}-`)
+  const lines = item.parts
+    .map(([tag, a, role]) =>
+      `<${tag} ${attrs({ 'stroke-width': LINE, ...a, fill: role === 'ink' ? C.ink : 'none', stroke: C.ink, ...common })}/>`,
+    )
+    .join('')
+
+  const defs = fillKey in PATTERNS ? PATTERNS[fillKey].replace('P-', `${uid}-`) : ''
+  const body = `${halo}${faces ? `<g id="칠">${faces}</g>` : ''}<g id="먹선">${lines}</g>`
+  return { defs, body }
+}
+
+function stickerName(item, fillKey, cut, kindName) {
+  return `스티커/${kindName}/${item.name}/${FILLS[fillKey].name} ${cut ? '외곽선' : '외곽선 없음'}`
+}
+
+function renderSticker(item, fillKey, cut, uid, kindName) {
+  const [w, h] = item.box
+  const pad = cut ? PAD : 2
+  const { defs, body } = stickerLayers(item, fillKey, cut, uid)
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${-pad} ${-pad} ${w + pad * 2} ${h + pad * 2}" width="${w + pad * 2}" height="${h + pad * 2}">${defs ? `<defs>${defs}</defs>` : ''}<g id="${stickerName(item, fillKey, cut, kindName)}">${body}</g></svg>\n`
+}
+
+function tapeParts(key) {
+  const t = TAPES[key]
+  const uid = `tape-${key}`
+  const defs = t.extra ? t.extra.replace('id="T"', `id="${uid}"`) : ''
+  const fill = t.fill === 'url(#T)' ? `url(#${uid})` : t.fill
+  const body = `<g id="칠"><path d="${TAPE_PATH}" fill="${fill}" fill-opacity="${key === 'ink' ? 0.9 : 0.78}"/></g>`
+  return { defs, body, name: `스티커/마스킹테이프/${t.name}` }
 }
 
 function renderTape(key) {
-  const t = TAPES[key]
-  const uid = `tape-${key}`
-  const defs = t.extra ? `<defs>${t.extra.replace('id="T"', `id="${uid}"`)}</defs>` : ''
-  const fill = t.fill === 'url(#T)' ? `url(#${uid})` : t.fill
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 30" width="140" height="30">${defs}<path d="${TAPE_PATH}" fill="${fill}" fill-opacity="${key === 'ink' ? 0.9 : 0.78}"/></svg>\n`
+  const { defs, body, name } = tapeParts(key)
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 30" width="140" height="30">${defs ? `<defs>${defs}</defs>` : ''}<g id="${name}">${body}</g></svg>\n`
 }
 
 rmSync(OUT, { recursive: true, force: true })
 mkdirSync(OUT, { recursive: true })
+
+/*
+ * 피그마용 전체 시트 — 한 줄에 그림 하나, 변형 12가지를 옆으로.
+ * 파일째 끌어다 놓거나 코드를 복사해 캔버스에 붙여넣으면 스티커마다 그룹이 나뉘어 들어온다.
+ */
+const CELL_W = 124
+const LABEL_W = 132
+const sheetDefs = []
+const sheetItems = []
+const sheetLabels = []
+let rowY = 40
 
 const index = []
 for (const [kind, group] of [
@@ -266,20 +299,47 @@ for (const [kind, group] of [
   for (const [key, item] of Object.entries(group)) {
     // 칠할 면이 없는 선 그림(클립)은 바탕을 바꿔도 똑같다 — 투명 하나만 뽑는다
     const hasFace = item.parts.some(([, , role]) => role === 'main' || role === 'sub')
+    const [, h] = item.box
+    sheetLabels.push(`<text x="0" y="${rowY + (h + PAD * 2) / 2 + 5}" font-family="Gowun Batang, serif" font-size="15" fill="${C.ink}">${item.name}</text>`)
+    let col = 0
     for (const fillKey of hasFace ? Object.keys(FILLS) : ['none']) {
       for (const cut of [true, false]) {
         const file = `${key}-${fillKey}${cut ? '-cut' : ''}.svg`
         const uid = file.replace('.svg', '')
-        writeFileSync(resolve(OUT, file), renderSticker(item, fillKey, cut, uid))
+        writeFileSync(resolve(OUT, file), renderSticker(item, fillKey, cut, uid, kind))
         index.push({ file, kind, key, name: item.name, fill: fillKey, fillName: FILLS[fillKey].name, cut })
+
+        const { defs, body } = stickerLayers(item, fillKey, cut, uid)
+        if (defs) sheetDefs.push(defs)
+        const pad = cut ? PAD : 2
+        const x = LABEL_W + col * CELL_W + pad
+        const y = rowY + pad + (cut ? 0 : PAD - 2)
+        sheetItems.push(`<g id="${stickerName(item, fillKey, cut, kind)}" transform="translate(${x} ${y})">${body}</g>`)
+        col++
       }
     }
+    rowY += h + PAD * 2 + 28
   }
 }
-for (const key of Object.keys(TAPES)) {
+
+sheetLabels.push(`<text x="0" y="${rowY + 20}" font-family="Gowun Batang, serif" font-size="15" fill="${C.ink}">마스킹테이프</text>`)
+Object.keys(TAPES).forEach((key, i) => {
   const file = `tape-${key}.svg`
   writeFileSync(resolve(OUT, file), renderTape(key))
   index.push({ file, kind: '테이프', key: `tape-${key}`, name: TAPES[key].name, fill: key, fillName: TAPES[key].name, cut: false })
-}
+  const { defs, body, name } = tapeParts(key)
+  if (defs) sheetDefs.push(defs)
+  sheetItems.push(`<g id="${name}" transform="translate(${LABEL_W + i * 160} ${rowY})">${body}</g>`)
+})
+rowY += 30 + 40
+
+const sheetW = LABEL_W + 12 * CELL_W + 20
+const sheet = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${sheetW} ${rowY}" width="${sheetW}" height="${rowY}">
+<defs>${sheetDefs.join('')}</defs>
+<g id="이름표">${sheetLabels.join('')}</g>
+<g id="스티커">${sheetItems.join('\n')}</g>
+</svg>
+`
+writeFileSync(resolve(OUT, 'figma-sheet.svg'), sheet)
 writeFileSync(resolve(OUT, 'index.json'), JSON.stringify(index, null, 2) + '\n')
-console.log(`스티커 ${index.length}장 → src/assets/stickers/`)
+console.log(`스티커 ${index.length}장 + 피그마용 시트 → src/assets/stickers/`)

@@ -80,7 +80,8 @@ npm run icons
 npm run stickers
 ```
 
-`src/assets/stickers/`의 SVG와 `index.json`이 통째로 다시 나온다. SVG를 손으로 고치지 않는다.
+`src/assets/stickers/`의 SVG, `index.json`, 피그마용 `figma-sheet.svg`가 통째로 다시 나온다.
+SVG를 손으로 고치지 않는다. 스티커마다 `외곽선 · 칠 · 먹선` 레이어가 나뉘어 있어야 한다 — 피그마에서 객체를 따로 쓰기 위해서다.
 색은 디자인 시스템에 있는 먹·흰색·회색 종이만 쓴다.
 
 ## 안드로이드
