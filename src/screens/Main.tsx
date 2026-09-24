@@ -97,7 +97,7 @@ export function Main() {
         <span className="meta">{synced ? '다른 기기와 함께 보는 중' : '고민은 이 기기에만 저장됩니다'}</span>
       </div>
 
-      <div className="stack" style={{ marginTop: 14, gap: 12 }}>
+      <div className="stack" style={{ marginTop: 22, gap: 22 }}>
         {loading && summaries.length === 0 ? null : summaries.length === 0 ? (
           <p className="empty m-settle" style={delay(0, 'm-settle', 540)}>
             첫 장은 비어 있어요. 지금 걸리는 걸 한 줄로 적어보세요.
@@ -143,13 +143,16 @@ function DecisionCard({
   const { badge, badgeTone } = statusBadge(summary)
 
   return (
-    <div className="card m-settle" style={delay(index, 'm-settle', 540)}>
+    <div className="card m-settle" style={{ position: 'relative', ...delay(index, 'm-settle', 540) }}>
       <Link to={resumePath(summary)} style={{ color: 'inherit', display: 'block' }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 10 }}>
-          <span style={{ flex: 1, minWidth: 0, fontSize: 15, fontWeight: 600, lineHeight: 1.55, wordBreak: 'keep-all', overflowWrap: 'anywhere' }}>
-            {summary.question.trim() === '' ? '제목 없는 고민' : summary.question}
-          </span>
-          <span className={`chip chip--sm${badgeTone === 'accent' ? ' chip--pass' : ''}`}>{badge}</span>
+        <span
+          className={`postit${badgeTone === 'accent' ? ' postit--call' : ''}`}
+          style={{ transform: `rotate(${index % 2 === 0 ? 2 : -1.5}deg)` }}
+        >
+          {badge}
+        </span>
+        <div style={{ fontSize: 15, fontWeight: 600, lineHeight: 1.55, wordBreak: 'keep-all', overflowWrap: 'anywhere' }}>
+          {summary.question.trim() === '' ? '제목 없는 고민' : summary.question}
         </div>
         <div style={{ marginTop: 7, fontSize: 12, color: 'var(--soft)' }}>{subtitle(summary)}</div>
       </Link>
