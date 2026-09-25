@@ -436,7 +436,7 @@ try {
   check('복제한 결정도 목록에 남는다', (await page.locator('.card').count()) === 2)
   check('상태는 알약 대신 포스트잇 쪽지로 붙는다', (await page.locator('.card .postit').count()) === 2)
   check('손이 가야 하는 상태만 노란 쪽지', (await page.locator('.postit--call').count()) === 1)
-  check('기록이 있는 홈에는 스티커가 붙어 있다', (await page.locator('img[data-sticker]').count()) >= 3)
+  check('기록이 있는 홈에는 스티커가 붙어 있다', (await page.locator('img[data-sticker]').count()) >= 2)
   await shot(page, 'main-postits')
 
   console.log('\n새로고침 뒤에도 남아 있나')

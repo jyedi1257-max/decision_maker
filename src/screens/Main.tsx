@@ -126,16 +126,13 @@ export function Main() {
 
       <div className="spacer" />
 
-      <div style={{ position: 'relative', display: 'flex', justifyContent: 'flex-end' }}>
-        <Sticker
-          name="leaf"
-          width={42}
-          rotate={-10}
-          className="m-settle"
-          style={{ position: 'absolute', left: -8, bottom: 30, ...delay(0, 'm-settle', 640) }}
-        />
-        <InkPhrase phrase="home" size={31} rotate={-3} className="m-lift" style={{ whiteSpace: 'nowrap', ...delay(0, 'm-lift', 680) }} />
-      </div>
+      <InkPhrase
+        phrase="home"
+        size={31}
+        rotate={-3}
+        className="m-lift"
+        style={{ alignSelf: 'flex-end', ...delay(0, 'm-lift', 680) }}
+      />
     </Paper>
   )
 }

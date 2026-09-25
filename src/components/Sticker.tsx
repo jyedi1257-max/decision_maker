@@ -1,7 +1,6 @@
 import type { CSSProperties } from 'react'
 import think from '@/assets/stickers/think-cut.svg'
 import sign from '@/assets/stickers/sign-cut.svg'
-import leaf from '@/assets/stickers/leaf-cut.svg'
 import pencil from '@/assets/stickers/pencil-cut.svg'
 import heart from '@/assets/stickers/heart-cut.svg'
 import checklist from '@/assets/stickers/checklist-cut.svg'
@@ -18,7 +17,7 @@ import tapeRose from '@/assets/stickers/tape-rose-dots.svg'
  * 쓰는 것만 여기서 불러온다 — src/assets/stickers의 158장을 전부 앱에 싣지 않기 위해서다.
  * 장식이라 읽어주지 않고, 눌리지도 않고, 글자를 가리지 않는 자리에만 둔다.
  */
-const STICKERS = { think, sign, leaf, pencil, heart, checklist, lock, scale, calendar, envelope, key, tapeRose } as const
+const STICKERS = { think, sign, pencil, heart, checklist, lock, scale, calendar, envelope, key, tapeRose } as const
 
 export type StickerName = keyof typeof STICKERS
 
