@@ -73,6 +73,21 @@ npm run build && npx cap sync android
 cd android && ./gradlew bundleRelease   # app/build/outputs/bundle/release/app-release.aab
 ```
 
+### 키를 옮기지 않고 서명하기 (클라우드 세션에서 빌드할 때)
+
+키는 내 컴퓨터에만 둔다. 클라우드 세션은 `keystore.properties` 없이 `bundleRelease`를 돌려
+**서명 안 된 AAB**를 넘겨주고, 서명은 내 컴퓨터에서 JDK의 `jarsigner`로 한 줄에 끝낸다
+(`keytool`과 같은 폴더에 있다). Windows PowerShell 기준:
+
+```powershell
+jarsigner -sigalg SHA256withRSA -digestalg SHA-256 `
+  -keystore $HOME\keys\decision-note-release.jks `
+  -signedjar decision-note-1.0.aab decision-note-1.0-unsigned.aab decision-note
+jarsigner -verify decision-note-1.0.aab     # "jar verified." 이 나오면 끝
+```
+
+자체 서명 인증서·타임스탬프 없음 경고는 정상이다 — Play 업로드 키는 원래 자체 서명이다.
+
 Play는 이제 APK가 아니라 **AAB(Android App Bundle)** 를 받는다. 위 파일을 그대로 올리면
 된다. (테스트용 APK가 필요하면 지금처럼 `assembleDebug`를 계속 쓴다 — 서명 안 된 디버그
 빌드라 스토어에는 못 올린다.)
