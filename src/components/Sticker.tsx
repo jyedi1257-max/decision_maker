@@ -12,6 +12,7 @@ import envelope from '@/assets/stickers/envelope-cut.svg'
 import key from '@/assets/stickers/key-cut.svg'
 import tapeRose from '@/assets/stickers/tape-rose-dots.svg'
 import tapeSage from '@/assets/stickers/tape-sage-stripe.svg'
+import tapeButter from '@/assets/stickers/tape-butter-dots.svg'
 
 /**
  * 다이어리에 붙인 스티커 (디자인 시스템 §5 '스티커 (화면)').
@@ -19,7 +20,7 @@ import tapeSage from '@/assets/stickers/tape-sage-stripe.svg'
  * 쓰는 것만 여기서 불러온다 — src/assets/stickers의 158장을 전부 앱에 싣지 않기 위해서다.
  * 장식이라 읽어주지 않고, 눌리지도 않고, 글자를 가리지 않는 자리에만 둔다.
  */
-const STICKERS = { plane, clip, sign, pencil, heart, checklist, lock, scale, calendar, envelope, key, tapeRose, tapeSage } as const
+const STICKERS = { plane, clip, sign, pencil, heart, checklist, lock, scale, calendar, envelope, key, tapeRose, tapeSage, tapeButter } as const
 
 export type StickerName = keyof typeof STICKERS
 
@@ -45,7 +46,8 @@ export function Sticker({
       data-sticker={name}
       width={width}
       className={`sticker${name.startsWith('tape') ? ' sticker--tape' : ''}${className ? ` ${className}` : ''}`}
-      style={{ transform: rotate ? `rotate(${rotate}deg)` : undefined, ...style }}
+      // transform은 등장 모션(m-settle)이 덮어쓰므로 기울기는 개별 rotate 속성으로 준다
+      style={{ rotate: rotate ? `${rotate}deg` : undefined, ...style }}
     />
   )
 }

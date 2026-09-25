@@ -57,7 +57,7 @@ export function Main() {
         <Sticker
           name="plane"
           width={64}
-          rotate={-10}
+          rotate={180}
           className="m-settle"
           style={{ position: 'absolute', right: -8, top: -16, ...delay(0, 'm-settle', 460) }}
         />
@@ -109,8 +109,9 @@ export function Main() {
         {loading && summaries.length === 0 ? null : summaries.length === 0 ? (
           <div className="empty empty--sticker m-settle" style={delay(0, 'm-settle', 540)}>
             <span style={{ position: 'relative', display: 'block' }}>
-              <Sticker name="sign" width={108} rotate={-4} />
-              <Sticker name="tapeSage" width={60} rotate={-14} style={{ position: 'absolute', left: -6, top: 34 }} />
+              <Sticker name="sign" width={150} rotate={-4} />
+              <Sticker name="tapeSage" width={52} rotate={-38} style={{ position: 'absolute', left: 7, top: 29 }} />
+              <Sticker name="tapeButter" width={46} rotate={-34} style={{ position: 'absolute', right: 4, bottom: 24 }} />
             </span>
             <p style={{ margin: 0 }}>첫 장은 비어 있어요. 지금 걸리는 걸 한 줄로 적어보세요.</p>
           </div>
