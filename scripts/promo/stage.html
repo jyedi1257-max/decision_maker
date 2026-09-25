@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>결정 노트 홍보 영상 무대</title>
+<!--
+  홍보 영상 2단계의 무대. compose.mjs가 이 페이지를 1080×1920으로 열고
+  window.render(t)를 프레임마다 불러 찍는다. 모든 움직임은 t의 순수 함수다 —
+  같은 t면 같은 그림이 나와야 영상이 떨리지 않는다.
+
+  색·서체는 docs/design-system.md 값만 쓴다. 감성 컬러는 스티커로만 나온다.
+-->
+<style>
+@font-face { font-family: 'Gowun Batang'; font-weight: 400; src: url('/node_modules/@fontsource/gowun-batang/files/gowun-batang-korean-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Gowun Batang'; font-weight: 700; src: url('/node_modules/@fontsource/gowun-batang/files/gowun-batang-korean-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Gowun Batang'; font-weight: 400; src: url('/node_modules/@fontsource/gowun-batang/files/gowun-batang-latin-400-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+2000-206F; }
+@font-face { font-family: 'Gowun Batang'; font-weight: 700; src: url('/node_modules/@fontsource/gowun-batang/files/gowun-batang-latin-700-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+2000-206F; }
+@font-face { font-family: 'IBM Plex Sans KR'; font-weight: 400; src: url('/node_modules/@fontsource/ibm-plex-sans-kr/files/ibm-plex-sans-kr-korean-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Sans KR'; font-weight: 500; src: url('/node_modules/@fontsource/ibm-plex-sans-kr/files/ibm-plex-sans-kr-korean-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'PenInk'; src: url('/assets/fonts/source/KCC-Kimhwanki.otf') format('opentype'); }
+
+:root {
+  --desk: #efece5; --paper: #faf9f6; --rule: #eae7df; --ink: #23201c; --soft: #5a554c; --meta: #6e695c;
+  --pen: #b3402b; --margin-line: rgba(179, 64, 43, 0.22);
+  --font-title: 'Gowun Batang', serif; --font-body: 'IBM Plex Sans KR', sans-serif; --font-ink: 'PenInk', serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; }
+body {
+  position: relative;
+  background: var(--paper);
+  background-image: repeating-linear-gradient(to bottom, transparent 0 62px, var(--rule) 62px 64px);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+/* 종이 왼쪽 여백선 — 앱과 같은 자리감 */
+body::before { content: ''; position: absolute; left: 76px; top: 0; bottom: 0; width: 2px; background: var(--margin-line); }
+
+.layer { position: absolute; inset: 0; }
+.line { display: block; white-space: nowrap; will-change: clip-path; }
+.title { font-family: var(--font-title); font-weight: 700; letter-spacing: -0.01em; }
+.sticker { position: absolute; display: block; filter: drop-shadow(0 2px 2.4px rgba(35, 32, 28, 0.16)); }
+.sticker--tape { filter: none; }
+.under { position: absolute; overflow: visible; }
+.under path { fill: none; stroke: var(--pen); stroke-width: 7; stroke-linecap: round; }
+
+/* 도입 */
+#hook { padding: 0 120px; }
+#hook .big { position: absolute; left: 130px; font-size: 128px; line-height: 1; }
+#hook .small { position: absolute; left: 132px; font-size: 58px; color: var(--soft); font-weight: 400; }
+
+/* 자막 */
+#caption { position: absolute; left: 124px; top: 190px; right: 80px; font-size: 70px; line-height: 1.34; }
+
+/* 폰 */
+#phone {
+  position: absolute; left: 224px; top: 520px; width: 632px; height: 1330px;
+  border-radius: 74px; background: var(--ink); padding: 16px;
+  box-shadow: 0 30px 60px rgba(35, 32, 28, 0.18), 0 6px 14px rgba(35, 32, 28, 0.12);
+  transform-origin: 50% 40%;
+}
+#screen { position: relative; width: 600px; height: 1298px; border-radius: 58px; overflow: hidden; background: var(--desk); }
+#screen img { display: block; width: 100%; height: 100%; }
+.tap { position: absolute; border-radius: 50%; pointer-events: none; }
+
+/* 끝 */
+#end { text-align: center; }
+#end .icon { position: absolute; left: 50%; top: 560px; width: 250px; height: 250px; margin-left: -125px; border-radius: 56px; box-shadow: 0 16px 36px rgba(35, 32, 28, 0.16); }
+#end .name { position: absolute; left: 0; right: 0; top: 880px; font-size: 118px; }
+#end .ink { position: absolute; left: 0; right: 0; top: 1060px; font-family: var(--font-ink); font-size: 84px; color: var(--pen); }
+#end .facts { position: absolute; left: 0; right: 0; top: 1250px; font-size: 40px; color: var(--soft); letter-spacing: 0.02em; }
+#end .name .line, #end .ink .line { display: inline-block; }
+</style>
+</head>
+<body>
+
+<div id="hook" class="layer">
+  <span class="big title line" data-k="h1" style="top: 640px">이사할까,</span>
+  <span class="big title line" data-k="h2" style="top: 800px">그냥 살까.</span>
+  <span class="small title line" data-k="h3" style="top: 1010px"><span data-u="h3u">3주째</span> 머릿속에서만 빙빙.</span>
+  <img class="sticker" data-k="hsign" src="/src/assets/stickers/sign-cut.svg" style="width: 300px; left: 690px; top: 560px">
+  <img class="sticker sticker--tape" data-k="htape" src="/src/assets/stickers/tape-sage-stripe.svg" style="width: 120px; left: 682px; top: 600px">
+</div>
+
+<div id="caption" class="title"></div>
+
+<div id="phone">
+  <div id="screen"><img id="app" alt=""></div>
+</div>
+<img class="sticker sticker--tape" id="tape1" src="/src/assets/stickers/tape-rose-dots.svg" style="width: 170px; left: 150px; top: 540px">
+<img class="sticker sticker--tape" id="tape2" src="/src/assets/stickers/tape-butter-dots.svg" style="width: 150px; left: 772px; top: 1776px">
+
+<div id="end" class="layer">
+  <img class="icon" data-k="eicon" src="/public/icons/icon-512.png" alt="">
+  <img class="sticker" data-k="eplane" src="/src/assets/stickers/plane-cut.svg" style="width: 150px; left: 700px; top: 500px">
+  <div class="name title"><span class="line" data-k="ename">결정 노트</span></div>
+  <div class="ink"><span class="line" data-k="eink">적을수록 고민이 적어집니다</span></div>
+  <div class="facts" data-k="efacts">로그인 없이 · 광고 없이 · 기록은 내 폰에만</div>
+</div>
+
+<svg class="under" id="u1" height="20"><path/></svg>
+<svg class="under" id="u2" height="20"><path/></svg>
+
+<script>
+const FPS = 30
+
+// ── 시간표 ───────────────────────────────────────────────
+// 폰 안의 장면: 영상 [start, start+dur) 동안 녹화의 [from, to]를 늘이거나 줄여 튼다.
+// from/to는 capture.json의 장면 표시 이름(+초).
+const SEGMENTS = [
+  { start: 4.2,  dur: 2.8, from: ['home', 0.11],        to: ['frame', -0.02] },
+  { start: 7.0,  dur: 2.6, from: ['frame', 0],       to: ['alternatives', -0.02] },
+  { start: 9.6,  dur: 2.4, from: ['alternatives', 0], to: ['alternativesEnd', 0] },
+  { start: 12.0, dur: 1.6, from: ['gut', 0],         to: ['gutEnd', 0] },
+  { start: 13.6, dur: 2.0, from: ['criteria', 0],    to: ['criteriaEnd', 0] },
+  { start: 15.6, dur: 2.3, from: ['evaluate', 0],    to: ['evaluateFast', 0] },
+  { start: 17.9, dur: 1.5, from: ['evaluateFast', 0], to: ['matrix', -0.02] },
+  { start: 19.4, dur: 5.0, from: ['matrix', 0],      to: ['matrixEnd', 0] },
+  { start: 24.4, dur: 2.9, from: ['result', 0],      to: ['resultEnd', 0] },
+  { start: 27.3, dur: 4.3, from: ['commit', 0],      to: ['commitEnd', 0] },
+]
+const PHONE_IN = 4.2, PHONE_OUT = 31.6
+// 자막. u는 빨간 밑줄을 그을 줄 번호.
+const CAPTIONS = [
+  { start: 3.5,  lines: ['머릿속에서 돌리지 말고,', '종이에 적어보세요.'], u: 1 },
+  { start: 7.0,  lines: ['고민을 한 줄로 적고'] },
+  { start: 9.6,  lines: ['떠오르는 선택지를 적고'] },
+  { start: 12.0, lines: ['처음 기운 마음도', '적어 둬요'] },
+  { start: 13.6, lines: ['중요한 기준을 순서대로'] },
+  { start: 15.6, lines: ['하나씩 점수를 매기면'] },
+  { start: 19.4, lines: ['내가 매긴 표가', '손글씨로 그려지고'] },
+  { start: 24.4, lines: ['지금 기준에서 더 맞는 쪽을', '이유와 함께 보여줘요'] },
+  { start: 27.3, lines: ['정했으면, 도장 쾅.'], u: 0 },
+]
+const CAPTION_END = 31.4
+const END_AT = 31.9
+const DURATION = 36.0
+
+// ── 도구 ────────────────────────────────────────────────
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x))
+const prog = (t, start, dur) => clamp((t - start) / dur)
+const ease = (x) => 1 - Math.pow(1 - x, 3)          // 디자인 시스템 --ease에 가까운 감속
+const pop = (x) => { const s = 1.4; x = x - 1; return x * x * ((s + 1) * x + s) + 1 } // 스티커가 붙는 살짝 튐
+
+function writeOn(el, p) {
+  el.style.clipPath = p >= 1 ? 'none' : `inset(-20% ${(1 - p) * 100}% -20% -2%)`
+}
+function stick(el, p, rot) {
+  el.style.opacity = p > 0 ? 1 : 0
+  const s = 1.18 - 0.18 * pop(p)
+  el.style.transform = `rotate(${rot}deg) scale(${p > 0 ? s : 1})`
+}
+/** 손으로 그은 듯한 밑줄. 폭에 맞춰 살짝 휘게 그린다. */
+function underline(svg, x, y, w, p) {
+  svg.style.left = `${x}px`; svg.style.top = `${y}px`; svg.setAttribute('width', w + 8)
+  const path = svg.querySelector('path')
+  path.setAttribute('d', `M4 12 C ${w * 0.3} 6, ${w * 0.62} 16, ${w} 9`)
+  const len = w * 1.02
+  path.style.strokeDasharray = len
+  path.style.strokeDashoffset = len * (1 - p)
+  svg.style.display = p > 0 ? 'block' : 'none'
+}
+
+// ── 녹화 불러오기 ─────────────────────────────────────────
+let CAP, FRAME_T, MARKS
+window.setup = async () => {
+  CAP = await (await fetch('/.promo/capture/capture.json')).json()
+  FRAME_T = CAP.frames.map((f) => f.t)
+  MARKS = CAP.marks
+  await Promise.all([
+    document.fonts.load('700 70px "Gowun Batang"', '가나다'),
+    document.fonts.load('400 58px "Gowun Batang"', '가나다'),
+    document.fonts.load('400 40px "IBM Plex Sans KR"', '가나다'),
+    document.fonts.load('84px PenInk', '적을수록 고민이 적어집니다'),
+  ])
+  await Promise.all([...document.images].map((i) => i.decode().catch(() => {})))
+  return { duration: DURATION, fps: FPS }
+}
+const at = ([name, off]) => MARKS[name] + off
+
+function frameAt(ct) {
+  // 그 시각이나 그 직전에 찍힌 프레임 (이분 탐색)
+  let lo = 0, hi = FRAME_T.length - 1
+  while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (FRAME_T[mid] <= ct) lo = mid; else hi = mid - 1 }
+  return CAP.frames[lo].file
+}
+function captureTime(t) {
+  let seg = SEGMENTS[0]
+  for (const s of SEGMENTS) if (t >= s.start) seg = s
+  const a = at(seg.from), b = at(seg.to)
+  return a + (b - a) * clamp((t - seg.start) / seg.dur)
+}
+/** 녹화 시각의 누름을 영상 시각으로 옮긴다. 지금 장면에서 누른 것만 — 앞 장면 자국이 새 화면에 남지 않게. */
+function tapsVisible(t) {
+  const out = []
+  let current = SEGMENTS[0]
+  for (const s of SEGMENTS) if (t >= s.start) current = s
+  for (const s of [current]) {
+    const a = at(s.from), b = at(s.to)
+    for (const tap of CAP.taps) {
+      if (tap.t < a || tap.t > b) continue
+      const vt = s.start + ((tap.t - a) / (b - a)) * s.dur
+      const age = t - vt
+      if (age >= 0 && age < 0.5) out.push({ ...tap, age })
+    }
+  }
+  return out
+}
+
+// ── 그리기 ──────────────────────────────────────────────
+const $ = (s) => document.querySelector(s)
+const K = (k) => document.querySelector(`[data-k="${k}"]`)
+const app = $('#app')
+let lastSrc = ''
+let captionKey = -1
+
+window.render = async (t) => {
+  // 도입
+  const hookOut = 1 - prog(t, 3.0, 0.4)
+  $('#hook').style.opacity = hookOut
+  $('#hook').style.display = hookOut > 0 ? 'block' : 'none'
+  writeOn(K('h1'), ease(prog(t, 0.25, 0.45)))
+  writeOn(K('h2'), ease(prog(t, 0.75, 0.45)))
+  writeOn(K('h3'), ease(prog(t, 1.4, 0.5)))
+  stick(K('hsign'), prog(t, 1.0, 0.35), 6)
+  stick(K('htape'), prog(t, 1.25, 0.3), -28)
+  {
+    const r = document.querySelector('[data-u="h3u"]').getBoundingClientRect()
+    const u2 = $('#u2')
+    underline(u2, r.left, r.top + r.height - 6, r.width, ease(prog(t, 1.95, 0.35)))
+    u2.style.opacity = hookOut
+    if (hookOut <= 0) u2.style.display = 'none'
+  }
+
+  // 자막
+  let ci = -1
+  for (let i = 0; i < CAPTIONS.length; i++) if (t >= CAPTIONS[i].start) ci = i
+  const cap = $('#caption')
+  const u1 = $('#u1')
+  u1.style.display = 'none'
+  if (ci < 0 || t >= CAPTION_END + 0.2) {
+    cap.style.display = 'none'
+  } else {
+    const c = CAPTIONS[ci]
+    if (captionKey !== ci) {
+      cap.innerHTML = c.lines.map((l) => `<span class="line"><span class="w">${l}</span></span>`).join('')
+      captionKey = ci
+    }
+    cap.style.display = 'block'
+    const next = ci + 1 < CAPTIONS.length ? CAPTIONS[ci + 1].start : CAPTION_END
+    cap.style.opacity = 1 - prog(t, next - 0.16, 0.16)
+    const lines = cap.querySelectorAll('.line')
+    lines.forEach((el, i) => writeOn(el, ease(prog(t, c.start + 0.06 + i * 0.16, 0.36))))
+    if (c.u !== undefined && lines[c.u]) {
+      // 줄 상자는 폭이 꽉 차 있으니 글자만 감싼 안쪽을 잰다
+      const r = lines[c.u].querySelector('.w').getBoundingClientRect()
+      const w = r.width
+      underline(u1, r.left, r.top + r.height - 10, w, ease(prog(t, c.start + 0.5 + c.u * 0.16, 0.38)))
+      u1.style.opacity = cap.style.opacity
+    }
+  }
+
+  // 폰
+  const phone = $('#phone')
+  const pin = ease(prog(t, PHONE_IN - 0.5, 0.7))
+  const pout = ease(prog(t, PHONE_OUT, 0.45))
+  const visible = t >= PHONE_IN - 0.5 && pout < 1
+  phone.style.display = visible ? 'block' : 'none'
+  phone.style.transform = `translateY(${(1 - pin) * 1400 + pout * 1500}px)`
+  for (const [id, delay, rot] of [['#tape1', 0.15, -32], ['#tape2', 0.3, -24]]) {
+    const el = $(id)
+    const p = prog(t, PHONE_IN + delay, 0.3)
+    el.style.display = visible && p > 0 ? 'block' : 'none'
+    el.style.transform = `translateY(${pout * 1500}px) rotate(${rot}deg) scale(${1.18 - 0.18 * pop(p)})`
+  }
+  if (visible) {
+    const src = '/.promo/capture/' + frameAt(captureTime(Math.max(t, PHONE_IN)))
+    if (src !== lastSrc) {
+      app.src = src
+      lastSrc = src
+      await app.decode().catch(() => {})
+    }
+    // 손끝 자국
+    const screen = $('#screen')
+    screen.querySelectorAll('.tap').forEach((n) => n.remove())
+    const k = 600 / CAP.viewport.width
+    for (const tap of tapsVisible(t)) {
+      const a = tap.age / 0.5
+      const r = 26 + 34 * ease(a)
+      const d = document.createElement('div')
+      d.className = 'tap'
+      Object.assign(d.style, {
+        left: `${tap.x * k - r}px`, top: `${tap.y * k - r}px`, width: `${r * 2}px`, height: `${r * 2}px`,
+        background: `rgba(35, 32, 28, ${0.16 * (1 - a)})`,
+        border: `3px solid rgba(35, 32, 28, ${0.35 * (1 - a)})`,
+      })
+      screen.appendChild(d)
+    }
+  }
+
+  // 끝
+  const endOn = t >= END_AT
+  $('#end').style.display = endOn ? 'block' : 'none'
+  if (endOn) {
+    const icon = K('eicon')
+    const pi = prog(t, END_AT, 0.4)
+    icon.style.opacity = pi > 0 ? 1 : 0
+    icon.style.transform = `scale(${0.86 + 0.14 * pop(pi)})`
+    stick(K('eplane'), prog(t, END_AT + 0.35, 0.35), 180)
+    writeOn(K('ename'), ease(prog(t, END_AT + 0.35, 0.45)))
+    writeOn(K('eink'), prog(t, END_AT + 0.95, 1.1))     // 손글씨는 일정한 속도로 써 내려간다
+    K('efacts').style.opacity = ease(prog(t, END_AT + 2.1, 0.5))
+  }
+}
+</script>
+</body>
+</html>

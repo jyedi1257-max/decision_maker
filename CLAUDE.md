@@ -130,3 +130,16 @@ npm run build && npm run smoke   # 전체 화면 완주 + 스크린샷
 민감도는 그래프보다 문장이 먼저다 (§6.7). 숫자와 그래프는 '왜 이런 결과인지' 화면 안에만 둔다.
 
 회고 패턴 같은 통계 문장은 **표본이 충분할 때만** 내보낸다. 한 건으로 경향을 지어내지 않는다.
+
+## 홍보 영상
+
+```bash
+npm run promo     # 빌드 → 실제 앱 녹화 → 폰 틀에 넣고 자막 → docs/promo/*.mp4
+```
+
+`scripts/promo/capture.mjs`가 앱을 직접 조작하며 녹화하고(`.promo/`, 커밋 안 함),
+`stage.html`이 자막·스티커·폰 틀을, `compose.mjs`가 프레임마다 찍어 mp4로 굽는다.
+화면이 바뀌면 다시 돌리면 된다 — 영상은 늘 지금 앱을 보여준다.
+장면 길이와 자막은 `stage.html`의 `SEGMENTS`·`CAPTIONS` 두 표만 고친다.
+ffmpeg가 없으면 `pip install imageio-ffmpeg`.
+자막에도 기획안 8.1 원칙 7을 지킨다 — "정답"이 아니라 "지금 기준에서 더 맞는 쪽".

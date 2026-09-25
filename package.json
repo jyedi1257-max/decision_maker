@@ -19,7 +19,8 @@
     "deploy:rules": "firebase deploy --only firestore:rules",
     "emulators": "firebase emulators:start --only auth,firestore,hosting",
     "icons": "node scripts/make-icons.mjs",
-    "stickers": "node scripts/make-stickers.mjs"
+    "stickers": "node scripts/make-stickers.mjs",
+    "promo": "npm run build && node scripts/promo/capture.mjs && node scripts/promo/compose.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^8.5.2",
