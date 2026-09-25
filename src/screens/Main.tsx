@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Paper } from '@/components/Paper'
 import { InkFlourish, InkPhrase } from '@/components/Ink'
 import { ArchiveIcon, CopyIcon, PlusIcon } from '@/components/Icons'
+import { Sticker } from '@/components/Sticker'
 import { delay } from '@/styles/motion'
 import { useDecisions } from '@/store/decisions'
 import { daysUntil, formatDate } from '@/store/factory'
@@ -52,7 +53,14 @@ export function Main() {
         </Link>
       </div>
 
-      <h1 className="title" style={{ fontSize: 29, marginTop: 28 }}>
+      <h1 className="title" style={{ position: 'relative', fontSize: 29, marginTop: 28 }}>
+        <Sticker
+          name="think"
+          width={60}
+          rotate={9}
+          className="m-settle"
+          style={{ position: 'absolute', right: -6, top: -10, ...delay(0, 'm-settle', 460) }}
+        />
         <span className="m-write" style={delay(0, 'm-write', 60)}>
           오늘은 어떤 걸
         </span>
@@ -99,9 +107,10 @@ export function Main() {
 
       <div className="stack" style={{ marginTop: 22, gap: 22 }}>
         {loading && summaries.length === 0 ? null : summaries.length === 0 ? (
-          <p className="empty m-settle" style={delay(0, 'm-settle', 540)}>
-            첫 장은 비어 있어요. 지금 걸리는 걸 한 줄로 적어보세요.
-          </p>
+          <div className="empty empty--sticker m-settle" style={delay(0, 'm-settle', 540)}>
+            <Sticker name="sign" width={92} rotate={-4} />
+            <p style={{ margin: 0 }}>첫 장은 비어 있어요. 지금 걸리는 걸 한 줄로 적어보세요.</p>
+          </div>
         ) : (
           summaries.map((summary, i) => (
             <DecisionCard
@@ -117,13 +126,16 @@ export function Main() {
 
       <div className="spacer" />
 
-      <InkPhrase
-        phrase="home"
-        size={31}
-        rotate={-3}
-        className="m-lift"
-        style={{ alignSelf: 'flex-end', ...delay(0, 'm-lift', 680) }}
-      />
+      <div style={{ position: 'relative', display: 'flex', justifyContent: 'flex-end' }}>
+        <Sticker
+          name="leaf"
+          width={42}
+          rotate={-10}
+          className="m-settle"
+          style={{ position: 'absolute', left: -8, bottom: 30, ...delay(0, 'm-settle', 640) }}
+        />
+        <InkPhrase phrase="home" size={31} rotate={-3} className="m-lift" style={{ whiteSpace: 'nowrap', ...delay(0, 'm-lift', 680) }} />
+      </div>
     </Paper>
   )
 }
@@ -144,6 +156,9 @@ function DecisionCard({
 
   return (
     <div className="card m-settle" style={{ position: 'relative', ...delay(index, 'm-settle', 540) }}>
+      {index === 0 && (
+        <Sticker name="tapeRose" width={72} rotate={-32} style={{ position: 'absolute', left: -20, top: -2 }} />
+      )}
       <Link to={resumePath(summary)} style={{ color: 'inherit', display: 'block' }}>
         <span
           className={`postit${badgeTone === 'accent' ? ' postit--call' : ''}`}

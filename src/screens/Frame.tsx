@@ -37,7 +37,7 @@ export function Frame() {
     >
       <TopBar
         back={prevPath(decision.id, 'frame')}
-        center={`${stepNumber('frame')} / ${STEP_COUNT}`}
+        center={`${stepNumber('frame')} / ${STEP_COUNT}`} sticker="pencil"
       />
       <StepBar step={stepNumber('frame')} />
 

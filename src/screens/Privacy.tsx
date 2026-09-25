@@ -11,7 +11,7 @@ import { delay } from '@/styles/motion'
 export function Privacy() {
   return (
     <Paper>
-      <TopBar back="/settings" backLabel="보관함으로" center="개인정보" />
+      <TopBar back="/settings" backLabel="보관함으로" center="개인정보" sticker="key" />
 
       <div style={{ marginTop: 32 }}>
         <Title lines={['어떤 정보를,', '어떻게 다루나요']} size={24} />

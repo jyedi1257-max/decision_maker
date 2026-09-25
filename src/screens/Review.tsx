@@ -42,7 +42,7 @@ export function Review() {
           </button>
         }
       >
-        <TopBar back="/" backLabel="홈으로" center="회고" />
+        <TopBar back="/" backLabel="홈으로" center="회고" sticker="calendar" />
         <div style={{ marginTop: 40 }}>
           <p className="empty">아직 확정하지 않은 결정이에요. 먼저 결정을 마무리해 주세요.</p>
         </div>
@@ -101,7 +101,7 @@ export function Review() {
         </div>
       }
     >
-      <TopBar back="/" backLabel="홈으로" center="회고" />
+      <TopBar back="/" backLabel="홈으로" center="회고" sticker="calendar" />
 
       <div style={{ marginTop: 32 }}>
         <Title lines={['한 달 전 그 결정,', '지금은 어때요?']} size={26} />

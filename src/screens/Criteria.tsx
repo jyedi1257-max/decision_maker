@@ -283,7 +283,7 @@ export function Criteria() {
 
   return (
     <Paper footer={footer}>
-      <TopBar back={prevPath(decision.id, 'criteria')} center={`${stepNumber('criteria')} / ${STEP_COUNT}`} />
+      <TopBar back={prevPath(decision.id, 'criteria')} center={`${stepNumber('criteria')} / ${STEP_COUNT}`} sticker="checklist" />
       <StepBar step={stepNumber('criteria')} />
 
       <div style={{ marginTop: 34 }}>

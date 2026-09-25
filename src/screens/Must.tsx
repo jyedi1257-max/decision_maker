@@ -88,7 +88,7 @@ export function Must() {
     >
       <TopBar
         back={prevPath(decision.id, 'must')}
-        center={`${stepNumber('must')} / ${STEP_COUNT}`}
+        center={`${stepNumber('must')} / ${STEP_COUNT}`} sticker="lock"
       />
       <StepBar step={stepNumber('must')} />
 

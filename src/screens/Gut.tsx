@@ -43,7 +43,7 @@ export function Gut() {
     >
       <TopBar
         back={prevPath(decision.id, 'gut')}
-        center={`${stepNumber('gut')} / ${STEP_COUNT}`}
+        center={`${stepNumber('gut')} / ${STEP_COUNT}`} sticker="heart"
       />
       <StepBar step={stepNumber('gut')} />
 

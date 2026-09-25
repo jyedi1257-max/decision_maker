@@ -115,7 +115,7 @@ export function Alternatives() {
     >
       <TopBar
         back={prevPath(decision.id, 'alternatives')}
-        center={`${stepNumber('alternatives')} / ${STEP_COUNT}`}
+        center={`${stepNumber('alternatives')} / ${STEP_COUNT}`} sticker="sign"
       />
       <StepBar step={stepNumber('alternatives')} />
 

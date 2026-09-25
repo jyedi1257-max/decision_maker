@@ -126,6 +126,8 @@ try {
   await page.waitForSelector('text=오늘은 어떤 걸')
   check('빈 상태를 보여준다', await visible(page, 'text=첫 장은 비어 있어요'))
   check('저장 위치를 먼저 말해준다', await visible(page, 'text=고민은 이 기기에만 저장됩니다'))
+  check('빈 홈에는 점선 상자 대신 스티커를 붙인다', await visible(page, '.empty--sticker img[data-sticker="sign"]'))
+  check('스티커는 읽어주지 않는다', (await page.locator('img[data-sticker]:not([aria-hidden="true"])').count()) === 0)
   await shot(page, 'main-empty')
 
   console.log('\n1 · 고민 한 문장')
@@ -135,6 +137,7 @@ try {
   await page.fill('#question', '가을에 이사할까, 지금 집에 더 살까')
   check('빈 칸일 때만 펜 커서가 보인다', (await page.locator('.write__caret').count()) === 0)
   check('적으면 다음이 열린다', await page.isEnabled('button:has-text("선택지 적기")'))
+  check('적는 단계는 상단바에 스티커 한 장', (await page.locator('.topbar__sticker img[data-sticker]').count()) === 1)
   await shot(page, 'frame')
 
   console.log('\n2 · 후보 적기')
@@ -328,6 +331,7 @@ try {
   check('총점 숫자를 노출하지 않는다', !/\b0\.\d{2,}\b/.test(body), body.match(/0\.\d{2,}/)?.[0])
   check('직감 충돌을 짚는다', await visible(page, 'text=처음 마음은'))
   await ctaInView(page, '결과')
+  check('결론을 읽는 화면에는 스티커를 붙이지 않는다', (await page.locator('img[data-sticker]').count()) === 0)
   await shot(page, 'result')
 
   console.log('\n왜 이런 결과인지')
@@ -432,6 +436,7 @@ try {
   check('복제한 결정도 목록에 남는다', (await page.locator('.card').count()) === 2)
   check('상태는 알약 대신 포스트잇 쪽지로 붙는다', (await page.locator('.card .postit').count()) === 2)
   check('손이 가야 하는 상태만 노란 쪽지', (await page.locator('.postit--call').count()) === 1)
+  check('기록이 있는 홈에는 스티커가 붙어 있다', (await page.locator('img[data-sticker]').count()) >= 3)
   await shot(page, 'main-postits')
 
   console.log('\n새로고침 뒤에도 남아 있나')
@@ -503,7 +508,7 @@ try {
   await rp.waitForSelector('text=오늘은 어떤 걸')
   await rp.waitForTimeout(150) // 모션을 껐으면 이 시점에 이미 최종 상태여야 한다
   const opacity = await rp
-    .locator('a.card, p.empty')
+    .locator('.card, .empty')
     .first()
     .evaluate((el) => getComputedStyle(el).opacity)
   check('reduced-motion에서 즉시 최종 상태', opacity === '1', `opacity=${opacity}`)

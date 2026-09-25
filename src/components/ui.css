@@ -186,6 +186,25 @@
   font-weight: 400;
 }
 
+/* 다이어리 스티커 (디자인 시스템 §5 '스티커 (화면)') — 장식이라 눌리지 않는다 */
+.sticker {
+  display: block;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  filter: drop-shadow(0 1px 1.2px rgba(35, 32, 28, 0.16));
+}
+.sticker--tape {
+  filter: none;
+}
+.topbar__sticker {
+  width: 44px;
+  display: flex;
+  justify-content: flex-end;
+  margin: -6px -4px -6px 0;
+}
+
 /* 홈 목록의 상태 쪽지 — 카드 위쪽 모서리에 붙인 포스트잇 (디자인 시스템 §5) */
 .postit {
   position: absolute;
@@ -562,6 +581,16 @@
   font-size: 14px;
   line-height: 1.7;
   color: var(--soft);
+}
+/* 빈 홈: 점선 상자 대신 스티커 한 장과 문장 */
+.empty--sticker {
+  border: 0;
+  padding: 8px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: reduce) {

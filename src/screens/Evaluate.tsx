@@ -120,7 +120,7 @@ export function Evaluate() {
       <TopBar
         onBack={back}
         backLabel={index > 0 ? '앞 문항으로' : '뒤로'}
-        center={`${stepNumber('evaluate')} / ${STEP_COUNT}`}
+        center={`${stepNumber('evaluate')} / ${STEP_COUNT}`} sticker="scale"
       />
       <StepBar step={stepNumber('evaluate')} />
 

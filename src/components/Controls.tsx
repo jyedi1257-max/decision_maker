@@ -4,6 +4,7 @@ import { BackIcon } from './Icons'
 import { InkUnderline } from './Ink'
 import { delay } from '@/styles/motion'
 import { STEP_COUNT } from '@/store/factory'
+import { Sticker, type StickerName } from './Sticker'
 
 /** 화면 머리말. 뒤로가기 · 단계 표시 · 저장 상태 (§6 화면 구성 공통) */
 export function TopBar({
@@ -12,6 +13,7 @@ export function TopBar({
   backLabel = '뒤로',
   center,
   right,
+  sticker,
 }: {
   /** 돌아갈 주소. 화면 안에서 앞 문항으로 돌아가야 하면 onBack을 대신 준다. */
   back?: string
@@ -19,6 +21,8 @@ export function TopBar({
   backLabel?: string
   center?: ReactNode
   right?: ReactNode
+  /** 오른쪽 빈자리에 붙이는 스티커 한 장 (디자인 시스템 §5 '스티커 (화면)') */
+  sticker?: StickerName
 }) {
   return (
     <div className="topbar m-lift">
@@ -34,7 +38,14 @@ export function TopBar({
         <span style={{ width: 30 }} />
       )}
       {typeof center === 'string' ? <span className="topbar__step">{center}</span> : center}
-      {right ?? <span style={{ width: 44 }} />}
+      {right ??
+        (sticker ? (
+          <span className="topbar__sticker">
+            <Sticker name={sticker} width={40} rotate={8} className="m-settle" style={{ '--d': '360ms' } as object} />
+          </span>
+        ) : (
+          <span style={{ width: 44 }} />
+        ))}
     </div>
   )
 }

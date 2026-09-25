@@ -83,7 +83,7 @@ export function Settings() {
 
   return (
     <Paper>
-      <TopBar back="/" backLabel="홈으로" center="보관함" />
+      <TopBar back="/" backLabel="홈으로" center="보관함" sticker="envelope" />
 
       <div style={{ marginTop: 32 }}>
         <Title lines={['보관함']} size={24} />
