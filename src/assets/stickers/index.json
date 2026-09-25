@@ -1,1469 +1,1374 @@
 [
   {
-    "file": "sign-white-cut.svg",
+    "file": "sign-cut.svg",
+    "name": "갈림길 표지판",
     "kind": "그림",
     "key": "sign",
-    "name": "갈림길 표지판",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": true
+    "group": "결정·생각",
+    "version": "cut",
+    "versionName": "외곽선"
   },
   {
-    "file": "sign-white.svg",
+    "file": "sign-plain.svg",
+    "name": "갈림길 표지판",
     "kind": "그림",
     "key": "sign",
-    "name": "갈림길 표지판",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": false
+    "group": "결정·생각",
+    "version": "plain",
+    "versionName": "외곽선 없음"
   },
   {
-    "file": "sign-none-cut.svg",
+    "file": "sign-line.svg",
+    "name": "갈림길 표지판",
     "kind": "그림",
     "key": "sign",
-    "name": "갈림길 표지판",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": true
+    "group": "결정·생각",
+    "version": "line",
+    "versionName": "선만"
   },
   {
-    "file": "sign-none.svg",
+    "file": "compass-cut.svg",
+    "name": "나침반",
     "kind": "그림",
-    "key": "sign",
-    "name": "갈림길 표지판",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": false
+    "key": "compass",
+    "group": "결정·생각",
+    "version": "cut",
+    "versionName": "외곽선"
   },
   {
-    "file": "sign-grey-cut.svg",
+    "file": "compass-plain.svg",
+    "name": "나침반",
     "kind": "그림",
-    "key": "sign",
-    "name": "갈림길 표지판",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": true
+    "key": "compass",
+    "group": "결정·생각",
+    "version": "plain",
+    "versionName": "외곽선 없음"
   },
   {
-    "file": "sign-grey.svg",
+    "file": "compass-line.svg",
+    "name": "나침반",
     "kind": "그림",
-    "key": "sign",
-    "name": "갈림길 표지판",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": false
+    "key": "compass",
+    "group": "결정·생각",
+    "version": "line",
+    "versionName": "선만"
   },
   {
-    "file": "sign-dots-cut.svg",
+    "file": "scale-cut.svg",
+    "name": "저울",
     "kind": "그림",
-    "key": "sign",
-    "name": "갈림길 표지판",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": true
+    "key": "scale",
+    "group": "결정·생각",
+    "version": "cut",
+    "versionName": "외곽선"
   },
   {
-    "file": "sign-dots.svg",
+    "file": "scale-plain.svg",
+    "name": "저울",
     "kind": "그림",
-    "key": "sign",
-    "name": "갈림길 표지판",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": false
+    "key": "scale",
+    "group": "결정·생각",
+    "version": "plain",
+    "versionName": "외곽선 없음"
   },
   {
-    "file": "sign-stripe-cut.svg",
+    "file": "scale-line.svg",
+    "name": "저울",
     "kind": "그림",
-    "key": "sign",
-    "name": "갈림길 표지판",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": true
+    "key": "scale",
+    "group": "결정·생각",
+    "version": "line",
+    "versionName": "선만"
   },
   {
-    "file": "sign-stripe.svg",
+    "file": "bulb-cut.svg",
+    "name": "전구",
     "kind": "그림",
-    "key": "sign",
-    "name": "갈림길 표지판",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": false
+    "key": "bulb",
+    "group": "결정·생각",
+    "version": "cut",
+    "versionName": "외곽선"
   },
   {
-    "file": "sign-grid-cut.svg",
+    "file": "bulb-plain.svg",
+    "name": "전구",
     "kind": "그림",
-    "key": "sign",
-    "name": "갈림길 표지판",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": true
+    "key": "bulb",
+    "group": "결정·생각",
+    "version": "plain",
+    "versionName": "외곽선 없음"
   },
   {
-    "file": "sign-grid.svg",
+    "file": "bulb-line.svg",
+    "name": "전구",
     "kind": "그림",
-    "key": "sign",
-    "name": "갈림길 표지판",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": false
+    "key": "bulb",
+    "group": "결정·생각",
+    "version": "line",
+    "versionName": "선만"
   },
   {
-    "file": "cup-white-cut.svg",
+    "file": "think-cut.svg",
+    "name": "생각구름",
     "kind": "그림",
-    "key": "cup",
-    "name": "커피잔",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": true
+    "key": "think",
+    "group": "결정·생각",
+    "version": "cut",
+    "versionName": "외곽선"
   },
   {
-    "file": "cup-white.svg",
+    "file": "think-plain.svg",
+    "name": "생각구름",
     "kind": "그림",
-    "key": "cup",
-    "name": "커피잔",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": false
+    "key": "think",
+    "group": "결정·생각",
+    "version": "plain",
+    "versionName": "외곽선 없음"
   },
   {
-    "file": "cup-none-cut.svg",
+    "file": "think-line.svg",
+    "name": "생각구름",
     "kind": "그림",
-    "key": "cup",
-    "name": "커피잔",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": true
+    "key": "think",
+    "group": "결정·생각",
+    "version": "line",
+    "versionName": "선만"
   },
   {
-    "file": "cup-none.svg",
+    "file": "checklist-cut.svg",
+    "name": "체크리스트",
     "kind": "그림",
-    "key": "cup",
-    "name": "커피잔",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": false
+    "key": "checklist",
+    "group": "결정·생각",
+    "version": "cut",
+    "versionName": "외곽선"
   },
   {
-    "file": "cup-grey-cut.svg",
+    "file": "checklist-plain.svg",
+    "name": "체크리스트",
     "kind": "그림",
-    "key": "cup",
-    "name": "커피잔",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": true
+    "key": "checklist",
+    "group": "결정·생각",
+    "version": "plain",
+    "versionName": "외곽선 없음"
   },
   {
-    "file": "cup-grey.svg",
+    "file": "checklist-line.svg",
+    "name": "체크리스트",
     "kind": "그림",
-    "key": "cup",
-    "name": "커피잔",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": false
+    "key": "checklist",
+    "group": "결정·생각",
+    "version": "line",
+    "versionName": "선만"
   },
   {
-    "file": "cup-dots-cut.svg",
+    "file": "key-cut.svg",
+    "name": "열쇠",
     "kind": "그림",
-    "key": "cup",
-    "name": "커피잔",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": true
+    "key": "key",
+    "group": "결정·생각",
+    "version": "cut",
+    "versionName": "외곽선"
   },
   {
-    "file": "cup-dots.svg",
+    "file": "key-plain.svg",
+    "name": "열쇠",
     "kind": "그림",
-    "key": "cup",
-    "name": "커피잔",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": false
+    "key": "key",
+    "group": "결정·생각",
+    "version": "plain",
+    "versionName": "외곽선 없음"
   },
   {
-    "file": "cup-stripe-cut.svg",
+    "file": "key-line.svg",
+    "name": "열쇠",
     "kind": "그림",
-    "key": "cup",
-    "name": "커피잔",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": true
+    "key": "key",
+    "group": "결정·생각",
+    "version": "line",
+    "versionName": "선만"
   },
   {
-    "file": "cup-stripe.svg",
+    "file": "lock-cut.svg",
+    "name": "자물쇠",
     "kind": "그림",
-    "key": "cup",
-    "name": "커피잔",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": false
+    "key": "lock",
+    "group": "결정·생각",
+    "version": "cut",
+    "versionName": "외곽선"
   },
   {
-    "file": "cup-grid-cut.svg",
+    "file": "lock-plain.svg",
+    "name": "자물쇠",
     "kind": "그림",
-    "key": "cup",
-    "name": "커피잔",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": true
+    "key": "lock",
+    "group": "결정·생각",
+    "version": "plain",
+    "versionName": "외곽선 없음"
   },
   {
-    "file": "cup-grid.svg",
+    "file": "lock-line.svg",
+    "name": "자물쇠",
     "kind": "그림",
-    "key": "cup",
-    "name": "커피잔",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": false
+    "key": "lock",
+    "group": "결정·생각",
+    "version": "line",
+    "versionName": "선만"
   },
   {
-    "file": "clip-none-cut.svg",
+    "file": "hourglass-cut.svg",
+    "name": "모래시계",
+    "kind": "그림",
+    "key": "hourglass",
+    "group": "결정·생각",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "hourglass-plain.svg",
+    "name": "모래시계",
+    "kind": "그림",
+    "key": "hourglass",
+    "group": "결정·생각",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "hourglass-line.svg",
+    "name": "모래시계",
+    "kind": "그림",
+    "key": "hourglass",
+    "group": "결정·생각",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "calendar-cut.svg",
+    "name": "달력",
+    "kind": "그림",
+    "key": "calendar",
+    "group": "결정·생각",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "calendar-plain.svg",
+    "name": "달력",
+    "kind": "그림",
+    "key": "calendar",
+    "group": "결정·생각",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "calendar-line.svg",
+    "name": "달력",
+    "kind": "그림",
+    "key": "calendar",
+    "group": "결정·생각",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "clock-cut.svg",
+    "name": "자명종",
+    "kind": "그림",
+    "key": "clock",
+    "group": "결정·생각",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "clock-plain.svg",
+    "name": "자명종",
+    "kind": "그림",
+    "key": "clock",
+    "group": "결정·생각",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "clock-line.svg",
+    "name": "자명종",
+    "kind": "그림",
+    "key": "clock",
+    "group": "결정·생각",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "pencil-cut.svg",
+    "name": "연필",
+    "kind": "그림",
+    "key": "pencil",
+    "group": "문구·다이어리",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "pencil-plain.svg",
+    "name": "연필",
+    "kind": "그림",
+    "key": "pencil",
+    "group": "문구·다이어리",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "pencil-line.svg",
+    "name": "연필",
+    "kind": "그림",
+    "key": "pencil",
+    "group": "문구·다이어리",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "pen-cut.svg",
+    "name": "만년필",
+    "kind": "그림",
+    "key": "pen",
+    "group": "문구·다이어리",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "pen-plain.svg",
+    "name": "만년필",
+    "kind": "그림",
+    "key": "pen",
+    "group": "문구·다이어리",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "pen-line.svg",
+    "name": "만년필",
+    "kind": "그림",
+    "key": "pen",
+    "group": "문구·다이어리",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "clip-cut.svg",
+    "name": "클립",
     "kind": "그림",
     "key": "clip",
-    "name": "클립",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": true
+    "group": "문구·다이어리",
+    "version": "cut",
+    "versionName": "외곽선"
   },
   {
-    "file": "clip-none.svg",
+    "file": "clip-plain.svg",
+    "name": "클립",
     "kind": "그림",
     "key": "clip",
+    "group": "문구·다이어리",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "clip-line.svg",
     "name": "클립",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": false
-  },
-  {
-    "file": "leaf-white-cut.svg",
-    "kind": "그림",
-    "key": "leaf",
-    "name": "새싹",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": true
-  },
-  {
-    "file": "leaf-white.svg",
-    "kind": "그림",
-    "key": "leaf",
-    "name": "새싹",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": false
-  },
-  {
-    "file": "leaf-none-cut.svg",
-    "kind": "그림",
-    "key": "leaf",
-    "name": "새싹",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": true
-  },
-  {
-    "file": "leaf-none.svg",
-    "kind": "그림",
-    "key": "leaf",
-    "name": "새싹",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": false
-  },
-  {
-    "file": "leaf-grey-cut.svg",
-    "kind": "그림",
-    "key": "leaf",
-    "name": "새싹",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": true
-  },
-  {
-    "file": "leaf-grey.svg",
-    "kind": "그림",
-    "key": "leaf",
-    "name": "새싹",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": false
-  },
-  {
-    "file": "leaf-dots-cut.svg",
-    "kind": "그림",
-    "key": "leaf",
-    "name": "새싹",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": true
-  },
-  {
-    "file": "leaf-dots.svg",
-    "kind": "그림",
-    "key": "leaf",
-    "name": "새싹",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": false
-  },
-  {
-    "file": "leaf-stripe-cut.svg",
-    "kind": "그림",
-    "key": "leaf",
-    "name": "새싹",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": true
-  },
-  {
-    "file": "leaf-stripe.svg",
-    "kind": "그림",
-    "key": "leaf",
-    "name": "새싹",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": false
-  },
-  {
-    "file": "leaf-grid-cut.svg",
-    "kind": "그림",
-    "key": "leaf",
-    "name": "새싹",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": true
-  },
-  {
-    "file": "leaf-grid.svg",
-    "kind": "그림",
-    "key": "leaf",
-    "name": "새싹",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": false
-  },
-  {
-    "file": "moon-white-cut.svg",
-    "kind": "그림",
-    "key": "moon",
-    "name": "달",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": true
-  },
-  {
-    "file": "moon-white.svg",
-    "kind": "그림",
-    "key": "moon",
-    "name": "달",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": false
-  },
-  {
-    "file": "moon-none-cut.svg",
-    "kind": "그림",
-    "key": "moon",
-    "name": "달",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": true
-  },
-  {
-    "file": "moon-none.svg",
-    "kind": "그림",
-    "key": "moon",
-    "name": "달",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": false
-  },
-  {
-    "file": "moon-grey-cut.svg",
-    "kind": "그림",
-    "key": "moon",
-    "name": "달",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": true
-  },
-  {
-    "file": "moon-grey.svg",
-    "kind": "그림",
-    "key": "moon",
-    "name": "달",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": false
-  },
-  {
-    "file": "moon-dots-cut.svg",
-    "kind": "그림",
-    "key": "moon",
-    "name": "달",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": true
-  },
-  {
-    "file": "moon-dots.svg",
-    "kind": "그림",
-    "key": "moon",
-    "name": "달",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": false
-  },
-  {
-    "file": "moon-stripe-cut.svg",
-    "kind": "그림",
-    "key": "moon",
-    "name": "달",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": true
-  },
-  {
-    "file": "moon-stripe.svg",
-    "kind": "그림",
-    "key": "moon",
-    "name": "달",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": false
-  },
-  {
-    "file": "moon-grid-cut.svg",
-    "kind": "그림",
-    "key": "moon",
-    "name": "달",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": true
-  },
-  {
-    "file": "moon-grid.svg",
-    "kind": "그림",
-    "key": "moon",
-    "name": "달",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": false
-  },
-  {
-    "file": "plane-white-cut.svg",
-    "kind": "그림",
-    "key": "plane",
-    "name": "종이비행기",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": true
-  },
-  {
-    "file": "plane-white.svg",
-    "kind": "그림",
-    "key": "plane",
-    "name": "종이비행기",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": false
-  },
-  {
-    "file": "plane-none-cut.svg",
-    "kind": "그림",
-    "key": "plane",
-    "name": "종이비행기",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": true
-  },
-  {
-    "file": "plane-none.svg",
-    "kind": "그림",
-    "key": "plane",
-    "name": "종이비행기",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": false
-  },
-  {
-    "file": "plane-grey-cut.svg",
-    "kind": "그림",
-    "key": "plane",
-    "name": "종이비행기",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": true
-  },
-  {
-    "file": "plane-grey.svg",
-    "kind": "그림",
-    "key": "plane",
-    "name": "종이비행기",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": false
-  },
-  {
-    "file": "plane-dots-cut.svg",
-    "kind": "그림",
-    "key": "plane",
-    "name": "종이비행기",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": true
-  },
-  {
-    "file": "plane-dots.svg",
-    "kind": "그림",
-    "key": "plane",
-    "name": "종이비행기",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": false
-  },
-  {
-    "file": "plane-stripe-cut.svg",
-    "kind": "그림",
-    "key": "plane",
-    "name": "종이비행기",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": true
-  },
-  {
-    "file": "plane-stripe.svg",
-    "kind": "그림",
-    "key": "plane",
-    "name": "종이비행기",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": false
-  },
-  {
-    "file": "plane-grid-cut.svg",
-    "kind": "그림",
-    "key": "plane",
-    "name": "종이비행기",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": true
-  },
-  {
-    "file": "plane-grid.svg",
-    "kind": "그림",
-    "key": "plane",
-    "name": "종이비행기",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": false
-  },
-  {
-    "file": "pencil-white-cut.svg",
-    "kind": "그림",
-    "key": "pencil",
-    "name": "연필",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": true
-  },
-  {
-    "file": "pencil-white.svg",
-    "kind": "그림",
-    "key": "pencil",
-    "name": "연필",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": false
-  },
-  {
-    "file": "pencil-none-cut.svg",
-    "kind": "그림",
-    "key": "pencil",
-    "name": "연필",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": true
-  },
-  {
-    "file": "pencil-none.svg",
-    "kind": "그림",
-    "key": "pencil",
-    "name": "연필",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": false
-  },
-  {
-    "file": "pencil-grey-cut.svg",
-    "kind": "그림",
-    "key": "pencil",
-    "name": "연필",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": true
-  },
-  {
-    "file": "pencil-grey.svg",
-    "kind": "그림",
-    "key": "pencil",
-    "name": "연필",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": false
-  },
-  {
-    "file": "pencil-dots-cut.svg",
-    "kind": "그림",
-    "key": "pencil",
-    "name": "연필",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": true
-  },
-  {
-    "file": "pencil-dots.svg",
-    "kind": "그림",
-    "key": "pencil",
-    "name": "연필",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": false
-  },
-  {
-    "file": "pencil-stripe-cut.svg",
-    "kind": "그림",
-    "key": "pencil",
-    "name": "연필",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": true
-  },
-  {
-    "file": "pencil-stripe.svg",
-    "kind": "그림",
-    "key": "pencil",
-    "name": "연필",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": false
-  },
-  {
-    "file": "pencil-grid-cut.svg",
-    "kind": "그림",
-    "key": "pencil",
-    "name": "연필",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": true
-  },
-  {
-    "file": "pencil-grid.svg",
-    "kind": "그림",
-    "key": "pencil",
-    "name": "연필",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": false
-  },
-  {
-    "file": "envelope-white-cut.svg",
-    "kind": "그림",
-    "key": "envelope",
-    "name": "봉투",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": true
-  },
-  {
-    "file": "envelope-white.svg",
-    "kind": "그림",
-    "key": "envelope",
-    "name": "봉투",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": false
-  },
-  {
-    "file": "envelope-none-cut.svg",
-    "kind": "그림",
-    "key": "envelope",
-    "name": "봉투",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": true
-  },
-  {
-    "file": "envelope-none.svg",
-    "kind": "그림",
-    "key": "envelope",
-    "name": "봉투",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": false
-  },
-  {
-    "file": "envelope-grey-cut.svg",
-    "kind": "그림",
-    "key": "envelope",
-    "name": "봉투",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": true
-  },
-  {
-    "file": "envelope-grey.svg",
-    "kind": "그림",
-    "key": "envelope",
-    "name": "봉투",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": false
-  },
-  {
-    "file": "envelope-dots-cut.svg",
-    "kind": "그림",
-    "key": "envelope",
-    "name": "봉투",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": true
-  },
-  {
-    "file": "envelope-dots.svg",
-    "kind": "그림",
-    "key": "envelope",
-    "name": "봉투",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": false
-  },
-  {
-    "file": "envelope-stripe-cut.svg",
-    "kind": "그림",
-    "key": "envelope",
-    "name": "봉투",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": true
-  },
-  {
-    "file": "envelope-stripe.svg",
-    "kind": "그림",
-    "key": "envelope",
-    "name": "봉투",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": false
-  },
-  {
-    "file": "envelope-grid-cut.svg",
-    "kind": "그림",
-    "key": "envelope",
-    "name": "봉투",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": true
-  },
-  {
-    "file": "envelope-grid.svg",
-    "kind": "그림",
-    "key": "envelope",
-    "name": "봉투",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": false
-  },
-  {
-    "file": "bulb-white-cut.svg",
-    "kind": "그림",
-    "key": "bulb",
-    "name": "전구",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": true
-  },
-  {
-    "file": "bulb-white.svg",
-    "kind": "그림",
-    "key": "bulb",
-    "name": "전구",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": false
-  },
-  {
-    "file": "bulb-none-cut.svg",
-    "kind": "그림",
-    "key": "bulb",
-    "name": "전구",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": true
-  },
-  {
-    "file": "bulb-none.svg",
-    "kind": "그림",
-    "key": "bulb",
-    "name": "전구",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": false
-  },
-  {
-    "file": "bulb-grey-cut.svg",
-    "kind": "그림",
-    "key": "bulb",
-    "name": "전구",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": true
-  },
-  {
-    "file": "bulb-grey.svg",
-    "kind": "그림",
-    "key": "bulb",
-    "name": "전구",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": false
-  },
-  {
-    "file": "bulb-dots-cut.svg",
-    "kind": "그림",
-    "key": "bulb",
-    "name": "전구",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": true
-  },
-  {
-    "file": "bulb-dots.svg",
-    "kind": "그림",
-    "key": "bulb",
-    "name": "전구",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": false
-  },
-  {
-    "file": "bulb-stripe-cut.svg",
-    "kind": "그림",
-    "key": "bulb",
-    "name": "전구",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": true
-  },
-  {
-    "file": "bulb-stripe.svg",
-    "kind": "그림",
-    "key": "bulb",
-    "name": "전구",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": false
-  },
-  {
-    "file": "bulb-grid-cut.svg",
-    "kind": "그림",
-    "key": "bulb",
-    "name": "전구",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": true
-  },
-  {
-    "file": "bulb-grid.svg",
     "kind": "그림",
-    "key": "bulb",
-    "name": "전구",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": false
+    "key": "clip",
+    "group": "문구·다이어리",
+    "version": "line",
+    "versionName": "선만"
   },
   {
-    "file": "pin-white-cut.svg",
+    "file": "pin-cut.svg",
+    "name": "압정",
     "kind": "그림",
     "key": "pin",
-    "name": "압정",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": true
+    "group": "문구·다이어리",
+    "version": "cut",
+    "versionName": "외곽선"
   },
   {
-    "file": "pin-white.svg",
+    "file": "pin-plain.svg",
+    "name": "압정",
     "kind": "그림",
     "key": "pin",
-    "name": "압정",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": false
+    "group": "문구·다이어리",
+    "version": "plain",
+    "versionName": "외곽선 없음"
   },
   {
-    "file": "pin-none-cut.svg",
+    "file": "pin-line.svg",
+    "name": "압정",
     "kind": "그림",
     "key": "pin",
-    "name": "압정",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": true
+    "group": "문구·다이어리",
+    "version": "line",
+    "versionName": "선만"
   },
   {
-    "file": "pin-none.svg",
+    "file": "eraser-cut.svg",
+    "name": "지우개",
     "kind": "그림",
-    "key": "pin",
-    "name": "압정",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": false
+    "key": "eraser",
+    "group": "문구·다이어리",
+    "version": "cut",
+    "versionName": "외곽선"
   },
   {
-    "file": "pin-grey-cut.svg",
+    "file": "eraser-plain.svg",
+    "name": "지우개",
     "kind": "그림",
-    "key": "pin",
-    "name": "압정",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": true
+    "key": "eraser",
+    "group": "문구·다이어리",
+    "version": "plain",
+    "versionName": "외곽선 없음"
   },
   {
-    "file": "pin-grey.svg",
+    "file": "eraser-line.svg",
+    "name": "지우개",
     "kind": "그림",
-    "key": "pin",
-    "name": "압정",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": false
+    "key": "eraser",
+    "group": "문구·다이어리",
+    "version": "line",
+    "versionName": "선만"
   },
   {
-    "file": "pin-dots-cut.svg",
+    "file": "scissors-cut.svg",
+    "name": "가위",
     "kind": "그림",
-    "key": "pin",
-    "name": "압정",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": true
+    "key": "scissors",
+    "group": "문구·다이어리",
+    "version": "cut",
+    "versionName": "외곽선"
   },
   {
-    "file": "pin-dots.svg",
+    "file": "scissors-plain.svg",
+    "name": "가위",
     "kind": "그림",
-    "key": "pin",
-    "name": "압정",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": false
+    "key": "scissors",
+    "group": "문구·다이어리",
+    "version": "plain",
+    "versionName": "외곽선 없음"
   },
   {
-    "file": "pin-stripe-cut.svg",
+    "file": "scissors-line.svg",
+    "name": "가위",
     "kind": "그림",
-    "key": "pin",
-    "name": "압정",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": true
+    "key": "scissors",
+    "group": "문구·다이어리",
+    "version": "line",
+    "versionName": "선만"
   },
   {
-    "file": "pin-stripe.svg",
+    "file": "envelope-cut.svg",
+    "name": "봉투",
     "kind": "그림",
-    "key": "pin",
-    "name": "압정",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": false
+    "key": "envelope",
+    "group": "문구·다이어리",
+    "version": "cut",
+    "versionName": "외곽선"
   },
   {
-    "file": "pin-grid-cut.svg",
+    "file": "envelope-plain.svg",
+    "name": "봉투",
     "kind": "그림",
-    "key": "pin",
-    "name": "압정",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": true
+    "key": "envelope",
+    "group": "문구·다이어리",
+    "version": "plain",
+    "versionName": "외곽선 없음"
   },
   {
-    "file": "pin-grid.svg",
+    "file": "envelope-line.svg",
+    "name": "봉투",
     "kind": "그림",
-    "key": "pin",
-    "name": "압정",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": false
+    "key": "envelope",
+    "group": "문구·다이어리",
+    "version": "line",
+    "versionName": "선만"
   },
   {
-    "file": "round-white-cut.svg",
+    "file": "stamp-cut.svg",
+    "name": "우표",
+    "kind": "그림",
+    "key": "stamp",
+    "group": "문구·다이어리",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "stamp-plain.svg",
+    "name": "우표",
+    "kind": "그림",
+    "key": "stamp",
+    "group": "문구·다이어리",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "stamp-line.svg",
+    "name": "우표",
+    "kind": "그림",
+    "key": "stamp",
+    "group": "문구·다이어리",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "seal-cut.svg",
+    "name": "도장",
+    "kind": "그림",
+    "key": "seal",
+    "group": "문구·다이어리",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "seal-plain.svg",
+    "name": "도장",
+    "kind": "그림",
+    "key": "seal",
+    "group": "문구·다이어리",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "seal-line.svg",
+    "name": "도장",
+    "kind": "그림",
+    "key": "seal",
+    "group": "문구·다이어리",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "book-cut.svg",
+    "name": "펼친 책",
+    "kind": "그림",
+    "key": "book",
+    "group": "문구·다이어리",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "book-plain.svg",
+    "name": "펼친 책",
+    "kind": "그림",
+    "key": "book",
+    "group": "문구·다이어리",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "book-line.svg",
+    "name": "펼친 책",
+    "kind": "그림",
+    "key": "book",
+    "group": "문구·다이어리",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "bookmark-cut.svg",
+    "name": "책갈피",
+    "kind": "그림",
+    "key": "bookmark",
+    "group": "문구·다이어리",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "bookmark-plain.svg",
+    "name": "책갈피",
+    "kind": "그림",
+    "key": "bookmark",
+    "group": "문구·다이어리",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "bookmark-line.svg",
+    "name": "책갈피",
+    "kind": "그림",
+    "key": "bookmark",
+    "group": "문구·다이어리",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "cup-cut.svg",
+    "name": "커피잔",
+    "kind": "그림",
+    "key": "cup",
+    "group": "일상·감성",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "cup-plain.svg",
+    "name": "커피잔",
+    "kind": "그림",
+    "key": "cup",
+    "group": "일상·감성",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "cup-line.svg",
+    "name": "커피잔",
+    "kind": "그림",
+    "key": "cup",
+    "group": "일상·감성",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "pot-cut.svg",
+    "name": "화분",
+    "kind": "그림",
+    "key": "pot",
+    "group": "일상·감성",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "pot-plain.svg",
+    "name": "화분",
+    "kind": "그림",
+    "key": "pot",
+    "group": "일상·감성",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "pot-line.svg",
+    "name": "화분",
+    "kind": "그림",
+    "key": "pot",
+    "group": "일상·감성",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "flower-cut.svg",
+    "name": "꽃",
+    "kind": "그림",
+    "key": "flower",
+    "group": "일상·감성",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "flower-plain.svg",
+    "name": "꽃",
+    "kind": "그림",
+    "key": "flower",
+    "group": "일상·감성",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "flower-line.svg",
+    "name": "꽃",
+    "kind": "그림",
+    "key": "flower",
+    "group": "일상·감성",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "leaf-cut.svg",
+    "name": "새싹",
+    "kind": "그림",
+    "key": "leaf",
+    "group": "일상·감성",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "leaf-plain.svg",
+    "name": "새싹",
+    "kind": "그림",
+    "key": "leaf",
+    "group": "일상·감성",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "leaf-line.svg",
+    "name": "새싹",
+    "kind": "그림",
+    "key": "leaf",
+    "group": "일상·감성",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "moon-cut.svg",
+    "name": "달",
+    "kind": "그림",
+    "key": "moon",
+    "group": "일상·감성",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "moon-plain.svg",
+    "name": "달",
+    "kind": "그림",
+    "key": "moon",
+    "group": "일상·감성",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "moon-line.svg",
+    "name": "달",
+    "kind": "그림",
+    "key": "moon",
+    "group": "일상·감성",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "sun-cut.svg",
+    "name": "해",
+    "kind": "그림",
+    "key": "sun",
+    "group": "일상·감성",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "sun-plain.svg",
+    "name": "해",
+    "kind": "그림",
+    "key": "sun",
+    "group": "일상·감성",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "sun-line.svg",
+    "name": "해",
+    "kind": "그림",
+    "key": "sun",
+    "group": "일상·감성",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "rain-cut.svg",
+    "name": "비구름",
+    "kind": "그림",
+    "key": "rain",
+    "group": "일상·감성",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "rain-plain.svg",
+    "name": "비구름",
+    "kind": "그림",
+    "key": "rain",
+    "group": "일상·감성",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "rain-line.svg",
+    "name": "비구름",
+    "kind": "그림",
+    "key": "rain",
+    "group": "일상·감성",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "umbrella-cut.svg",
+    "name": "우산",
+    "kind": "그림",
+    "key": "umbrella",
+    "group": "일상·감성",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "umbrella-plain.svg",
+    "name": "우산",
+    "kind": "그림",
+    "key": "umbrella",
+    "group": "일상·감성",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "umbrella-line.svg",
+    "name": "우산",
+    "kind": "그림",
+    "key": "umbrella",
+    "group": "일상·감성",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "plane-cut.svg",
+    "name": "종이비행기",
+    "kind": "그림",
+    "key": "plane",
+    "group": "일상·감성",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "plane-plain.svg",
+    "name": "종이비행기",
+    "kind": "그림",
+    "key": "plane",
+    "group": "일상·감성",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "plane-line.svg",
+    "name": "종이비행기",
+    "kind": "그림",
+    "key": "plane",
+    "group": "일상·감성",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "house-cut.svg",
+    "name": "집",
+    "kind": "그림",
+    "key": "house",
+    "group": "일상·감성",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "house-plain.svg",
+    "name": "집",
+    "kind": "그림",
+    "key": "house",
+    "group": "일상·감성",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "house-line.svg",
+    "name": "집",
+    "kind": "그림",
+    "key": "house",
+    "group": "일상·감성",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "suitcase-cut.svg",
+    "name": "캐리어",
+    "kind": "그림",
+    "key": "suitcase",
+    "group": "일상·감성",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "suitcase-plain.svg",
+    "name": "캐리어",
+    "kind": "그림",
+    "key": "suitcase",
+    "group": "일상·감성",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "suitcase-line.svg",
+    "name": "캐리어",
+    "kind": "그림",
+    "key": "suitcase",
+    "group": "일상·감성",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "mountain-cut.svg",
+    "name": "산",
+    "kind": "그림",
+    "key": "mountain",
+    "group": "일상·감성",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "mountain-plain.svg",
+    "name": "산",
+    "kind": "그림",
+    "key": "mountain",
+    "group": "일상·감성",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "mountain-line.svg",
+    "name": "산",
+    "kind": "그림",
+    "key": "mountain",
+    "group": "일상·감성",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "heart-cut.svg",
+    "name": "하트",
+    "kind": "그림",
+    "key": "heart",
+    "group": "일상·감성",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "heart-plain.svg",
+    "name": "하트",
+    "kind": "그림",
+    "key": "heart",
+    "group": "일상·감성",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "heart-line.svg",
+    "name": "하트",
+    "kind": "그림",
+    "key": "heart",
+    "group": "일상·감성",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "cat-cut.svg",
+    "name": "고양이",
+    "kind": "그림",
+    "key": "cat",
+    "group": "일상·감성",
+    "version": "cut",
+    "versionName": "외곽선"
+  },
+  {
+    "file": "cat-plain.svg",
+    "name": "고양이",
+    "kind": "그림",
+    "key": "cat",
+    "group": "일상·감성",
+    "version": "plain",
+    "versionName": "외곽선 없음"
+  },
+  {
+    "file": "cat-line.svg",
+    "name": "고양이",
+    "kind": "그림",
+    "key": "cat",
+    "group": "일상·감성",
+    "version": "line",
+    "versionName": "선만"
+  },
+  {
+    "file": "label-round-cut.svg",
+    "name": "원형 라벨",
     "kind": "라벨",
     "key": "round",
-    "name": "원형 라벨",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": true
+    "version": "cut",
+    "versionName": "외곽선"
   },
   {
-    "file": "round-white.svg",
+    "file": "label-round-plain.svg",
+    "name": "원형 라벨",
     "kind": "라벨",
     "key": "round",
-    "name": "원형 라벨",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": false
+    "version": "plain",
+    "versionName": "외곽선 없음"
   },
   {
-    "file": "round-none-cut.svg",
+    "file": "label-round-line.svg",
+    "name": "원형 라벨",
     "kind": "라벨",
     "key": "round",
-    "name": "원형 라벨",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": true
+    "version": "line",
+    "versionName": "선만"
   },
   {
-    "file": "round-none.svg",
-    "kind": "라벨",
-    "key": "round",
-    "name": "원형 라벨",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": false
-  },
-  {
-    "file": "round-grey-cut.svg",
-    "kind": "라벨",
-    "key": "round",
-    "name": "원형 라벨",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": true
-  },
-  {
-    "file": "round-grey.svg",
-    "kind": "라벨",
-    "key": "round",
-    "name": "원형 라벨",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": false
-  },
-  {
-    "file": "round-dots-cut.svg",
-    "kind": "라벨",
-    "key": "round",
-    "name": "원형 라벨",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": true
-  },
-  {
-    "file": "round-dots.svg",
-    "kind": "라벨",
-    "key": "round",
-    "name": "원형 라벨",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": false
-  },
-  {
-    "file": "round-stripe-cut.svg",
-    "kind": "라벨",
-    "key": "round",
-    "name": "원형 라벨",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": true
-  },
-  {
-    "file": "round-stripe.svg",
-    "kind": "라벨",
-    "key": "round",
-    "name": "원형 라벨",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": false
-  },
-  {
-    "file": "round-grid-cut.svg",
-    "kind": "라벨",
-    "key": "round",
-    "name": "원형 라벨",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": true
-  },
-  {
-    "file": "round-grid.svg",
-    "kind": "라벨",
-    "key": "round",
-    "name": "원형 라벨",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": false
-  },
-  {
-    "file": "tag-white-cut.svg",
+    "file": "label-tag-cut.svg",
+    "name": "꼬리표",
     "kind": "라벨",
     "key": "tag",
-    "name": "꼬리표",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": true
+    "version": "cut",
+    "versionName": "외곽선"
   },
   {
-    "file": "tag-white.svg",
+    "file": "label-tag-plain.svg",
+    "name": "꼬리표",
     "kind": "라벨",
     "key": "tag",
-    "name": "꼬리표",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": false
+    "version": "plain",
+    "versionName": "외곽선 없음"
   },
   {
-    "file": "tag-none-cut.svg",
+    "file": "label-tag-line.svg",
+    "name": "꼬리표",
     "kind": "라벨",
     "key": "tag",
-    "name": "꼬리표",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": true
+    "version": "line",
+    "versionName": "선만"
   },
   {
-    "file": "tag-none.svg",
-    "kind": "라벨",
-    "key": "tag",
-    "name": "꼬리표",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": false
-  },
-  {
-    "file": "tag-grey-cut.svg",
-    "kind": "라벨",
-    "key": "tag",
-    "name": "꼬리표",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": true
-  },
-  {
-    "file": "tag-grey.svg",
-    "kind": "라벨",
-    "key": "tag",
-    "name": "꼬리표",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": false
-  },
-  {
-    "file": "tag-dots-cut.svg",
-    "kind": "라벨",
-    "key": "tag",
-    "name": "꼬리표",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": true
-  },
-  {
-    "file": "tag-dots.svg",
-    "kind": "라벨",
-    "key": "tag",
-    "name": "꼬리표",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": false
-  },
-  {
-    "file": "tag-stripe-cut.svg",
-    "kind": "라벨",
-    "key": "tag",
-    "name": "꼬리표",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": true
-  },
-  {
-    "file": "tag-stripe.svg",
-    "kind": "라벨",
-    "key": "tag",
-    "name": "꼬리표",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": false
-  },
-  {
-    "file": "tag-grid-cut.svg",
-    "kind": "라벨",
-    "key": "tag",
-    "name": "꼬리표",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": true
-  },
-  {
-    "file": "tag-grid.svg",
-    "kind": "라벨",
-    "key": "tag",
-    "name": "꼬리표",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": false
-  },
-  {
-    "file": "ticket-white-cut.svg",
+    "file": "label-ticket-cut.svg",
+    "name": "티켓",
     "kind": "라벨",
     "key": "ticket",
-    "name": "티켓",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": true
+    "version": "cut",
+    "versionName": "외곽선"
   },
   {
-    "file": "ticket-white.svg",
+    "file": "label-ticket-plain.svg",
+    "name": "티켓",
     "kind": "라벨",
     "key": "ticket",
-    "name": "티켓",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": false
+    "version": "plain",
+    "versionName": "외곽선 없음"
   },
   {
-    "file": "ticket-none-cut.svg",
+    "file": "label-ticket-line.svg",
+    "name": "티켓",
     "kind": "라벨",
     "key": "ticket",
-    "name": "티켓",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": true
+    "version": "line",
+    "versionName": "선만"
   },
   {
-    "file": "ticket-none.svg",
-    "kind": "라벨",
-    "key": "ticket",
-    "name": "티켓",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": false
-  },
-  {
-    "file": "ticket-grey-cut.svg",
-    "kind": "라벨",
-    "key": "ticket",
-    "name": "티켓",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": true
-  },
-  {
-    "file": "ticket-grey.svg",
-    "kind": "라벨",
-    "key": "ticket",
-    "name": "티켓",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": false
-  },
-  {
-    "file": "ticket-dots-cut.svg",
-    "kind": "라벨",
-    "key": "ticket",
-    "name": "티켓",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": true
-  },
-  {
-    "file": "ticket-dots.svg",
-    "kind": "라벨",
-    "key": "ticket",
-    "name": "티켓",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": false
-  },
-  {
-    "file": "ticket-stripe-cut.svg",
-    "kind": "라벨",
-    "key": "ticket",
-    "name": "티켓",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": true
-  },
-  {
-    "file": "ticket-stripe.svg",
-    "kind": "라벨",
-    "key": "ticket",
-    "name": "티켓",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": false
-  },
-  {
-    "file": "ticket-grid-cut.svg",
-    "kind": "라벨",
-    "key": "ticket",
-    "name": "티켓",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": true
-  },
-  {
-    "file": "ticket-grid.svg",
-    "kind": "라벨",
-    "key": "ticket",
-    "name": "티켓",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": false
-  },
-  {
-    "file": "bubble-white-cut.svg",
+    "file": "label-bubble-cut.svg",
+    "name": "말풍선",
     "kind": "라벨",
     "key": "bubble",
-    "name": "말풍선",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": true
+    "version": "cut",
+    "versionName": "외곽선"
   },
   {
-    "file": "bubble-white.svg",
+    "file": "label-bubble-plain.svg",
+    "name": "말풍선",
     "kind": "라벨",
     "key": "bubble",
-    "name": "말풍선",
-    "fill": "white",
-    "fillName": "흰색",
-    "cut": false
+    "version": "plain",
+    "versionName": "외곽선 없음"
   },
   {
-    "file": "bubble-none-cut.svg",
+    "file": "label-bubble-line.svg",
+    "name": "말풍선",
     "kind": "라벨",
     "key": "bubble",
-    "name": "말풍선",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": true
+    "version": "line",
+    "versionName": "선만"
   },
   {
-    "file": "bubble-none.svg",
+    "file": "label-banner-cut.svg",
+    "name": "리본 배너",
     "kind": "라벨",
-    "key": "bubble",
-    "name": "말풍선",
-    "fill": "none",
-    "fillName": "투명",
-    "cut": false
+    "key": "banner",
+    "version": "cut",
+    "versionName": "외곽선"
   },
   {
-    "file": "bubble-grey-cut.svg",
+    "file": "label-banner-plain.svg",
+    "name": "리본 배너",
     "kind": "라벨",
-    "key": "bubble",
-    "name": "말풍선",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": true
+    "key": "banner",
+    "version": "plain",
+    "versionName": "외곽선 없음"
   },
   {
-    "file": "bubble-grey.svg",
+    "file": "label-banner-line.svg",
+    "name": "리본 배너",
     "kind": "라벨",
-    "key": "bubble",
-    "name": "말풍선",
-    "fill": "grey",
-    "fillName": "회색",
-    "cut": false
+    "key": "banner",
+    "version": "line",
+    "versionName": "선만"
   },
   {
-    "file": "bubble-dots-cut.svg",
-    "kind": "라벨",
-    "key": "bubble",
-    "name": "말풍선",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": true
+    "file": "postit-fold-rose.svg",
+    "name": "포스트잇",
+    "kind": "포스트잇",
+    "key": "fold",
+    "color": "rose",
+    "colorName": "분홍"
   },
   {
-    "file": "bubble-dots.svg",
-    "kind": "라벨",
-    "key": "bubble",
-    "name": "말풍선",
-    "fill": "dots",
-    "fillName": "도트",
-    "cut": false
+    "file": "postit-fold-sage.svg",
+    "name": "포스트잇",
+    "kind": "포스트잇",
+    "key": "fold",
+    "color": "sage",
+    "colorName": "세이지"
   },
   {
-    "file": "bubble-stripe-cut.svg",
-    "kind": "라벨",
-    "key": "bubble",
-    "name": "말풍선",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": true
+    "file": "postit-fold-butter.svg",
+    "name": "포스트잇",
+    "kind": "포스트잇",
+    "key": "fold",
+    "color": "butter",
+    "colorName": "버터"
   },
   {
-    "file": "bubble-stripe.svg",
-    "kind": "라벨",
-    "key": "bubble",
-    "name": "말풍선",
-    "fill": "stripe",
-    "fillName": "줄무늬",
-    "cut": false
+    "file": "postit-fold-sky.svg",
+    "name": "포스트잇",
+    "kind": "포스트잇",
+    "key": "fold",
+    "color": "sky",
+    "colorName": "하늘"
   },
   {
-    "file": "bubble-grid-cut.svg",
-    "kind": "라벨",
-    "key": "bubble",
-    "name": "말풍선",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": true
+    "file": "postit-fold-lav.svg",
+    "name": "포스트잇",
+    "kind": "포스트잇",
+    "key": "fold",
+    "color": "lav",
+    "colorName": "라벤더"
   },
   {
-    "file": "bubble-grid.svg",
-    "kind": "라벨",
-    "key": "bubble",
-    "name": "말풍선",
-    "fill": "grid",
-    "fillName": "격자",
-    "cut": false
+    "file": "postit-lined-rose.svg",
+    "name": "줄 포스트잇",
+    "kind": "포스트잇",
+    "key": "lined",
+    "color": "rose",
+    "colorName": "분홍"
   },
   {
-    "file": "tape-plain.svg",
+    "file": "postit-lined-sage.svg",
+    "name": "줄 포스트잇",
+    "kind": "포스트잇",
+    "key": "lined",
+    "color": "sage",
+    "colorName": "세이지"
+  },
+  {
+    "file": "postit-lined-butter.svg",
+    "name": "줄 포스트잇",
+    "kind": "포스트잇",
+    "key": "lined",
+    "color": "butter",
+    "colorName": "버터"
+  },
+  {
+    "file": "postit-lined-sky.svg",
+    "name": "줄 포스트잇",
+    "kind": "포스트잇",
+    "key": "lined",
+    "color": "sky",
+    "colorName": "하늘"
+  },
+  {
+    "file": "postit-lined-lav.svg",
+    "name": "줄 포스트잇",
+    "kind": "포스트잇",
+    "key": "lined",
+    "color": "lav",
+    "colorName": "라벤더"
+  },
+  {
+    "file": "postit-grid-rose.svg",
+    "name": "모눈 포스트잇",
+    "kind": "포스트잇",
+    "key": "grid",
+    "color": "rose",
+    "colorName": "분홍"
+  },
+  {
+    "file": "postit-grid-sage.svg",
+    "name": "모눈 포스트잇",
+    "kind": "포스트잇",
+    "key": "grid",
+    "color": "sage",
+    "colorName": "세이지"
+  },
+  {
+    "file": "postit-grid-butter.svg",
+    "name": "모눈 포스트잇",
+    "kind": "포스트잇",
+    "key": "grid",
+    "color": "butter",
+    "colorName": "버터"
+  },
+  {
+    "file": "postit-grid-sky.svg",
+    "name": "모눈 포스트잇",
+    "kind": "포스트잇",
+    "key": "grid",
+    "color": "sky",
+    "colorName": "하늘"
+  },
+  {
+    "file": "postit-grid-lav.svg",
+    "name": "모눈 포스트잇",
+    "kind": "포스트잇",
+    "key": "grid",
+    "color": "lav",
+    "colorName": "라벤더"
+  },
+  {
+    "file": "postit-torn-rose.svg",
+    "name": "찢은 메모지",
+    "kind": "포스트잇",
+    "key": "torn",
+    "color": "rose",
+    "colorName": "분홍"
+  },
+  {
+    "file": "postit-torn-sage.svg",
+    "name": "찢은 메모지",
+    "kind": "포스트잇",
+    "key": "torn",
+    "color": "sage",
+    "colorName": "세이지"
+  },
+  {
+    "file": "postit-torn-butter.svg",
+    "name": "찢은 메모지",
+    "kind": "포스트잇",
+    "key": "torn",
+    "color": "butter",
+    "colorName": "버터"
+  },
+  {
+    "file": "postit-torn-sky.svg",
+    "name": "찢은 메모지",
+    "kind": "포스트잇",
+    "key": "torn",
+    "color": "sky",
+    "colorName": "하늘"
+  },
+  {
+    "file": "postit-torn-lav.svg",
+    "name": "찢은 메모지",
+    "kind": "포스트잇",
+    "key": "torn",
+    "color": "lav",
+    "colorName": "라벤더"
+  },
+  {
+    "file": "postit-flag-rose.svg",
+    "name": "인덱스 탭",
+    "kind": "포스트잇",
+    "key": "flag",
+    "color": "rose",
+    "colorName": "분홍"
+  },
+  {
+    "file": "postit-flag-sage.svg",
+    "name": "인덱스 탭",
+    "kind": "포스트잇",
+    "key": "flag",
+    "color": "sage",
+    "colorName": "세이지"
+  },
+  {
+    "file": "postit-flag-butter.svg",
+    "name": "인덱스 탭",
+    "kind": "포스트잇",
+    "key": "flag",
+    "color": "butter",
+    "colorName": "버터"
+  },
+  {
+    "file": "postit-flag-sky.svg",
+    "name": "인덱스 탭",
+    "kind": "포스트잇",
+    "key": "flag",
+    "color": "sky",
+    "colorName": "하늘"
+  },
+  {
+    "file": "postit-flag-lav.svg",
+    "name": "인덱스 탭",
+    "kind": "포스트잇",
+    "key": "flag",
+    "color": "lav",
+    "colorName": "라벤더"
+  },
+  {
+    "file": "tape-rose-dots.svg",
+    "name": "분홍 도트",
     "kind": "테이프",
-    "key": "tape-plain",
-    "name": "민무늬 테이프",
-    "fill": "plain",
-    "fillName": "민무늬 테이프",
-    "cut": false
+    "key": "rose-dots",
+    "color": "rose",
+    "colorName": "분홍"
   },
   {
-    "file": "tape-dots.svg",
+    "file": "tape-sage-stripe.svg",
+    "name": "세이지 사선",
     "kind": "테이프",
-    "key": "tape-dots",
-    "name": "도트 테이프",
-    "fill": "dots",
-    "fillName": "도트 테이프",
-    "cut": false
+    "key": "sage-stripe",
+    "color": "sage",
+    "colorName": "세이지"
   },
   {
-    "file": "tape-stripe.svg",
+    "file": "tape-butter-plain.svg",
+    "name": "버터 민무늬",
     "kind": "테이프",
-    "key": "tape-stripe",
-    "name": "줄무늬 테이프",
-    "fill": "stripe",
-    "fillName": "줄무늬 테이프",
-    "cut": false
+    "key": "butter-plain",
+    "color": "butter",
+    "colorName": "버터"
   },
   {
-    "file": "tape-grid.svg",
+    "file": "tape-sky-gingham.svg",
+    "name": "하늘 깅엄체크",
     "kind": "테이프",
-    "key": "tape-grid",
-    "name": "격자 테이프",
-    "fill": "grid",
-    "fillName": "격자 테이프",
-    "cut": false
+    "key": "sky-gingham",
+    "color": "sky",
+    "colorName": "하늘"
   },
   {
-    "file": "tape-ink.svg",
+    "file": "tape-lav-flowers.svg",
+    "name": "라벤더 잔꽃",
     "kind": "테이프",
-    "key": "tape-ink",
-    "name": "먹색 테이프",
-    "fill": "ink",
-    "fillName": "먹색 테이프",
-    "cut": false
+    "key": "lav-flowers",
+    "color": "lav",
+    "colorName": "라벤더"
+  },
+  {
+    "file": "tape-rose-gingham.svg",
+    "name": "분홍 깅엄체크",
+    "kind": "테이프",
+    "key": "rose-gingham",
+    "color": "rose",
+    "colorName": "분홍"
+  },
+  {
+    "file": "tape-sage-grid.svg",
+    "name": "세이지 격자",
+    "kind": "테이프",
+    "key": "sage-grid",
+    "color": "sage",
+    "colorName": "세이지"
+  },
+  {
+    "file": "tape-butter-dots.svg",
+    "name": "버터 도트",
+    "kind": "테이프",
+    "key": "butter-dots",
+    "color": "butter",
+    "colorName": "버터"
+  },
+  {
+    "file": "tape-sky-wave.svg",
+    "name": "하늘 물결",
+    "kind": "테이프",
+    "key": "sky-wave",
+    "color": "sky",
+    "colorName": "하늘"
+  },
+  {
+    "file": "tape-lav-stripe.svg",
+    "name": "라벤더 줄무늬",
+    "kind": "테이프",
+    "key": "lav-stripe",
+    "color": "lav",
+    "colorName": "라벤더"
   }
 ]
