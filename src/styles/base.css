@@ -137,6 +137,11 @@ input {
   pointer-events: none;
 }
 
+/* 내용이 넘치면 줄어들지 말고 스크롤된다 — 기록이 쌓이면 버튼이 납작해지고 밑줄이 사라졌다 */
+.sheet > * {
+  flex-shrink: 0;
+}
+
 /* 화면 하단에 붙는 확정 버튼 위의 밀어내기 */
 .spacer {
   flex-grow: 1;

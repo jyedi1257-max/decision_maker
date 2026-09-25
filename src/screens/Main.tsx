@@ -55,11 +55,11 @@ export function Main() {
 
       <h1 className="title" style={{ position: 'relative', fontSize: 29, marginTop: 28 }}>
         <Sticker
-          name="think"
-          width={60}
-          rotate={9}
+          name="plane"
+          width={64}
+          rotate={-10}
           className="m-settle"
-          style={{ position: 'absolute', right: -6, top: -10, ...delay(0, 'm-settle', 460) }}
+          style={{ position: 'absolute', right: -8, top: -16, ...delay(0, 'm-settle', 460) }}
         />
         <span className="m-write" style={delay(0, 'm-write', 60)}>
           오늘은 어떤 걸
@@ -108,7 +108,10 @@ export function Main() {
       <div className="stack" style={{ marginTop: 22, gap: 22 }}>
         {loading && summaries.length === 0 ? null : summaries.length === 0 ? (
           <div className="empty empty--sticker m-settle" style={delay(0, 'm-settle', 540)}>
-            <Sticker name="sign" width={92} rotate={-4} />
+            <span style={{ position: 'relative', display: 'block' }}>
+              <Sticker name="sign" width={108} rotate={-4} />
+              <Sticker name="tapeSage" width={60} rotate={-14} style={{ position: 'absolute', left: -6, top: 34 }} />
+            </span>
             <p style={{ margin: 0 }}>첫 장은 비어 있어요. 지금 걸리는 걸 한 줄로 적어보세요.</p>
           </div>
         ) : (
@@ -155,6 +158,9 @@ function DecisionCard({
     <div className="card m-settle" style={{ position: 'relative', ...delay(index, 'm-settle', 540) }}>
       {index === 0 && (
         <Sticker name="tapeRose" width={72} rotate={-32} style={{ position: 'absolute', left: -20, top: -2 }} />
+      )}
+      {index === 1 && (
+        <Sticker name="clip" width={46} rotate={-8} style={{ position: 'absolute', left: 24, top: -17 }} />
       )}
       <Link to={resumePath(summary)} style={{ color: 'inherit', display: 'block' }}>
         <span
