@@ -89,7 +89,8 @@ const MAX_FACTOR = 20
 
 /**
  * 한 기준의 무게에 연속적인 배율을 걸어 1위가 뒤집히는 지점을 이분탐색으로 찾는다.
- * Why 화면의 `여기부터 ①` 표식 위치를 만든다.
+ * 지금은 화면이 쓰지 않는다 — '자세히' 화면의 눈금이 쓰던 것. 결과를 바꾸는 지점을
+ * 연속 배율로 짚어야 할 때(예: '직접 조정해보기'의 표식) 다시 쓴다.
  */
 export function findWeightFlipPoint(decision: Decision): WeightFlipPoint | null {
   const base = evaluate(decision)

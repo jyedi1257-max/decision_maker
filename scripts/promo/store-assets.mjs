@@ -39,7 +39,7 @@ const SHOTS = [
   { name: '02-alternatives', at: m.alternativesEnd - 0.05, title: ['머릿속 선택지를 적어보세요'], sub: '다섯 개까지만. 적는 순간 또렷해져요.', tapes: ['tape-sage-stripe', 'tape-rose-gingham'] },
   { name: '03-evaluate', at: m.evaluate + 1.45, title: ['기준마다 1점에서 5점'], sub: '잘 모르겠으면 비워두세요. 빈 칸도 결과에 반영돼요.', tapes: ['tape-sky-gingham', 'tape-butter-plain'] },
   { name: '04-matrix', at: m.matrixEnd - 0.1, title: ['내가 매긴 표가 손글씨로'], sub: '기준마다 앞선 칸에 동그라미를 쳐 줘요.', tapes: ['tape-lav-stripe', 'tape-sage-grid'] },
-  { name: '05-result', at: m.resultEnd - 0.1, title: ['지금 기준에서 더 맞는 쪽을,', '이유와 함께'], sub: '무엇이 둘을 갈랐는지, 결과가 얼마나 단단한지 보여줘요.', tapes: ['tape-butter-dots', 'tape-sky-wave'] },
+  { name: '05-result', at: m.resultEnd - 0.1, title: ['지금 기준에서 더 맞는 쪽을,', '이유와 함께'], sub: '무엇이 둘을 갈랐는지, 무엇을 바꾸면 뒤집히는지 알려줘요.', tapes: ['tape-butter-dots', 'tape-sky-wave'] },
   { name: '06-commit', at: m.commitEnd - 0.1, title: ['정했으면, 도장 쾅'], sub: '30일 뒤에 그 결정이 어땠는지 다시 물어봐요.', tapes: ['tape-rose-dots', 'tape-lav-flowers'], underline: true },
 ]
 

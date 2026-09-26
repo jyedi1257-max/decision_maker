@@ -1,14 +1,15 @@
 import { describe, expect, it } from 'vitest'
 import { evaluate } from './evaluate'
 import { makeDecision } from './fixtures'
+import { uncertainties } from './explain'
 import {
   conclusionSentence,
   differenceLead,
   differenceRows,
-  flipPointSentence,
   joinNames,
   ordinalMark,
   robustnessSentence,
+  uncertaintySentence,
 } from './narrate'
 import { analyzeSensitivity } from './sensitivity'
 
@@ -104,14 +105,38 @@ describe('robustnessSentence', () => {
   })
 })
 
-describe('flipPointSentence', () => {
-  it('뒤집히는 기준과 방향을 말한다', () => {
-    const text = flipPointSentence(analyzeSensitivity(close))
-    expect(text).toMatch(/무겁게|가볍게/)
+describe('uncertaintySentence', () => {
+  const tagged = makeDecision({
+    alternatives: ['지금 집 재계약', '신도시 24평으로 이사'],
+    criteria: ['방 개수', '월 주거비'],
+    scores: [
+      [2, 5],
+      [5, 3],
+    ],
+    evidence: [
+      ['fact', 'estimate'],
+      ['fact', 'feeling'],
+    ],
   })
 
-  it('안 뒤집히면 단단하다고 말한다', () => {
-    expect(flipPointSentence(analyzeSensitivity(stable))).toContain('단단')
+  it('확인 안 한 칸을 하나 짚고 나머지는 개수로만 말한다', () => {
+    const text = uncertaintySentence(uncertainties(evaluate(tagged), 10))!
+    expect(text).toMatch(/‘월 주거비’는 (추정|느낌)으로 매겼어요/)
+    expect(text).toContain('1개 더')
+  })
+
+  it('받침에 맞춰 은/는을 붙인다', () => {
+    const d = makeDecision({
+      alternatives: ['A', 'B'],
+      criteria: ['출퇴근 시간'],
+      scores: [[4], [null]],
+    })
+    expect(uncertaintySentence(uncertainties(evaluate(d), 10))).toContain('‘출퇴근 시간’은 아직 비워둔 칸이에요')
+  })
+
+  it('다 사실로 채웠으면 말하지 않는다', () => {
+    const d = makeDecision({ alternatives: ['A', 'B'], criteria: ['a'], scores: [[4], [2]] })
+    expect(uncertaintySentence(uncertainties(evaluate(d), 10))).toBeNull()
   })
 })
 

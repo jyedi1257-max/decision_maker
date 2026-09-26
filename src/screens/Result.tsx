@@ -6,7 +6,7 @@ import { ArrowDownIcon, ArrowUpIcon } from '@/components/Icons'
 import { Hilite } from '@/components/Ink'
 import { delay } from '@/styles/motion'
 import { evaluate, fitLabel } from '@/core/evaluate'
-import { gutConflict } from '@/core/explain'
+import { gutConflict, uncertainties } from '@/core/explain'
 import {
   conclusionSentence,
   differenceLead,
@@ -14,6 +14,7 @@ import {
   ordinalMark,
   robustnessSentence,
   gutConflictSentence,
+  uncertaintySentence,
 } from '@/core/narrate'
 import { analyzeSensitivity } from '@/core/sensitivity'
 import { useDecision } from '@/app/useDecision'
@@ -38,12 +39,13 @@ export function Result() {
       differences: differenceRows(result),
       differenceLead: differenceLead(result),
       conflict: gutConflict(result, decision.gut.alternativeId),
+      unknown: uncertaintySentence(uncertainties(result, 10)),
     }
   }, [decision])
 
   if (!decision || !view) return <Paper> </Paper>
 
-  const { result, sensitivity, conclusion, differences, conflict } = view
+  const { result, sensitivity, conclusion, differences, conflict, unknown } = view
   const madeTheDifference = view.differenceLead
   const top = result.ranked[0]
   const best = result.ranked.reduce((m, a) => Math.max(m, a.fit), 0.0001)
@@ -72,11 +74,11 @@ export function Result() {
       footer={
         <div className="btnrow">
           <Link
-            to={`/d/${decision.id}/why`}
+            to={`/d/${decision.id}/explore`}
             className="btn btn--ghost m-lift"
             style={{ flexGrow: 1, whiteSpace: 'nowrap', ...delay(0, 'm-lift', 680) }}
           >
-            판단 기준 자세히 보기
+            직접 조정해보기
           </Link>
           <Link
             to={`/d/${decision.id}/commit`}
@@ -159,6 +161,12 @@ export function Result() {
       {/* 민감도는 그래프 전에 문장으로 (기획안 6.7) */}
       <div className="block m-settle" style={delay(0, 'm-settle', 640)}>
         <p className="say">{robustnessSentence(sensitivity)}</p>
+        {/* 평가에서 고른 사실/추정/느낌이 돌아오는 자리 — 같은 덩어리 안에 한 문장으로 */}
+        {unknown && (
+          <p className="say" style={{ marginTop: 10, color: 'var(--soft)' }}>
+            {unknown}
+          </p>
+        )}
       </div>
 
       {conflict && (

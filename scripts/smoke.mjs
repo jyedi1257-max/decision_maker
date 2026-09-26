@@ -334,18 +334,19 @@ try {
   check('결론을 읽는 화면에는 스티커를 붙이지 않는다', (await page.locator('img[data-sticker]').count()) === 0)
   await shot(page, 'result')
 
-  console.log('\n왜 이런 결과인지')
-  await page.click('text=판단 기준 자세히 보기')
-  await page.waitForURL(/\/why$/)
-  check('결과가 얼마나 단단한지를 말한다', await visible(page, 'text=얼마나 단단한가'))
-  check('뒤집히는 지점을 말한다', await visible(page, 'text=단계만 더'))
-  check('확인 안 한 칸을 표시한다', await visible(page, 'text=아직 확인 안 한 것'))
-  // 기준별 막대 비교는 '내가 매긴 표'로 옮겼다. 두 화면이 같은 말을 하지 않는다.
-  check('기준별 막대를 중복해 그리지 않는다', !(await page.isVisible('text=기준마다 어디서')))
-  await shot(page, 'why')
+  // '자세히' 화면은 없앴다 — 결과 화면과 같은 말을 되풀이했다 (2026-09-26).
+  check('뒤집히는 지점은 결과 화면이 한 번만 말한다', await visible(page, 'text=한 칸만'))
+  check('확인 안 한 칸을 결과 화면에서 짚는다', await visible(page, 'text=/으로 매겼어요|비워둔 칸이에요/'))
+  check('자세히 화면으로 가는 버튼이 없다', !(await page.isVisible('text=판단 기준 자세히 보기')))
+  {
+    const here = page.url()
+    await page.goto(here.replace(/\/result$/, '/why'))
+    await page.waitForURL(/\/result$/)
+    check('예전 자세히 주소는 결과로 돌아간다', page.url().endsWith('/result'))
+  }
 
   console.log('\n직접 움직여보기')
-  await page.click('text=무엇이 중요한지 직접 조정해보기')
+  await page.click('text=직접 조정해보기')
   await page.waitForURL(/\/explore$/)
   await page.locator('.tune__slider').first().waitFor({ state: 'visible' })
   const sliders = await page.locator('.tune__slider').count()

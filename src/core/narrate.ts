@@ -8,7 +8,7 @@
  * 기획안 8.1 원칙 7 — "정답/최선"으로 단정하지 않고 "현재 입력 기준에서는"이라고 말한다.
  */
 import type { EvaluationResult } from './evaluate'
-import { differenceMakers, type DifferenceMaker } from './explain'
+import { differenceMakers, type DifferenceMaker, type Uncertainty } from './explain'
 import type { SensitivitySummary } from './sensitivity'
 
 const CIRCLED = ['①', '②', '③', '④', '⑤'] as const
@@ -68,15 +68,19 @@ export function robustnessSentence(sensitivity: SensitivitySummary): string {
   return `둘 사이 차이가 분명해요. 다만 ‘${rankFlip.criterionName}’의 중요도를 ${amount} ${direction} ${target}으로 바뀝니다.`
 }
 
-/** Why 화면의 "결과가 뒤집히는 지점". */
-export function flipPointSentence(sensitivity: SensitivitySummary): string {
-  const { rankFlip } = sensitivity
-  if (rankFlip === null) {
-    return '기준 순서를 어떻게 바꿔도 1위는 그대로예요. 지금 정보로는 결과가 단단합니다.'
-  }
-  const direction = rankFlip.steps > 0 ? '무겁게' : '가볍게'
-  const amount = Math.abs(rankFlip.steps) === 1 ? '한 단계만 더' : `${Math.abs(rankFlip.steps)}단계 더`
-  return `‘${rankFlip.criterionName}’을 ${amount} ${direction} 보면 ${ordinalMark(rankFlip.newLeaderOrdinal)}로 바뀝니다. 나머지 기준은 조금 바꿔도 결과가 유지돼요.`
+/**
+ * 아직 확인 안 한 칸 — 비워뒀거나 추정·느낌으로 채운 칸 (기획안 8.1 원칙 6).
+ * 평가 화면에서 사실/추정/느낌을 고르게 한 이유가 여기서 돌아온다.
+ * 가장 무게 있는 한 칸만 말하고, 나머지는 개수로만 덧붙인다. 없으면 null.
+ */
+export function uncertaintySentence(list: Uncertainty[]): string | null {
+  const u = list[0]
+  if (!u) return null
+  const who = `${ordinalMark(u.alternativeOrdinal)}의 ‘${u.criterionName}’${topicParticle(u.criterionName)}`
+  const what = u.kind === 'missing' ? '아직 비워둔 칸이에요' : u.kind === 'estimate' ? '추정으로 매겼어요' : '느낌으로 매겼어요'
+  const tail = u.matters ? '실제로 확인해 보면 결과를 더 믿을 수 있어요.' : '알아두면 좋아요.'
+  const more = list.length > 1 ? ` 이런 칸이 ${list.length - 1}개 더 있어요.` : ''
+  return `${who} ${what}. ${tail}${more}`
 }
 
 /** 직감과 분석이 갈렸을 때. 직감을 틀린 것으로 다루지 않는다 (기획안 7.3). */
@@ -89,6 +93,13 @@ function andParticle(word: string): string {
   const code = word.charCodeAt(word.length - 1)
   if (Number.isNaN(code) || code < 0xac00 || code > 0xd7a3) return '와'
   return (code - 0xac00) % 28 === 0 ? '와' : '과'
+}
+
+/** 받침이 있으면 '은', 없으면 '는'. "방 개수은"이 되지 않게. */
+function topicParticle(word: string): string {
+  const code = word.charCodeAt(word.length - 1)
+  if (Number.isNaN(code) || code < 0xac00 || code > 0xd7a3) return '는'
+  return (code - 0xac00) % 28 === 0 ? '는' : '은'
 }
 
 /** 이름 여럿을 "A와 B" / "A, B와 C"로 잇는다. */

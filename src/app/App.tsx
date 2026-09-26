@@ -8,7 +8,6 @@ import { Criteria } from '@/screens/Criteria'
 import { Must } from '@/screens/Must'
 import { Evaluate } from '@/screens/Evaluate'
 import { Result } from '@/screens/Result'
-import { Why } from '@/screens/Why'
 import { Explore } from '@/screens/Explore'
 import { Commit } from '@/screens/Commit'
 import { Matrix } from '@/screens/Matrix'
@@ -40,7 +39,8 @@ export function App() {
         <Route path="/d/:id/weight" element={<Navigate to="../criteria" relative="path" replace />} />
         <Route path="/d/:id/evaluate" element={<Evaluate />} />
         <Route path="/d/:id/result" element={<Result />} />
-        <Route path="/d/:id/why" element={<Why />} />
+        {/* 예전 '자세히' 화면. 결과 화면과 같은 말을 되풀이해서 없앴다 (2026-09-26). */}
+        <Route path="/d/:id/why" element={<Navigate to="../result" relative="path" replace />} />
         <Route path="/d/:id/explore" element={<Explore />} />
         <Route path="/d/:id/commit" element={<Commit />} />
         <Route path="/d/:id/matrix" element={<Matrix />} />

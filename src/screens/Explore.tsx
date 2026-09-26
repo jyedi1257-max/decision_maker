@@ -143,7 +143,7 @@ export function Explore() {
         </div>
       }
     >
-      <TopBar back={`/d/${decision.id}/why`} backLabel="자세히로 돌아가기" center="무엇이 중요한지 직접 조정해보기" />
+      <TopBar back={`/d/${decision.id}/result`} backLabel="결과로 돌아가기" center="무엇이 중요한지 직접 조정해보기" />
 
       <div style={{ marginTop: 26 }}>
         <Title lines={['무게를 바꾸면', '결과가 어떻게 바뀔까']} size={24} />
