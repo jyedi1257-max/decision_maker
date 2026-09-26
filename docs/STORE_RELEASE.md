@@ -98,9 +98,10 @@ Play는 이제 APK가 아니라 **AAB(Android App Bundle)** 를 받는다. 위 �
 2. **스토어 등록정보** — 제목·설명·아이콘·스크린샷. 초안은
    [`docs/store-listing.md`](store-listing.md)에 있다. 그대로 붙여넣거나 다듬어서 쓴다.
    - 고해상도 아이콘(512×512): `docs/icon.png` (이미 있음)
-   - 스크린샷: `docs/screenshots/`의 것들을 골라 쓴다. 기기 스크린샷 규격(세로 16:9~19.5:9)에
-     맞는지 업로드할 때 Play가 알려준다.
-   - 그래픽 배너(1024×500)는 아직 없다 — 필요해지면 알려주면 만든다.
+   - 휴대전화 스크린샷: `docs/store/01~06-*.png` (1080×1920, 순서대로 올린다).
+     `docs/screenshots/`의 앱 캡처(780×1688)는 **그대로 올리면 거절된다** — 긴 변이 짧은 변의
+     두 배를 넘으면 안 된다. 화면을 바꿨으면 `node scripts/promo/store-assets.mjs`로 다시 만든다.
+   - 그래픽 이미지(1024×500): `docs/store/feature-graphic.png`
 3. **개인정보 처리방침 URL** — 앱에 화면으로 만들어 뒀다. 배포하면
    `https://decision-maker-48224.web.app/privacy` (또는 커스텀 도메인을 연결했다면 그 주소 +
    `/privacy`)로 접근된다. `npm run deploy:hosting`으로 먼저 배포해야 링크가 실제로 열린다.

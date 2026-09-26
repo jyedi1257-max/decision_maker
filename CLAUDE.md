@@ -143,3 +143,7 @@ npm run promo     # 빌드 → 실제 앱 녹화 → 폰 틀에 넣고 자막 �
 장면 길이와 자막은 `stage.html`의 `SEGMENTS`·`CAPTIONS` 두 표만 고친다.
 ffmpeg가 없으면 `pip install imageio-ffmpeg`.
 자막에도 기획안 8.1 원칙 7을 지킨다 — "정답"이 아니라 "지금 기준에서 더 맞는 쪽".
+
+같은 녹화로 Play 스토어 이미지도 만든다: `node scripts/promo/store-assets.mjs` → `docs/store/`
+(스크린샷 1080×1920 여섯 장 + 그래픽 이미지 1024×500). 앱 캡처를 그대로 올리면
+비율(긴 변 ≤ 짧은 변 × 2) 때문에 거절된다. 문구는 `store-assets.mjs`의 `SHOTS` 표에 있다.

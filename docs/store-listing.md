@@ -44,7 +44,7 @@
 - **아이콘(512×512)**: `docs/icon.png`
 - **적응형 아이콘 배경색**: `scripts/icon-source.mjs`의 `BG` 값과 동일하게 맞춰져 있음
   (`npm run icons`가 자동 반영)
-- **휴대전화 스크린샷**: `docs/screenshots/`에서 2~8장 고른다. 최근 스모크 실행분(번호가
-  붙은 파일들) 중 홈·기준·결과·회고 화면을 추천
+- **휴대전화 스크린샷**: `docs/store/01~06-*.png` (1080×1920). 앱 캡처(`docs/screenshots/`)는 비율이 길어서 Play가 받지 않는다
+- **그래픽 이미지(1024×500)**: `docs/store/feature-graphic.png`
 - **카테고리**: 생산성
 - **개인정보 처리방침 URL**: 배포 후 `<호스팅 주소>/privacy`
